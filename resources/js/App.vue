@@ -4,13 +4,14 @@
     </template>
     <template v-else>
         <div class="grid grid-cols-4">
-            <div>
+            <div class="">
                 <ul>
-                    <li class="mb-4 mt-4 ml-6">Syariah V</li>
+                    <li class="mb-4 mt-4 ml-6 italic text-lg">Syariah Multi</li>
                     <li class="pb-2 pt-2 pl-4"><router-link :to="{ name: 'SuperDashboard'}">Dashboard</router-link></li>
                     <li class="pb-2 pt-2 pl-4"><router-link :to="{ name: 'SuperMahasiswa'}">Mahasiswa</router-link></li>
                     <li class="pb-2 pt-2 pl-4"><router-link :to="{ name: 'SuperGrup'}">Grup</router-link></li>
                     <li class="pb-2 pt-2 pl-4"><router-link :to="{ name: 'SuperBank'}">Bank</router-link></li>
+                    <li class="pb-2 pt-2 pl-4"><router-link :to="{ name: 'SuperBank'}">Logout</router-link></li>
                 </ul>
             </div>
             <div class="col-span-3 grid grid-rows-1">
@@ -18,8 +19,8 @@
                     <div class="col-span-4 p-4">
                         <h1>{{ tanggal }}</h1>
                     </div>
-                    <div class="p-4">
-                        <h1>User</h1>
+                    <div class="p-4 text-right">
+                        <h1>{{ userCpanel }}</h1>
                     </div>
                 </div>
                 <div>
@@ -50,7 +51,8 @@ export default {
     data()
     {
         return {
-            tanggal: ''
+            tanggal: '',
+            userCpanel: 'User'
         }
     }
 }

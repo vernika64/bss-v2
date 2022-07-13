@@ -3,7 +3,7 @@
     <h1 class="text-2xl mb-4">Mahasiswa</h1>
     <div class="flex flex-row gap-2">
         <button class="p-2 text-white bg-black w-auto text-sm" @click="openModalAdd = true">{{ btnTambahMahasiswa }}</button>
-        <button class="p-2 text-white bg-black w-auto text-sm">{{ btnImportData }}</button>
+        <!-- <button class="p-2 text-white bg-black w-auto text-sm">{{ btnImportData }}</button> -->
     </div>
     <div>
         <table class="border-collapse mt-4 w-full">
@@ -23,7 +23,7 @@
                     <td class="text-center p-2">{{ t.uid }}</td>
                     <td>{{ t.nama_lengkap }}</td>
                     <td class="text-center p-2">{{ t.nama_grup }}</td>
-                    <td class="text-center p-2">Kosong</td>
+                    <td class="text-center p-2">{{ t.nama_bank }}<p v-if="t.nama_bank == null">Belum Terdaftar</p></td>
                     <td class="text-center p-2"><button class="p-2 bg-blue-600 text-white">Primary</button></td>
                 </tr>
             </tbody>
@@ -82,8 +82,8 @@ export default {
     mounted() {
 
         axios.get('/api/super/memberList').then(dat => {
-            // console.log(dat.data)
             this.isiTabelMahasiswa =  dat.data.data
+            console.log(this.isiTabelMahasiswa)
             axios.get('/api/super/groupList').then(dat2 => {
                 this.listGrup = dat2.data.data
             })
@@ -116,7 +116,8 @@ export default {
     },
     methods: {
         simpanDataMahasiswa() {
-            console.log(this.formMahasiswa)
+
+            // console.log(this.formMahasiswa)
 
             const dataTambahMahasiswa = {
                 tipe_id : this.formMahasiswa.kd_id,
@@ -126,8 +127,8 @@ export default {
             }
 
             axios.post('/api/super/addNewMember', dataTambahMahasiswa).then(hit => {
-                console.log(hit.data.status)
                 alert(hit.data.status)
+                location.reload()
             })
         }
     }

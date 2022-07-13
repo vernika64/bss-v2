@@ -45,9 +45,11 @@ class Administrator extends Controller
     public function getMemberDataAll(Request $re)
     {
         try {
-            $ModelUser = SysUser::join('sys_grup', 'sys_user.kd_grup', '=', 'sys_grup.id')
-                        ->get(['nama_lengkap', 'uid', 'nama_grup']);
+            $ModelUser = SysUser::whereNotIn('sys_user.id', [1])->leftJoin('sys_grup', 'sys_user.kd_grup', '=', 'sys_grup.id')
+                        ->leftjoin('sys_bank', 'sys_user.kd_bank', '=', 'sys_bank.id')
+                        ->get(['nama_lengkap', 'uid', 'nama_grup', 'nama_bank']);
 
+                    
             return response()->json([
                 'data'      => $ModelUser,
                 'status'    => 'getdata_success'
@@ -90,7 +92,7 @@ class Administrator extends Controller
     public function getGroupList()
     {
         try {
-            $ModelGrup = SysGrup::get(['kd_grup', 'nama_grup']);
+            $ModelGrup = SysGrup::get(['id', 'kd_grup', 'nama_grup']);
 
             return response()->json([
                 'data'      => $ModelGrup,
