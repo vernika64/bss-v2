@@ -10,6 +10,7 @@ import SuperBank            from "../views/Superadmin/SuperBankList.vue"
 // Aset untuk Cpanel Banking
 import BankingLogin     from '../views/CPanel/BankingLogin.vue'
 import BankingDashboard from '../views/CPanel/BankingDashboard.vue'
+import axios from 'axios'
 
 
 // import Test from '../views/Test/Test.vue'
@@ -38,6 +39,21 @@ const routes = [
 const router = createRouter({
     history: createWebHistory(),
     routes,
+})
+
+router.beforeEach((to, from, next) => {
+    if(to.fullPath == '/supercpl/' || to.fullPath == '/') {
+        next()
+    } else {
+        // axios.post('/api/super/authcheck', { tkn    : document.cookie})
+        var jajan = document.cookie
+
+        var jajan2 = jajan.split(';')
+
+        console.log(jajan2)
+
+        next()
+    }
 })
 
 export default router

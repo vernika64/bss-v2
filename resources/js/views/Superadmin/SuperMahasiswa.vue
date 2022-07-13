@@ -80,6 +80,7 @@ export default {
         vSelect
     },
     mounted() {
+
         axios.get('/api/super/memberList').then(dat => {
             // console.log(dat.data)
             this.isiTabelMahasiswa =  dat.data.data

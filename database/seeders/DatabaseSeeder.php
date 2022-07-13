@@ -95,10 +95,25 @@ class DatabaseSeeder extends Seeder
         // Untuk Sys User
 
         DB::table('sys_user')->insert([
+            'uid'               => 'admin',
+            'tipe_id'           => 'KTM',
+            'nama_lengkap'      => 'Administrator',
+            'role'              => 'admin',
+            'password'          => Hash::make('admin'),
+            'kd_grup'           => NULL,
+            'kd_admin'          => NULL,
+            'created_at'        => Carbon::now(),
+            'updated_at'        => Carbon::now()
+        ]);
+
+        DB::table('sys_user')->insert([
             'uid'               => '1642530023',
             'tipe_id'           => 'KTM',
             'nama_lengkap'      => 'Mohammad Basori Wahyudi',
+            'role'              => NULL,
+            'password'          => NULL,
             'kd_grup'           => 1,
+            'kd_bank'           => 1,
             'kd_admin'          => 1,
             'created_at'        => Carbon::now(),
             'updated_at'        => Carbon::now()
@@ -108,7 +123,10 @@ class DatabaseSeeder extends Seeder
             'uid'               => '174561230',
             'tipe_id'           => 'KTM',
             'nama_lengkap'      => 'Bagong Tunjung Kali',
+            'role'              => NULL,
+            'password'          => NULL,
             'kd_grup'           => 1,
+            'kd_bank'           => 1,
             'kd_admin'          => 1,
             'created_at'        => Carbon::now(),
             'updated_at'        => Carbon::now()
@@ -118,7 +136,10 @@ class DatabaseSeeder extends Seeder
             'uid'               => '189654231',
             'tipe_id'           => 'KTM',
             'nama_lengkap'      => 'Junaedi bin Jotor',
+            'role'              => NULL,
+            'password'          => NULL,
             'kd_grup'           => 1,
+            'kd_bank'           => 1,
             'kd_admin'          => 1,
             'created_at'        => Carbon::now(),
             'updated_at'        => Carbon::now()

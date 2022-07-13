@@ -18,8 +18,11 @@ class SysUser extends Migration
             $table->string('uid');
             $table->string('tipe_id');
             $table->string('nama_lengkap');
-            $table->integer('kd_grup');
-            $table->integer('kd_admin');
+            $table->enum('role', ['admin', 'cservice', 'supervisor'])->nullable();
+            $table->string('password')->nullable();
+            $table->integer('kd_grup')->nullable();
+            $table->string('kd_bank')->nullable();
+            $table->integer('kd_admin')->nullable();
             $table->timestamps();
         });
     }

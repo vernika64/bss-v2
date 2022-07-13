@@ -43,7 +43,7 @@ export default {
 
         this.tanggal = tgl.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric'})
         
-        // axios.post().then(user => {
+        // axios.post('').then(user => {
         //     console.log(user.data)
         // })
     },
