@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Administrator;
+use App\Http\Controllers\Auth;
 use App\Http\Controllers\UserManagement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -19,6 +20,10 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// Untuk Login
+Route::post('/super/login', [Auth::class, 'login']);
+Route::get('/super/tknCheck', [Auth::class, 'tokenCheck']);
 
 // Untuk Administrator
 

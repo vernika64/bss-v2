@@ -14,10 +14,9 @@ class SysToken extends Migration
     public function up()
     {
         Schema::create('sys_token', function(Blueprint $table) {
-            $table->bigIncrements();
+            $table->bigInteger('id');
             $table->string('kd_user');
             $table->string('token');
-            $table->datetime('expiration');
             $table->timestamps();
         });
     }
