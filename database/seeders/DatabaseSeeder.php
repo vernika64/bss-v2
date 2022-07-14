@@ -20,7 +20,36 @@ class DatabaseSeeder extends Seeder
 
         // Untuk User SuperAdmin
 
-        
+        DB::table('sys_user')->insert([
+            'username'          => 'admin',
+            'password'          => Hash::make('admin'),
+            'role'              => 'admin',
+            'kd_bank'           => 0
+        ]);
+
+        DB::table('sys_user')->insert([
+            'username'          => 'arjuna',
+            'password'          => Hash::make('arjuna'),
+            'role'              => 'office',
+            'kd_bank'           => 1
+        ]);
+
+
+        // // Untuk Data Bank (Untuk keperluan Testing)
+
+        DB::table('sys_bank')->insert([
+            'kd_bank'           => '2022-06-13-1',
+            'nama_bank'         => 'Bank Amanah Sejahtera',
+            'alamat_bank'       => 'Jl. Sentosa',
+            'kd_admin'          => 1
+        ]);
+
+        DB::table('sys_bank')->insert([
+            'kd_bank'           => '2022-06-13-1',
+            'nama_bank'         => 'Bank Pembangunan Lancar',
+            'alamat_bank'       => 'Jl. Lurus',
+            'kd_admin'          => 1
+        ]);
 
         // DB::table('sys_superadmin')->insert([
         //     'username'          => 'admin',
@@ -147,20 +176,5 @@ class DatabaseSeeder extends Seeder
         //     'updated_at'        => Carbon::now()
         // ]);
 
-        // // Untuk Data Bank (Testing)
-
-        // DB::table('sys_bank')->insert([
-        //     'kd_bank'           => '2022-06-13-1',
-        //     'nama_bank'         => 'Bank Amanah Sejahtera',
-        //     'alamat_bank'       => 'Jl. Sentosa',
-        //     'kd_admin'          => 1
-        // ]);
-
-        // DB::table('sys_bank')->insert([
-        //     'kd_bank'           => '2022-06-13-1',
-        //     'nama_bank'         => 'Bank Pembangunan Lancar',
-        //     'alamat_bank'       => 'Jl. Lurus',
-        //     'kd_admin'          => 1
-        // ]);
     }
 }

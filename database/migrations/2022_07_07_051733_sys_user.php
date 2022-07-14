@@ -15,14 +15,10 @@ class SysUser extends Migration
     {
         Schema::create('sys_user', function (Blueprint $table) {
             $table->id();
-            $table->string('uid');
-            $table->string('tipe_id');
-            $table->string('nama_lengkap');
-            $table->enum('role', ['admin', 'cservice', 'supervisor'])->nullable();
-            $table->string('password')->nullable();
-            $table->integer('kd_grup')->nullable();
-            $table->string('kd_bank')->nullable();
-            $table->integer('kd_admin')->nullable();
+            $table->string('username');
+            $table->string('password');
+            $table->enum('role', ['admin', 'office', 'client']);
+            $table->string('kd_bank');
             $table->timestamps();
         });
     }

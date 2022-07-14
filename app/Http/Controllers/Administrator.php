@@ -14,34 +14,6 @@ class Administrator extends Controller
 {
     protected $admin_test = 1;
 
-
-    public function adminLogin(Request $re)
-    {
-        $username = $re->username;
-        $password = $re->password;
-
-        try {
-            $ModelUserAdmin = SysUserAdmin::where('username', $username)->first();
-
-            if(Hash::check($password, $ModelUserAdmin->password)) {
-                return response()->json([
-                    'message'       => 'Username terdaftar dan password sesuai',
-                    'username'      => $ModelUserAdmin->username,
-                    'status'        => 'login_success'
-                ]);
-            } else {
-                return response()->json([
-                    'message'      => 'Username atau password tidak sesuai',
-                    'status'        => 'user_auth_error'
-                ]);
-            }
-        } catch (\Throwable $th) {
-            return response()->json([
-                'data'      => $th->getMessage()
-            ]);
-        }
-    }
-
     public function getMemberDataAll(Request $re)
     {
         try {
@@ -81,45 +53,6 @@ class Administrator extends Controller
                 'status'      => 'insert_success'
             ]);
 
-        } catch (\Throwable $th) {
-            return response()->json([
-                'data'      => $th->getMessage(),
-                'status'    => 'server_error'
-            ]);
-        }
-    }
-
-    public function getGroupList()
-    {
-        try {
-            $ModelGrup = SysGrup::get(['id', 'kd_grup', 'nama_grup']);
-
-            return response()->json([
-                'data'      => $ModelGrup,
-                'status'    => 'getdata_success'
-            ]);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'data'      => $th->getMessage(),
-                'status'    => 'server_error'
-            ]);
-        }
-    }
-
-    public function addNewGroups(Request $re)
-    {
-        try {
-            $ModelGrup = new SysGrup;
-
-            $ModelGrup->kd_grup         = $re->kodegrup;
-            $ModelGrup->nama_grup       = $re->namagrup;
-            $ModelGrup->deskripsi_grup  = $re->descgrup;
-            $ModelGrup->kd_admin        = $this->admin_test;
-            $ModelGrup->save();
-
-            return response()->json([
-                'status'        => 'insert_success'
-            ]);
         } catch (\Throwable $th) {
             return response()->json([
                 'data'      => $th->getMessage(),

@@ -13,12 +13,12 @@ class SysTipeId extends Migration
      */
     public function up()
     {
-        Schema::create('sys_tipe_id', function(Blueprint $table) {
-            $table->id();
-            $table->string('kd_kartu');
-            $table->string('nama_kartu');
-            $table->timestamps();
-        });
+        // Schema::create('sys_tipe_id', function(Blueprint $table) {
+        //     $table->id();
+        //     $table->string('kd_kartu');
+        //     $table->string('nama_kartu');
+        //     $table->timestamps();
+        // });
     }
 
     /**

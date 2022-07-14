@@ -8,9 +8,9 @@
                 <ul>
                     <li class="mb-4 mt-4 ml-6 italic text-lg">Syariah Multi</li>
                     <li class="pb-2 pt-2 pl-4"><router-link :to="{ name: 'SuperDashboard'}">Dashboard</router-link></li>
-                    <li class="pb-2 pt-2 pl-4"><router-link :to="{ name: 'SuperMahasiswa'}">Mahasiswa</router-link></li>
-                    <li class="pb-2 pt-2 pl-4"><router-link :to="{ name: 'SuperGrup'}">Grup</router-link></li>
-                    <li class="pb-2 pt-2 pl-4"><router-link :to="{ name: 'SuperBank'}">Bank</router-link></li>
+                    <li class="pb-2 pt-2 pl-4"><router-link :to="{ name: 'SuperBank'}">Manajemen Bank</router-link></li>
+                    <li class="pb-2 pt-2 pl-4"><router-link :to="{ name: 'SuperUser'}">Manajemen User</router-link></li>
+                    <li class="pb-2 pt-2 pl-4"><router-link :to="{ name: ''}">Laporan (beta)</router-link></li>
                     <li class="pb-2 pt-2 pl-4"><router-link :to="{ name: 'SuperBank'}">Logout</router-link></li>
                 </ul>
             </div>
@@ -57,3 +57,7 @@ export default {
     }
 }
 </script>
+
+<style>
+/*  */
+</style>

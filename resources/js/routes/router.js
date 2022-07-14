@@ -1,11 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 // Aset untuk Super Admin
+
+// import SuperMahasiswa       from "../views/Superadmin/SuperMahasiswa.vue"
+// import SuperGrup            from "../views/Superadmin/SuperGrup.vue"
+
 import SuperLogin           from '../views/Superadmin/SuperLogin.vue'
 import SuperDashboard       from '../views/Superadmin/SuperDashboard.vue'
-import SuperMahasiswa       from "../views/Superadmin/SuperMahasiswa.vue"
-import SuperGrup            from "../views/Superadmin/SuperGrup.vue"
-import SuperBank            from "../views/Superadmin/SuperBankList.vue"
+import SuperBank            from "../views/Superadmin/SuperBank.vue"
+import SuperUser            from "../views/Superadmin/SuperUser.vue"
 
 // Aset untuk Cpanel Banking
 import BankingLogin     from '../views/CPanel/BankingLogin.vue'
@@ -27,11 +30,16 @@ const routes = [
 
     { path: '/supercpl/superdashboard/',    component: SuperDashboard,      name: 'SuperDashboard'},
 
-    { path: '/supercpl/supermahasiswa/',    component: SuperMahasiswa,      name: 'SuperMahasiswa'},
+    { path: '/supercpl/superbank',          component: SuperBank,           name: 'SuperBank'},
 
-    { path: '/supercpl/supergrup/',         component: SuperGrup,           name: 'SuperGrup'},
+    { path: '/supercpl/superuser/',         component: SuperUser,          name: 'SuperUser'},
 
-    { path: '/supercpl/superbank',          component: SuperBank,           name: 'SuperBank'}
+
+
+    // { path: '/supercpl/supermahasiswa/',    component: SuperMahasiswa,      name: 'SuperMahasiswa'},
+
+    // { path: '/supercpl/supergrup/',         component: SuperGrup,           name: 'SuperGrup'},
+
 
 
 ]
@@ -45,12 +53,13 @@ router.beforeEach((to, from, next) => {
     if(to.fullPath == '/supercpl/' || to.fullPath == '/') {
         next()
     } else {
-        // axios.post('/api/super/authcheck', { tkn    : document.cookie})
-        var jajan = document.cookie
-
-        var jajan2 = jajan.split(';')
-
-        console.log(jajan2)
+        axios.get('/api/super/tknCheck').then(tkn => {
+            if(tkn.data.status == 'token_error')
+            {
+                return router.push({name: 'BankingLogin'})
+            }
+            // console.log(tkn.data)
+        })
 
         next()
     }

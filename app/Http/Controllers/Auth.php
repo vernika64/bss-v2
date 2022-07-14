@@ -13,19 +13,26 @@ class Auth extends Controller
     {
         try {
 
-            $ModelUser = SysUser::where('uid', $re->username)->first();
+            $ModelUser = SysUser::where('username', $re->username)->first();
 
-            if(!$ModelUser)
+            if(!$ModelUser || !Hash::check($re->password, $ModelUser->password))
             {
                 return response()->json([
                     'status'    => 'Username atau Password salah'
                 ]);
             }
 
-            $kuki = cookie('tkn', Hash::make(rand()));
+            $buatkuki = Hash::make(rand());
+
+            $kuki = cookie('tkn', $buatkuki);
+
+            $ModelToken = new SysToken;
+            $ModelToken->kd_user    = $ModelUser->username;
+            $ModelToken->token      = $buatkuki;
+            $ModelToken->save();
 
             return response()->json([
-                'data'      => $ModelUser,
+                'role'      => $ModelUser->role,
                 'status'    => 'auth_success'
             ])->withCookie($kuki);
 
@@ -46,12 +53,22 @@ class Auth extends Controller
 
             if(!$ModelToken) {
                 return response()->json([
-                    'status'      => 'token_notfound'
+                    'status'      => 'token_error'
+                ]);
+            }
+
+            $ModelUser  = SysUser::where('username', $ModelToken->kd_user)->first();
+
+            if(!$ModelUser) {
+                return response()->json([
+                    'status'      => 'token_error'
                 ]);
             }
 
             return response()->json([
-                'token'     => $kuki
+                'token'     => $kuki,
+                'user'      => $ModelToken->kd_user,
+                'role'      => $ModelUser->role
             ]);
         } catch (\Throwable $th) {
             return response()->json([

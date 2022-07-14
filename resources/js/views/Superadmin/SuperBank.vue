@@ -18,11 +18,11 @@
             </thead>
             <tbody>
                 <tr v-for="(bk, index) in tabelBank" :key="bk.kd_bank">
-                   <td class="text-center">{{ index }}</td> 
-                   <td>{{ bk.kd_bank }}</td> 
-                   <td>{{ bk.nama_bank }}</td> 
-                   <td>{{ bk.alamat_bank }}</td> 
-                   <td><button class="p-2 bg-blue-600 text-white">Aksi</button></td> 
+                   <td class="text-center border p-2">{{ index }}</td> 
+                   <td class="border p-2">{{ bk.kd_bank }}</td> 
+                   <td class="border p-2">{{ bk.nama_bank }}</td> 
+                   <td class="border p-2">{{ bk.alamat_bank }}</td> 
+                   <td class="border p-2"><button class="p-2 bg-blue-600 text-white">Aksi</button></td> 
                 </tr>
             </tbody>
         </table>
@@ -87,6 +87,7 @@ export default {
             }
             axios.post('/api/super/addNewBank', dataBank).then(res2 => {
                 alert(res2.data.status)
+                location.reload()
             }).catch(err2 => {
                 alert('Mohon maaf, server sedang mengalami gangguan, mohon untuk menghubungi Web Administrator')
             })
