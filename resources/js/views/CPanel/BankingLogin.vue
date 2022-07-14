@@ -1,21 +1,19 @@
 <template>
 
-<div class="grid grid-cols-3 text-center mt-[300px]">
-    <div>
-
+<div class="grid grid-cols-3 text-center">
+    <div class="col-span-2 h-screen">
     </div>
-    <div class="grid grid-rows-1">
-        <h1 class="text-2xl mb-4">Syariah Multi</h1>
-        <p class="mb-4">Silahkan login untuk melanjutkan</p>
-        <form class="grid grid-rows-1 gap-2">
-            <input v-model="formLogin.username" type="text" class="border p-2" placeholder="Username" />
-            <input v-model="formLogin.password" type="password" class="border p-2" placeholder="Password" />
-    
-            <input type="submit" value="Login" class="border bg-blue-500 text-white p-2" @click="masukKeDashboard" />
-        </form>
-    </div>
-    <div>
-
+    <div class="grid grid-rows-1 p-4">
+        <div>
+            <h1 class="text-2xl mb-4">Syariah Multi</h1>
+            <p class="mb-4">Silahkan login untuk melanjutkan</p>
+            <form class="grid grid-rows-1 gap-2">
+                <input v-model="formLogin.username" type="text" class="border p-2" placeholder="Username" />
+                <input v-model="formLogin.password" type="password" class="border p-2" placeholder="Password" />
+        
+                <input type="submit" value="Login" class="border bg-blue-500 text-white p-2" @click="masukKeDashboard" />
+            </form>
+        </div>
     </div>
 </div>
 

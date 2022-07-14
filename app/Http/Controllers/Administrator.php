@@ -17,11 +17,10 @@ class Administrator extends Controller
     public function getMemberDataAll(Request $re)
     {
         try {
-            $ModelUser = SysUser::whereNotIn('sys_user.id', [1])->leftJoin('sys_grup', 'sys_user.kd_grup', '=', 'sys_grup.id')
-                        ->leftjoin('sys_bank', 'sys_user.kd_bank', '=', 'sys_bank.id')
-                        ->get(['nama_lengkap', 'uid', 'nama_grup', 'nama_bank']);
+            $ModelUser = SysUser::whereNotIn('sys_user.id', [1])
+                         ->join('sys_bank', 'sys_user.kd_bank', '=', 'sys_bank.kd_bank')
+                         ->get(['username', 'nama_bank', 'role']);
 
-                    
             return response()->json([
                 'data'      => $ModelUser,
                 'status'    => 'getdata_success'
@@ -39,15 +38,13 @@ class Administrator extends Controller
     public function addNewMember(Request $re)
     {
         try {
-            $ModelMahasiswa = new SysUser;
+            $ModelUser = new SysUser;
 
-            $ModelMahasiswa->uid            = $re->no_id;
-            $ModelMahasiswa->tipe_id        = $re->tipe_id;
-            $ModelMahasiswa->nama_lengkap   = $re->nama_l;
-            $ModelMahasiswa->kd_grup        = $re->grup;
-            $ModelMahasiswa->kd_admin       = $this->admin_test;
-
-            $ModelMahasiswa->save();
+            $ModelUser->username       = $re->username;
+            $ModelUser->password       = Hash::make($re->username);
+            $ModelUser->role           = $re->pekerjaan;
+            $ModelUser->kd_bank        = $re->bankTujuan;
+            $ModelUser->save();
 
             return response()->json([
                 'status'      => 'insert_success'
@@ -82,8 +79,10 @@ class Administrator extends Controller
     {
         try {
             $ModelBank = new SysBank;
+            
+            $kalkulasiJumlahBank    = SysBank::count() + 1;
 
-            $ModelBank->kd_bank     = Carbon::now()->format('Y-m-d') . '-' . SysBank::count();
+            $ModelBank->kd_bank     = Carbon::now()->format('Y-m-d') . '-' . $kalkulasiJumlahBank; // Format : Tahun - Bulan - Hari - Jumlah Bank yang terdaftar di database
             $ModelBank->nama_bank   = $re->namabank;
             $ModelBank->alamat_bank = $re->alamatbank;
             $ModelBank->kd_admin    = $this->admin_test;
