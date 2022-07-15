@@ -39,6 +39,7 @@ Route::post('/super/addNewGroup', [Administrator::class, 'addNewGroups']);
 
 // Sub Manajemen Bank
 Route::get('/super/bankList', [Administrator::class, 'getBankList']);
+Route::get('/super/bankList/{id}', [Administrator::class, 'getBankListById']);
 Route::post('/super/addNewBank', [Administrator::class, 'addBankNew']);
 
 

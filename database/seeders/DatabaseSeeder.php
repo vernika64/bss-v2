@@ -45,7 +45,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         DB::table('sys_bank')->insert([
-            'kd_bank'           => '2022-06-13-1',
+            'kd_bank'           => '2022-06-13-2',
             'nama_bank'         => 'Bank Pembangunan Lancar',
             'alamat_bank'       => 'Jl. Lurus',
             'kd_admin'          => 1
