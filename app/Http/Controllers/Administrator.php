@@ -18,20 +18,18 @@ class Administrator extends Controller
     {
         try {
             $ModelUser = SysUser::whereNotIn('sys_user.id', [1])
-                         ->join('sys_bank', 'sys_user.kd_bank', '=', 'sys_bank.kd_bank')
-                         ->get(['username', 'nama_bank', 'role']);
+                ->join('sys_bank', 'sys_user.kd_bank', '=', 'sys_bank.kd_bank')
+                ->get(['username', 'nama_bank', 'role']);
 
             return response()->json([
                 'data'      => $ModelUser,
                 'status'    => 'getdata_success'
             ]);
-
         } catch (\Throwable $th) {
             return response()->json([
                 'data'      => $th->getMessage(),
                 'status'    => 'server_error'
             ]);
-
         }
     }
 
@@ -49,7 +47,6 @@ class Administrator extends Controller
             return response()->json([
                 'status'      => 'insert_success'
             ]);
-
         } catch (\Throwable $th) {
             return response()->json([
                 'data'      => $th->getMessage(),
@@ -75,11 +72,33 @@ class Administrator extends Controller
         }
     }
 
+    public function getBankListById($id)
+    {
+        try {
+            $ModelBank = SysBank::where('kd_bank', $id)->first();
+
+            if (!$ModelBank) {
+                return response()->json([
+                    'status'        => 'data_notfound'
+                ]);
+            }
+
+            return response()->json([
+                'data'              => $ModelBank->get()
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'data'      => $th->getMessage(),
+                'status'    => 'server_error'
+            ]);
+        }
+    }
+
     public function addBankNew(Request $re)
     {
         try {
             $ModelBank = new SysBank;
-            
+
             $kalkulasiJumlahBank    = SysBank::count() + 1;
 
             $ModelBank->kd_bank     = Carbon::now()->format('Y-m-d') . '-' . $kalkulasiJumlahBank; // Format : Tahun - Bulan - Hari - Jumlah Bank yang terdaftar di database
@@ -98,5 +117,4 @@ class Administrator extends Controller
             ]);
         }
     }
-
 }
