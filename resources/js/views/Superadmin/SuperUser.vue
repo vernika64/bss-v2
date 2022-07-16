@@ -18,7 +18,7 @@
                 </thead>
                 <tbody>
                     <tr class="border" v-for="(user, index) in listUser" :key="index">
-                       <td class="text-center border p-2">{{ index }}</td>
+                       <td class="text-center border p-2">{{ index + 1 }}</td>
                        <td class="border p-2">{{ user.username }}</td>
                        <td class="border p-2">{{ user.nama_bank }}</td>
                        <td class="border p-2">{{ user.role }}</td>
@@ -67,17 +67,24 @@ import axios from 'axios'
 
 export default {
     mounted() {
+        
         axios.get('/api/super/bankList').then(hsl => {
             this.listBank = hsl.data.data
             // console.log(this.listBank)
-
-            axios.get('/api/super/memberList').then(hsl2 => {
-                this.listUser = hsl2.data.data
-                console.log(this.listUser)
-            })
         }).catch(err => {
             console.log('Server Error')
         })
+
+        axios.get('/api/super/memberList').then(hsl2 => {
+            this.listUser = hsl2.data.data
+            // console.log(this.listUser)
+        }).catch(err => {
+            console.log('Server Error')
+        })
+
+        
+
+
     },
     data() {
         return {

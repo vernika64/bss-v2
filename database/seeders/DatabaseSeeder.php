@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
             'username'          => 'arjuna',
             'password'          => Hash::make('arjuna'),
             'role'              => 'office',
-            'kd_bank'           => 1
+            'kd_bank'           => '2022-06-13-2'
         ]);
 
 
