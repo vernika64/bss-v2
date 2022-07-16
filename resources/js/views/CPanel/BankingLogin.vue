@@ -25,33 +25,42 @@ import axios from 'axios'
 import router from '../../routes/router'
 
 export default {
-methods: {
-    masukKeDashboard(e) {
-        // console.log(this.formLogin)
-        
-        axios.post('/api/super/login', { username: this.formLogin.username, password: this.formLogin.password}).then(res => {
-            console.log(res.data)
-            if(res.data.role == 'admin')
-            {
-                router.push({name: 'SuperDashboard'})
-            } else if(res.data.role == 'office') {
-                router.push({name: 'BankingDashboard'})
-            } else if(res.data.role == 'client') {
-                // 
-            } else {
-                alert('Server error, silahkan hubungi web administrator')
+
+    mounted() {
+        axios.get('/api/super/cekLogin').then(cek => {
+            // console.log(cek.data.status)
+            if(cek.data.status == 'token_available') {
+                return router.push({name: 'SuperDashboard'})
             }
         })
-        e.preventDefault()
-    }
-},
-data() {
-    return {
-        formLogin: {
-            username: '',
-            password: ''
+    },
+    methods: {
+        masukKeDashboard(e) {
+            // console.log(this.formLogin)
+
+            axios.post('/api/super/login', { username: this.formLogin.username, password: this.formLogin.password}).then(res => {
+                console.log(res.data)
+                if(res.data.role == 'admin')
+                {
+                    router.push({name: 'SuperDashboard'})
+                } else if(res.data.role == 'office') {
+                    router.push({name: 'BankingDashboard'})
+                } else if(res.data.role == 'client') {
+                    // 
+                } else {
+                    alert('Server error, silahkan hubungi web administrator')
+                }
+            })
+            e.preventDefault()
+        }
+    },
+    data() {
+        return {
+            formLogin: {
+                username: '',
+                password: ''
+            }
         }
     }
-}
 }
 </script>

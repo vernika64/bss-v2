@@ -1,6 +1,8 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory} from 'vue-router'
 
-// Aset untuk Super Admin
+// Aset untuk Sistem
+
+import Peko_404             from '../views/System/404.vue'
 
 // import SuperMahasiswa       from "../views/Superadmin/SuperMahasiswa.vue"
 // import SuperGrup            from "../views/Superadmin/SuperGrup.vue"
@@ -21,14 +23,17 @@ import axios from 'axios'
 
 const routes = [
 
-    // Rute untuk Cpanel Banking
-    { path: '/', component: BankingLogin, name: 'BankingLogin'},
+    // Rute untuk Sistem Vue Router
+    { path: '/:pathMatch(.*)*',                     component: Peko_404,                name: 'PekoNotFound'},
 
-    { path: '/banking/dashboard', component: BankingDashboard, name: 'BankingDashboard'},
+    // Rute untuk Cpanel Banking
+    { path: '/',                                    component: BankingLogin,            name: 'BankingLogin'},
+
+    { path: '/banking/dashboard',                   component: BankingDashboard,        name: 'BankingDashboard'},
 
     // Rute untuk Superadmin
 
-    { path: '/supercpl/',                           component: SuperLogin,              name: 'SuperLogin'},
+    { path: '/supercpl/',                           component: SuperDashboard},
 
     { path: '/supercpl/superdashboard/',            component: SuperDashboard,          name: 'SuperDashboard'},
 
@@ -53,11 +58,13 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    if(to.fullPath == '/supercpl/' || to.fullPath == '/') {
+    if(to.fullPath == '/') {
         next()
+    } else if(to.name == 'PekoNotFound') {
+        next();
     } else {
         axios.get('/api/super/tknCheck').then(tkn => {
-            if(tkn.data.status == 'token_error')
+            if(tkn.data.status == 'token_notexist')
             {
                 return router.push({name: 'BankingLogin'})
             }

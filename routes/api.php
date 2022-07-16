@@ -24,6 +24,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // Untuk Login
 Route::post('/super/login', [Auth::class, 'login']);
 Route::get('/super/tknCheck', [Auth::class, 'tokenCheck']);
+Route::get('/super/cekLogin', [Auth::class, 'checkSudahLogin']);
+Route::get('/super/keluar', [Auth::class, 'logout']);
 
 // Untuk Administrator
 

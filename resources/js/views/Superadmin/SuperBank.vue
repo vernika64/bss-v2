@@ -18,11 +18,11 @@
             </thead>
             <tbody>
                 <tr v-for="(bk, index) in tabelBank" :key="bk.kd_bank">
-                   <td class="text-center border p-2">{{ index }}</td> 
-                   <td class="border p-2">{{ bk.kd_bank }}</td> 
-                   <td class="border p-2">{{ bk.nama_bank }}</td> 
-                   <td class="border p-2">{{ bk.alamat_bank }}</td> 
-                   <td class="border p-2"><router-link class="p-2 bg-blue-600 text-white" :to="{ name: 'SuperBankDetail', params: { bankID: bk.kd_bank }}">Details</router-link></td> 
+                   <td class="text-center border p-3">{{ index + 1 }}</td> 
+                   <td class="border p-3">{{ bk.kd_bank }}</td> 
+                   <td class="border p-3">{{ bk.nama_bank }}</td> 
+                   <td class="border p-3">{{ bk.alamat_bank }}</td> 
+                   <td class="border p-3"><router-link class="p-2 bg-blue-600 text-white" :to="{ name: 'SuperBankDetail', params: { bankID: bk.kd_bank }}">Details</router-link></td> 
                 </tr>
             </tbody>
         </table>

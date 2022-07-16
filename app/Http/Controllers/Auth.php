@@ -24,7 +24,7 @@ class Auth extends Controller
 
             $buatkuki = Hash::make(rand());
 
-            $kuki = cookie('tkn', $buatkuki);
+            $kuki = cookie('tkn', $buatkuki, 3 * 60);       // Cookie expired dalam 3 jam (3 dikali 60 menit) setelah login
 
             $ModelToken = new SysToken;
             $ModelToken->kd_user    = $ModelUser->username;
@@ -53,7 +53,7 @@ class Auth extends Controller
 
             if(!$ModelToken) {
                 return response()->json([
-                    'status'      => 'token_error'
+                    'status'      => 'token_notexist'
                 ]);
             }
 
@@ -61,7 +61,7 @@ class Auth extends Controller
 
             if(!$ModelUser) {
                 return response()->json([
-                    'status'      => 'token_error'
+                    'status'      => 'user_notlisted'
                 ]);
             }
 
@@ -70,6 +70,57 @@ class Auth extends Controller
                 'user'      => $ModelToken->kd_user,
                 'role'      => $ModelUser->role
             ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'data'      => $th->getMessage(),
+                'status'    => 'server_error'
+            ]);
+        }
+    }
+
+    public function checkSudahLogin(Request $re)
+    {
+        try {
+            if($re->cookie('tkn') == null)
+            {
+                return response()->json(['status' => 'token_notfound']);                // Token tidak ditemukan di komputer client
+            } else {
+                $ModelToken = SysToken::where('token', $re->cookie('tkn'))->first();
+
+                if(!$ModelToken) {
+                    return response()->json(['status' => 'token_notlisted']);           // Token tidak terdaftar di server
+                }
+
+                return response()->json(['status' => 'token_available']);               // Token OK
+            }
+        } catch (\Throwable $th) {
+            return response()->json([
+                'data'      => $th->getMessage(),
+                'status'    => 'server_error'
+            ]);
+        }
+    }
+
+    public function logout(Request $re)
+    {
+        try {
+            $kuki = $re->cookie('tkn');
+
+            $ModelToken = SysToken::where('token', $kuki)->first();
+
+            if(!$ModelToken) {
+                return response()->json([
+                    'status'        => 'token_error'
+                ]);
+            }
+
+            if(SysToken::where('token', $kuki)->delete())
+            {
+                return response()->json([ 'status' => 'logout_success'])->withoutCookie('tkn');
+            } else {
+                return response()->json([ 'status' => 'logout_error']);
+            }
+            
         } catch (\Throwable $th) {
             return response()->json([
                 'data'      => $th->getMessage(),
