@@ -35,6 +35,7 @@ class DatabaseSeeder extends Seeder
         DB::table('sys_user')->insert([
             'username'          => 'admin',
             'password'          => Hash::make('admin'),
+            'fname'             => 'Administrator',
             'role'              => 'admin',
             'kd_bank'           => 0
         ]);
@@ -42,6 +43,7 @@ class DatabaseSeeder extends Seeder
         DB::table('sys_user')->insert([
             'username'          => 'arjuna',
             'password'          => Hash::make('arjuna'),
+            'fname'             => 'Arjuna',
             'role'              => 'office',
             'kd_bank'           => '2022-06-13-2'
         ]);

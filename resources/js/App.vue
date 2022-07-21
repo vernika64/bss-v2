@@ -22,17 +22,17 @@
                         </li>
                     <li class="bg-slate-900 p-4 rounded-md ">
                         <router-link :to="{ name: 'SuperUser'}" class="flex">
-                            <identification-icon class="h-7 w-7 mr-3" /> Users Management
+                            <identification-icon class="h-7 w-7 mr-3" /> Users
+                        </router-link>
+                    </li>
+                    <li class="bg-slate-900 p-4 rounded-md ">
+                        <router-link :to="{ name: 'SuperPekerjaan'}" class="flex">
+                            <users-icon class="h-7 w-7 mr-3" /> Pekerjaan
                         </router-link>
                     </li>
                     <li class="bg-slate-900 p-4 rounded-md ">
                         <router-link :to="{ name: ''}" class="flex">
                             <document-report-icon class="h-7 w-7 mr-3" /> Laporan <p class="ml-2 bg-white text-black rounded-sm italic">(experimental)</p>
-                        </router-link>
-                    </li>
-                    <li class="bg-slate-900 p-4 rounded-md ">
-                        <router-link :to="{ name: ''}" class="flex">
-                            <users-icon class="h-7 w-7 mr-3" /> Jobs
                         </router-link>
                     </li>
                     <li class="bg-slate-900 p-4 rounded-md ">
@@ -49,9 +49,6 @@
                         <div>
                             <h1>{{ userCpanel }}</h1>
                         </div>
-                        <!-- <div class="bg-white pt-4 pb-4 pr-5 w-[200px] border-t absolute right-0 mt-4 border-l shadow-md">
-                            <router-link :to="''">Logout</router-link>
-                        </div> -->
                     </div>
                 </div>
                 <div class="bg-slate-200">
@@ -88,9 +85,10 @@ export default {
 
         this.tanggal = tgl.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric'})
         
-        // axios.post('').then(user => {
-        //     console.log(user.data)
-        // })
+        if(localStorage.getItem('uname') != null)
+        {
+            this.userCpanel = localStorage.getItem('uname')
+        }
     },
     data()
     {

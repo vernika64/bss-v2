@@ -12,6 +12,7 @@ import SuperDashboard       from '../views/Superadmin/SuperDashboard.vue'
 import SuperBank            from "../views/Superadmin/SuperBank.vue"
 import SuperBankDetail      from "../views/Superadmin/SuperBankDetails.vue"
 import SuperUser            from "../views/Superadmin/SuperUser.vue"
+import SuperPekerjaan       from "../views/Superadmin/SuperPekerjaan.vue"
 
 // Aset untuk Cpanel Banking
 import BankingLogin     from '../views/CPanel/BankingLogin.vue'
@@ -41,6 +42,11 @@ const routes = [
     { path: '/supercpl/superbank/detail/:bankID',   component: SuperBankDetail,         name: 'SuperBankDetail'},
 
     { path: '/supercpl/superuser/',                 component: SuperUser,               name: 'SuperUser'},
+
+
+    { path: '/supercpl/superpekerjaan/',            component: SuperPekerjaan,          name: 'SuperPekerjaan'},
+
+
 
 
 

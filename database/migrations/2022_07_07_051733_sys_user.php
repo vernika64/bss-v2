@@ -17,7 +17,8 @@ class SysUser extends Migration
             $table->id();
             $table->string('username');
             $table->string('password');
-            $table->enum('role', ['admin', 'office', 'client']);
+            $table->string('fname');
+            $table->string('role');
             $table->string('kd_bank');
             $table->timestamps();
         });

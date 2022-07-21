@@ -40,13 +40,12 @@ export default {
 
             axios.post('/api/super/login', { username: this.formLogin.username, password: this.formLogin.password}).then(res => {
                 console.log(res.data)
+                localStorage.setItem('uname', res.data.nama)
                 if(res.data.role == 'admin')
                 {
                     router.push({name: 'SuperDashboard'})
                 } else if(res.data.role == 'office') {
                     router.push({name: 'BankingDashboard'})
-                } else if(res.data.role == 'client') {
-                    // 
                 } else {
                     alert('Server error, silahkan hubungi web administrator')
                 }

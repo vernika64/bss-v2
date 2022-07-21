@@ -38,7 +38,10 @@ methods: {
         }
 
         axios.post('/api/super/adminLogin', entryData).then(user => {
+            const nama = user.data.nama
+            console.log(nama)
             console.log(user.data)
+
 
             return router.push({name: 'SuperDashboard'})
         })

@@ -33,6 +33,7 @@ class Auth extends Controller
 
             return response()->json([
                 'role'      => $ModelUser->role,
+                'nama'      => $ModelUser->fname,
                 'status'    => 'auth_success'
             ])->withCookie($kuki);
 
