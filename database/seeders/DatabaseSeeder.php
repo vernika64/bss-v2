@@ -18,6 +18,18 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
 
+        // Untuk Role
+
+        DB::table('sys_role')->insert([
+            'kd_role'           => 'admin',
+            'nama_role'         => 'Administrator',
+        ]);
+
+        DB::table('sys_role')->insert([
+            'kd_role'           => 'office',
+            'nama_role'         => 'Office Serbaguna'
+        ]);
+
         // Untuk User SuperAdmin
 
         DB::table('sys_user')->insert([

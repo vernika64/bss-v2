@@ -1,33 +1,39 @@
 <template>
 
-<div class="grid grid-rows-1 ml-2 mr-2">
-    <h1 class="text-2xl mb-4">List Bank</h1>
-    <div class="flex flex-row gap-2">
-        <button class="p-2 text-white bg-black w-auto text-sm" @click="openModalAddBank = true">Tambah Bank Baru</button>
+<div>
+    <div class="p-3 bg-white border-t flex flex-row">
+        <h1 class="text-2xl italic">List Bank</h1>
+        <button class="p-2 text-white bg-blue-600 w-auto text-sm ml-4" @click="openModalAddBank = true">Tambah Bank Baru</button>
     </div>
-    <div>
-        <table class="border-collapse mt-4 w-full">
-            <thead>
-                <tr>
-                    <th class="p-4 bg-slate-500 text-slate-100 bold text-left">No.#</th>
-                    <th class="p-4 bg-slate-500 text-slate-100 bold text-left">Kode Bank</th>
-                    <th class="p-4 bg-slate-500 text-slate-100 bold text-left">Nama Bank</th>
-                    <th class="p-4 bg-slate-500 text-slate-100 bold text-left">Alamat Bank</th>
-                    <th class="p-4 bg-slate-500 text-slate-100 bold text-left">Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="(bk, index) in tabelBank" :key="bk.kd_bank">
-                   <td class="text-center border p-3">{{ index + 1 }}</td> 
-                   <td class="border p-3">{{ bk.kd_bank }}</td> 
-                   <td class="border p-3">{{ bk.nama_bank }}</td> 
-                   <td class="border p-3">{{ bk.alamat_bank }}</td> 
-                   <td class="border p-3"><router-link class="p-2 bg-blue-600 text-white" :to="{ name: 'SuperBankDetail', params: { bankID: bk.kd_bank }}">Details</router-link></td> 
-                </tr>
-            </tbody>
-        </table>
-
+    <div class="p-2">
+        <div>
+            <table class="border border-white w-full">
+                <thead class="bg-slate-500 text-white">
+                    <tr>
+                        <th class="p-4 bold font-md text-left font-semibold w-[50px]">No.#</th>
+                        <th class="p-4 bold font-md text-left font-semibold">Kode Bank</th>
+                        <th class="p-4 bold font-md text-left font-semibold">Nama Bank</th>
+                        <th class="p-4 bold font-md text-left font-semibold">Alamat Bank</th>
+                        <th class="p-4 bold font-md text-center font-semibold">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white">
+                    <tr v-for="(bk, index) in tabelBank" :key="bk.kd_bank" class="even:bg-slate-200 even:text-black">
+                        <td class="border border-white text-center p-3">{{ index + 1 }}</td> 
+                        <td class="border border-white p-3">{{ bk.kd_bank }}</td> 
+                        <td class="border border-white p-3">{{ bk.nama_bank }}</td> 
+                        <td class="border border-white p-3">{{ bk.alamat_bank }}</td> 
+                        <td class="border border-white p-3 text-center">
+                            <router-link class="p-2 bg-blue-600 text-white" :to="{ name: 'SuperBankDetail', params: { bankID: bk.kd_bank }}">
+                                Details
+                            </router-link>
+                        </td> 
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
+    
 
     <!-- Modal Section -->
     <div class="w-full h-full overflow-auto bg-slate-900 left-0 top-0 fixed bg-opacity-70" v-if="openModalAddBank == true">
