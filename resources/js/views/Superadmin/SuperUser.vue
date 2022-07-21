@@ -9,20 +9,20 @@
             <table class="border-collapse mt-4 w-full">
                 <thead>
                     <tr>
-                        <th class="p-4 bg-slate-500 text-slate-100 bold text-left w-[70px]">No.#</th>
+                        <th class="p-4 bg-slate-500 text-slate-100 bold text-left w-[50px]">#</th>
                         <th class="p-4 bg-slate-500 text-slate-100 bold text-left">Username</th>
                         <th class="p-4 bg-slate-500 text-slate-100 bold text-left">Terdaftar di Bank</th>
                         <th class="p-4 bg-slate-500 text-slate-100 bold text-left">Role</th>
-                        <th class="p-4 bg-slate-500 text-slate-100 bold text-left">Aksi</th>
+                        <th class="p-4 bg-slate-500 text-slate-100 bold text-center">Aksi</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr class="border" v-for="(user, index) in listUser" :key="index">
-                       <td class="text-center border p-2">{{ index + 1 }}</td>
-                       <td class="border p-2">{{ user.username }}</td>
-                       <td class="border p-2">{{ user.nama_bank }}</td>
-                       <td class="border p-2">{{ user.nama_role }}</td>
-                       <td class="border p-2"><button class="bg-blue-500 p-2 text-white rounded-md">Aksi</button></td>
+                <tbody class="bg-white">
+                    <tr v-for="(user, index) in listUser" :key="index" class="even:bg-slate-100 even:text-black hover:bg-slate-300">
+                       <td class="text-center border border-white p-2">{{ index + 1 }}</td>
+                       <td class="border border-white p-3">{{ user.username }}</td>
+                       <td class="border border-white p-3">{{ user.nama_bank }}</td>
+                       <td class="border border-white p-3">{{ user.nama_role }}</td>
+                       <td class="border border-white p-3 text-center"><router-link class="bg-blue-500 p-2 text-white text-sm rounded-md" :to="''">Details</router-link></td>
                     </tr>
                 </tbody>
             </table>
@@ -48,7 +48,7 @@
                             <label class="font-bold text-black">Pekerjaan</label>
                                 <select class="border border-slate-500 bg-white p-1" v-model="formTambahUser.pekerjaan">
                                     <option :value="0">-- Pilih Pekerjaan --</option>
-                                    <option v-for="pkj in jenisPekerjaan" :key="pkj.kd_pekerjaan" :value="pkj.kd_pekerjaan">{{ pkj.nama_pekerjaan }}</option>
+                                    <option v-for="pkj in listRole" :key="pkj.kd_role" :value="pkj.kd_role">{{ pkj.nama_role }}</option>
                                 </select>
                         </div>
                         <div class="grid grid-cols-2 gap-4">
@@ -84,7 +84,10 @@ export default {
             console.log('Server Error')
         })
 
-        
+        axios.get('/api/super/roleList').then(hsl3 => {
+            this.listRole = hsl3.data.data
+            console.log(this.listRole)
+        })
 
 
     },
@@ -92,6 +95,7 @@ export default {
         return {
             listUser            : [],
             listBank            : [],
+            listRole            : [],
             openModalAddUser    : '',
             jenisPekerjaan      : [
                 { kd_pekerjaan: 'office', nama_pekerjaan: 'Office Serbaguna'},

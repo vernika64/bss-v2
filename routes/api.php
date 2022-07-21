@@ -45,7 +45,8 @@ Route::get('/super/bankList', [Administrator::class, 'getBankList']);
 Route::get('/super/bankList/{keys}', [Administrator::class, 'getBankListById']);
 Route::post('/super/addNewBank', [Administrator::class, 'addBankNew']);
 
-
+// Sub Manajemen Role / Jenis Pekerjaan
+Route::get('/super/roleList', [Administrator::class, 'getRoleList']);
 
 // Untuk banking
 

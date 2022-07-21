@@ -24,7 +24,7 @@
                         <td class="border border-white p-3">{{ bk.nama_bank }}</td> 
                         <td class="border border-white p-3">{{ bk.alamat_bank }}</td> 
                         <td class="border border-white p-3 text-center">
-                            <router-link class="p-2 bg-blue-600 text-white" :to="{ name: 'SuperBankDetail', params: { bankID: bk.kd_bank }}">
+                            <router-link class="p-2 bg-blue-600 text-white rounded-md text-sm" :to="{ name: 'SuperBankDetail', params: { bankID: bk.kd_bank }}">
                                 Details
                             </router-link>
                         </td> 

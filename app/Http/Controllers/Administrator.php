@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\SysBank;
+use App\Models\SysRole;
 use App\Models\SysUser;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -138,6 +139,23 @@ class Administrator extends Controller
 
             return response()->json([
                 'status'      => 'insert_success'
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'data'      => $th->getMessage(),
+                'status'    => 'server_error'
+            ]);
+        }
+    }
+
+    public function getRoleList()
+    {
+        try {
+            $ModelRole = SysRole::whereNotIn('kd_role', ['admin'])->get(['kd_role', 'nama_role']);
+
+            return response()->json([
+                'data'      => $ModelRole,
+                'status'    => 'getdata_success'
             ]);
         } catch (\Throwable $th) {
             return response()->json([

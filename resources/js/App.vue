@@ -31,6 +31,11 @@
                         </router-link>
                     </li>
                     <li class="bg-slate-900 p-4 rounded-md ">
+                        <router-link :to="{ name: ''}" class="flex">
+                            <users-icon class="h-7 w-7 mr-3" /> Jobs
+                        </router-link>
+                    </li>
+                    <li class="bg-slate-900 p-4 rounded-md ">
                         <button @click="logout" class="flex"><logout-icon class="h-7 w-7 mr-3"/>Logout</button>
                     </li>
                 </ul>
@@ -41,7 +46,12 @@
                         <h1>{{ tanggal }}</h1>
                     </div>
                     <div class="p-4 text-right">
-                        <h1>{{ userCpanel }}</h1>
+                        <div>
+                            <h1>{{ userCpanel }}</h1>
+                        </div>
+                        <!-- <div class="bg-white pt-4 pb-4 pr-5 w-[200px] border-t absolute right-0 mt-4 border-l shadow-md">
+                            <router-link :to="''">Logout</router-link>
+                        </div> -->
                     </div>
                 </div>
                 <div class="bg-slate-200">
@@ -58,7 +68,7 @@
 import axios from 'axios';
 import { data } from 'browserslist';
 import router from './routes/router';
-import { HomeIcon, IdentificationIcon, OfficeBuildingIcon, DocumentReportIcon } from '@heroicons/vue/solid'
+import { HomeIcon, IdentificationIcon, OfficeBuildingIcon, DocumentReportIcon, UsersIcon } from '@heroicons/vue/solid'
 import { LogoutIcon } from '@heroicons/vue/outline'
 
 export default {
@@ -71,6 +81,7 @@ export default {
         OfficeBuildingIcon, 
         DocumentReportIcon,
         LogoutIcon,
+        UsersIcon
         },
     mounted() {
         var tgl = new Date()
