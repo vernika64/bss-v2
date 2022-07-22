@@ -36,6 +36,11 @@
                         </router-link>
                     </li>
                     <li class="bg-slate-900 p-4 rounded-md ">
+                        <router-link :to="{ name: 'DevelopmentArea'}" class="flex">
+                            <code-icon class="h-7 w-7 mr-3" /> Development Area
+                        </router-link>
+                    </li>
+                    <li class="bg-slate-900 p-4 rounded-md ">
                         <button @click="logout" class="flex"><logout-icon class="h-7 w-7 mr-3"/>Logout</button>
                     </li>
                 </ul>
@@ -62,10 +67,9 @@
 </template>
 
 <script>
-import axios from 'axios';
-import { data } from 'browserslist';
-import router from './routes/router';
-import { HomeIcon, IdentificationIcon, OfficeBuildingIcon, DocumentReportIcon, UsersIcon } from '@heroicons/vue/solid'
+import axios from 'axios'
+import router from './routes/router'
+import { HomeIcon, IdentificationIcon, OfficeBuildingIcon, DocumentReportIcon, UsersIcon, CodeIcon } from '@heroicons/vue/solid'
 import { LogoutIcon } from '@heroicons/vue/outline'
 
 export default {
@@ -78,7 +82,8 @@ export default {
         OfficeBuildingIcon, 
         DocumentReportIcon,
         LogoutIcon,
-        UsersIcon
+        UsersIcon,
+        CodeIcon
         },
     mounted() {
         var tgl = new Date()

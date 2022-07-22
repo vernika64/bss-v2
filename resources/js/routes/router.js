@@ -15,9 +15,12 @@ import SuperUser            from "../views/Superadmin/SuperUser.vue"
 import SuperPekerjaan       from "../views/Superadmin/SuperPekerjaan.vue"
 
 // Aset untuk Cpanel Banking
-import BankingLogin     from '../views/CPanel/BankingLogin.vue'
-import BankingDashboard from '../views/CPanel/BankingDashboard.vue'
+import BankingLogin         from '../views/CPanel/BankingLogin.vue'
+import BankingDashboard     from '../views/CPanel/BankingDashboard.vue'
 import axios from 'axios'
+
+// Untuk Pengembangan dan Testing
+import DevArea              from '../views/Superadmin/Dev/DevelopmentArea.vue'
 
 
 // import Test from '../views/Test/Test.vue'
@@ -47,7 +50,7 @@ const routes = [
     { path: '/supercpl/superpekerjaan/',            component: SuperPekerjaan,          name: 'SuperPekerjaan'},
 
 
-
+    { path: '/supercpl/devarea/',                   component: DevArea,                 name: 'DevelopmentArea'},
 
 
     // { path: '/supercpl/supermahasiswa/',    component: SuperMahasiswa,      name: 'SuperMahasiswa'},
