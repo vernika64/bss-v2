@@ -13,14 +13,14 @@ class SysSuperadmin extends Migration
      */
     public function up()
     {
-        Schema::create('sys_superadmin', function(Blueprint $table) {
-            $table->id();
-            $table->string('username');
-            $table->string('password');
-            $table->string('ign');
-            $table->integer('role');
-            $table->timestamps();
-        });
+        // Schema::create('sys_superadmin', function(Blueprint $table) {
+        //     $table->id();
+        //     $table->string('username');
+        //     $table->string('password');
+        //     $table->string('ign');
+        //     $table->integer('role');
+        //     $table->timestamps();
+        // });
     }
 
     /**

@@ -5,7 +5,17 @@ module.exports = {
     "./resources/**/*.vue",
   ],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        'utah-road': "url('/bg/utah-road.jpg')"
+      },
+      colors: {
+        'sidebar' : '#1b213d',
+        'content' : '#151934',
+        'navbar'  : '#1c2340',
+        'ppurple' : '#1b213d'
+      }
+    },
   },
   plugins: [],
 }

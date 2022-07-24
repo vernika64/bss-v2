@@ -15,6 +15,7 @@ class SysRole extends Migration
     {
         Schema::create('sys_role', function(Blueprint $table) {
             $table->id();
+            $table->string('kd_role');
             $table->string('nama_role');
             $table->timestamps();
         });

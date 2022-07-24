@@ -18,9 +18,52 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
 
+        // Untuk Role
+
+        DB::table('sys_role')->insert([
+            'kd_role'           => 'admin',
+            'nama_role'         => 'Administrator',
+        ]);
+
+        DB::table('sys_role')->insert([
+            'kd_role'           => 'office',
+            'nama_role'         => 'Office Serbaguna'
+        ]);
+
         // Untuk User SuperAdmin
 
-        
+        DB::table('sys_user')->insert([
+            'username'          => 'admin',
+            'password'          => Hash::make('admin'),
+            'fname'             => 'Administrator',
+            'role'              => 'admin',
+            'kd_bank'           => 0
+        ]);
+
+        DB::table('sys_user')->insert([
+            'username'          => 'arjuna',
+            'password'          => Hash::make('arjuna'),
+            'fname'             => 'Arjuna',
+            'role'              => 'office',
+            'kd_bank'           => '2022-06-13-2'
+        ]);
+
+
+        // // Untuk Data Bank (Untuk keperluan Testing)
+
+        DB::table('sys_bank')->insert([
+            'kd_bank'           => '2022-06-13-1',
+            'nama_bank'         => 'Bank Amanah Sejahtera',
+            'alamat_bank'       => 'Jl. Sentosa',
+            'kd_admin'          => 1
+        ]);
+
+        DB::table('sys_bank')->insert([
+            'kd_bank'           => '2022-06-13-2',
+            'nama_bank'         => 'Bank Pembangunan Lancar',
+            'alamat_bank'       => 'Jl. Lurus',
+            'kd_admin'          => 1
+        ]);
 
         // DB::table('sys_superadmin')->insert([
         //     'username'          => 'admin',
@@ -147,20 +190,5 @@ class DatabaseSeeder extends Seeder
         //     'updated_at'        => Carbon::now()
         // ]);
 
-        // // Untuk Data Bank (Testing)
-
-        // DB::table('sys_bank')->insert([
-        //     'kd_bank'           => '2022-06-13-1',
-        //     'nama_bank'         => 'Bank Amanah Sejahtera',
-        //     'alamat_bank'       => 'Jl. Sentosa',
-        //     'kd_admin'          => 1
-        // ]);
-
-        // DB::table('sys_bank')->insert([
-        //     'kd_bank'           => '2022-06-13-1',
-        //     'nama_bank'         => 'Bank Pembangunan Lancar',
-        //     'alamat_bank'       => 'Jl. Lurus',
-        //     'kd_admin'          => 1
-        // ]);
     }
 }

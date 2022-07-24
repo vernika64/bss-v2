@@ -13,14 +13,14 @@ class SysGrup extends Migration
      */
     public function up()
     {
-        Schema::create('sys_grup', function(Blueprint $table) {
-            $table->id();
-            $table->string('kd_grup');
-            $table->string('nama_grup');
-            $table->string('deskripsi_grup')->nullable();
-            $table->integer('kd_admin');
-            $table->timestamps();
-        });
+        // Schema::create('sys_grup', function(Blueprint $table) {
+        //     $table->id();
+        //     $table->string('kd_grup');
+        //     $table->string('nama_grup');
+        //     $table->string('deskripsi_grup')->nullable();
+        //     $table->integer('kd_admin');
+        //     $table->timestamps();
+        // });
     }
 
     /**
