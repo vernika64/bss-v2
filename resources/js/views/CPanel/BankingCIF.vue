@@ -3,7 +3,7 @@
 <div>
     <div class="p-3 bg-white border-t flex flex-row">
         <h1 class="text-2xl italic">{{ judulNavbar }}</h1>
-        <button class="p-2 text-white bg-blue-600 w-auto text-sm ml-4" @click="openModalAddCIF = true">Tambah CIF baru</button>
+        <router-link class="p-2 text-white bg-blue-600 w-auto text-sm ml-4" :to="{name: 'CIFAdd'}">Tambah CIF baru</router-link>
     </div>
     <div class="p-2">
         <div>
@@ -20,10 +20,10 @@
                 <tbody class="bg-white">
                     <tr v-for="(dat, index) in isiTabelCIF" :key="dat.cif_kode_id" class="even:bg-slate-200 even:text-black">
                         <td class="border border-white text-center p-3">{{ index + 1 }}</td>
-                        <td class="border border-white p-3">{{ dat.cif_kode_id }}</td>
-                        <td class="border border-white p-3">{{ dat.cif_nama_lengkap }}</td>
-                        <td class="border border-white p-3">{{ dat.tglDibuat }}</td>
-                        <td class="border border-white p-3">Aksi</td>
+                        <td class="border border-white p-3">{{ dat.kd_identitas }}</td>
+                        <td class="border border-white p-3">{{ dat.nama_sesuai_identitas }}</td>
+                        <td class="border border-white p-3">{{ convertTanggal(dat.created_at) }}</td>
+                        <td class="border border-white p-3 text-center"><router-link :to="''" class="p-2 text-white bg-blue-600 w-auto text-sm ml-4">Details</router-link></td>
                     </tr>
                 </tbody>
             </table>
@@ -33,27 +33,27 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 
 export default {
     mounted() {
-        // 
+        axios.get('/api/bank/listCIF').then(res => {
+            this.isiTabelCIF = res.data.data
+            console.log(this.isiTabelCIF)
+        })
     },
     data() {
         return {
             judulNavbar     : 'Customer Identification File',
-            isiTabelCIF     : [
-                { 
-                    cif_kode_id         : '1642530023',
-                    cif_nama_lengkap    : 'Mohammad Basori Wahyudi',
-                    tglDibuat           : '2022-07-23'
-                },
-                { 
-                    cif_kode_id         : '12121212',
-                    cif_nama_lengkap    : 'Uciha Sasule',
-                    tglDibuat           : '2022-07-24'
-                },
-            ],
+            isiTabelCIF     : [],
             openModalAddCIF : false
+        }
+    },
+    methods: {
+        convertTanggal(initanggal) {
+            var tanggal = new Date(initanggal)
+            return tanggal.toLocaleDateString('id-ID', {year: 'numeric', month: 'long', day: 'numeric'})
         }
     }
 }

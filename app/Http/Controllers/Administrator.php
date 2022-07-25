@@ -21,7 +21,7 @@ class Administrator extends Controller
             $ModelUser = SysUser::whereNotIn('sys_user.id', [1])
                 ->join('sys_bank', 'sys_user.kd_bank', '=', 'sys_bank.kd_bank')
                 ->join('sys_role', 'sys_user.role', '=', 'sys_role.kd_role')
-                ->get(['username', 'nama_bank', 'nama_role']);
+                ->get(['fname', 'nama_bank', 'nama_role']);
 
             if (empty($ModelUser)) {
                 // Jika nilainya 0 atau NULL
@@ -68,6 +68,7 @@ class Administrator extends Controller
 
             $ModelUser->username       = $username;
             $ModelUser->password       = Hash::make($username);
+            $ModelUser->fname          = $re->username;
             $ModelUser->role           = $re->pekerjaan;
             $ModelUser->kd_bank        = $re->bankTujuan;
             $ModelUser->save();

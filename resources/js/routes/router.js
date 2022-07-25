@@ -18,6 +18,7 @@ import SuperPekerjaan       from "../views/Superadmin/SuperPekerjaan.vue"
 import BankingLogin         from '../views/CPanel/BankingLogin.vue'
 import BankingDashboard     from '../views/CPanel/BankingDashboard.vue'
 import BankingCIF           from '../views/CPanel/BankingCIF.vue'
+import BankingCIFAdd        from '../views/CPanel/Forms/BankingCIFNew.vue'
 import axios from 'axios'
 
 // Untuk Pengembangan dan Testing
@@ -103,8 +104,16 @@ const routes = [
     { 
         path            : '/supercpl/devarea/cif',
         component       : BankingCIF,
-        name            : 'DevelopCIF'
+        name            : 'CIF'
     },
+
+    { 
+        path            : '/supercpl/devarea/cif/add',
+        component       : BankingCIFAdd,
+        name            : 'CIFAdd'
+    },
+
+
 
     
 

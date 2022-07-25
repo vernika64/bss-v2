@@ -4,7 +4,7 @@
             <h1 class="text-2xl italic">Development Area</h1>
         </div>
         <div class="grid grid-rows-1 md:grid md:grid-cols-5 gap-2 mt-2 p-4">
-            <router-link class="p-2 bg-white shadow-md grid justify-items-center" :to="{ name: 'DevelopCIF'}">
+            <router-link class="p-2 bg-white shadow-md grid justify-items-center" :to="{ name: 'CIF'}">
                 <user-icon class="h-[50px] w-[50px] mb-4 mt-2" />
                 <h1>Customer Identification File</h1>
             </router-link>

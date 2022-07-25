@@ -7,7 +7,7 @@
     </template>
     <template v-else>
         <div class="flex">
-            <div class="bg-sidebar text-white w-[300px]">
+            <div class="bg-sidebar text-white w-[300px] bg-fixed">
                 <ul class="grid gap-4 pr-5 pl-5">
                     <li class="mb-4 mt-4 ml-6 italic text-lg bg-">Syariah Multi</li>
                     <li class="bg-slate-900 p-4 rounded-md ">
