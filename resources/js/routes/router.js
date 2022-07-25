@@ -17,6 +17,7 @@ import SuperPekerjaan       from "../views/Superadmin/SuperPekerjaan.vue"
 // Aset untuk Cpanel Banking
 import BankingLogin         from '../views/CPanel/BankingLogin.vue'
 import BankingDashboard     from '../views/CPanel/BankingDashboard.vue'
+import BankingCIF           from '../views/CPanel/BankingCIF.vue'
 import axios from 'axios'
 
 // Untuk Pengembangan dan Testing
@@ -28,29 +29,84 @@ import DevArea              from '../views/Superadmin/Dev/DevelopmentArea.vue'
 const routes = [
 
     // Rute untuk Sistem Vue Router
-    { path: '/:pathMatch(.*)*',                     component: Peko_404,                name: 'PekoNotFound'},
+    {   
+        path            : '/:pathMatch(.*)*',
+        component       : Peko_404,
+        name            : 'PekoNotFound'
+    },
 
     // Rute untuk Cpanel Banking
-    { path: '/',                                    component: BankingLogin,            name: 'BankingLogin'},
+    {   
+        path            : '/',
+        component       : BankingLogin,
+        name            : 'BankingLogin'
+    },
 
-    { path: '/banking/dashboard',                   component: BankingDashboard,        name: 'BankingDashboard'},
+    {   
+        path            : '/banking/dashboard',
+        component       : BankingDashboard,
+        name            : 'BankingDashboard'
+    },
+
+    {
+        path            : '/banking/cif',
+        component       : BankingCIF,
+        name            : 'CIF',
+        props           :   {
+                                teksNavbar  : 'Customer Identification File'
+                            }
+    },
 
     // Rute untuk Superadmin
 
-    { path: '/supercpl/',                           component: SuperDashboard},
+    {   
+        path            : '/supercpl/',
+        component       : SuperDashboard
+    },
 
-    { path: '/supercpl/superdashboard/',            component: SuperDashboard,          name: 'SuperDashboard'},
+    {
+        path            : '/supercpl/superdashboard/',
+        component       : SuperDashboard,
+        name            : 'SuperDashboard'
+    },
 
-    { path: '/supercpl/superbank',                  component: SuperBank,               name: 'SuperBank'},
-    { path: '/supercpl/superbank/detail/:bankID',   component: SuperBankDetail,         name: 'SuperBankDetail'},
+    {
+        path            : '/supercpl/superbank',
+        component       : SuperBank,
+        name            : 'SuperBank'
+    },
+    { 
+        path            : '/supercpl/superbank/detail/:bankID',
+        component       : SuperBankDetail,
+        name            : 'SuperBankDetail'
+    },
 
-    { path: '/supercpl/superuser/',                 component: SuperUser,               name: 'SuperUser'},
+    { 
+        path            : '/supercpl/superuser/',
+        component       : SuperUser,
+        name            : 'SuperUser'
+    },
 
 
-    { path: '/supercpl/superpekerjaan/',            component: SuperPekerjaan,          name: 'SuperPekerjaan'},
+    { 
+        path            : '/supercpl/superpekerjaan/',
+        component       : SuperPekerjaan,
+        name            : 'SuperPekerjaan'},
 
 
-    { path: '/supercpl/devarea/',                   component: DevArea,                 name: 'DevelopmentArea'},
+    { 
+        path            : '/supercpl/devarea/',
+        component       : DevArea,
+        name            : 'DevelopmentArea'
+    },
+
+    { 
+        path            : '/supercpl/devarea/cif',
+        component       : BankingCIF,
+        name            : 'DevelopCIF'
+    },
+
+    
 
 
     // { path: '/supercpl/supermahasiswa/',    component: SuperMahasiswa,      name: 'SuperMahasiswa'},
