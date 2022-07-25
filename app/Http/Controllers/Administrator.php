@@ -132,10 +132,11 @@ class Administrator extends Controller
             $kalkulasiJumlahBank    = SysBank::count() + 1;
             // $kalkulasiJumlahBank    = SysBank::increment();
 
-            $ModelBank->kd_bank     = Carbon::now()->format('Y-m-d') . '-' . $kalkulasiJumlahBank; // Format : Tahun - Bulan - Hari - Jumlah Bank yang terdaftar di database
-            $ModelBank->nama_bank   = $re->namabank;
-            $ModelBank->alamat_bank = $re->alamatbank;
-            $ModelBank->kd_admin    = $this->admin_test;
+            $ModelBank->kd_bank         = Carbon::now()->format('Y-m-d') . '-' . $kalkulasiJumlahBank; // Format : Tahun - Bulan - Hari - Jumlah Bank yang terdaftar di database
+            $ModelBank->nama_bank       = $re->namabank;
+            $ModelBank->kd_unik_bank    = 200 + $kalkulasiJumlahBank;
+            $ModelBank->alamat_bank     = $re->alamatbank;
+            $ModelBank->kd_admin        = $this->admin_test;
             $ModelBank->save();
 
             return response()->json([

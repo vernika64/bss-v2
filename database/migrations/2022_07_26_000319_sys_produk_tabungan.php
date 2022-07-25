@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class SysBank extends Migration
+class SysProdukTabungan extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,12 @@ class SysBank extends Migration
      */
     public function up()
     {
-        Schema::create('sys_bank', function(Blueprint $table) {
+        Schema::create('sys_produk_tabungan', function(Blueprint $table) {
             $table->id();
-            $table->string('kd_bank');      // TAHUN-BULAN-HARI-BANK_COUNT_IN_DATABASE
-            $table->integer('kd_unik_bank')->unique();
-            $table->string('nama_bank');
-            $table->string('alamat_bank');
-            $table->string('kd_admin');
+            $table->string('kd_produk');
+            $table->string('nama_produk');
+            $table->text('keterangan');
+            $table->integer('kd_admin');
             $table->timestamps();
         });
     }
@@ -31,6 +30,6 @@ class SysBank extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sys_bank');
+        Schema::dropIfExists('sys_produk_tabungan');
     }
 }

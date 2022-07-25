@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory} from 'vue-router'
+import axios from 'axios'
 
 // Aset untuk Sistem
 
@@ -19,7 +20,8 @@ import BankingLogin         from '../views/CPanel/BankingLogin.vue'
 import BankingDashboard     from '../views/CPanel/BankingDashboard.vue'
 import BankingCIF           from '../views/CPanel/BankingCIF.vue'
 import BankingCIFAdd        from '../views/CPanel/Forms/BankingCIFNew.vue'
-import axios from 'axios'
+import BankingTabungan      from '../views/CPanel/BankingTabungan.vue'
+
 
 // Untuk Pengembangan dan Testing
 import DevArea              from '../views/Superadmin/Dev/DevelopmentArea.vue'
@@ -101,6 +103,8 @@ const routes = [
         name            : 'DevelopmentArea'
     },
 
+    // Customer Identification File
+
     { 
         path            : '/supercpl/devarea/cif',
         component       : BankingCIF,
@@ -112,6 +116,16 @@ const routes = [
         component       : BankingCIFAdd,
         name            : 'CIFAdd'
     },
+
+    // Tabungan Wadiah
+
+    { 
+        path            : '/supercpl/devarea/tabungan',
+        component       : BankingTabungan,
+        name            : 'Tabungan'
+    },
+
+
 
 
 

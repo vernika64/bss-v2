@@ -37,7 +37,7 @@ class DatabaseSeeder extends Seeder
             'password'          => Hash::make('admin'),
             'fname'             => 'Administrator',
             'role'              => 'admin',
-            'kd_bank'           => 0
+            'kd_bank'           => 1
         ]);
 
         DB::table('sys_user')->insert([
@@ -49,10 +49,11 @@ class DatabaseSeeder extends Seeder
         ]);
 
 
-        // // Untuk Data Bank (Untuk keperluan Testing)
+        // Untuk Data Bank (Untuk keperluan Testing)
 
         DB::table('sys_bank')->insert([
             'kd_bank'           => '2022-06-13-1',
+            'kd_unik_bank'      => '201',
             'nama_bank'         => 'Bank Amanah Sejahtera',
             'alamat_bank'       => 'Jl. Sentosa',
             'kd_admin'          => 1
@@ -60,8 +61,18 @@ class DatabaseSeeder extends Seeder
 
         DB::table('sys_bank')->insert([
             'kd_bank'           => '2022-06-13-2',
+            'kd_unik_bank'      => '202',
             'nama_bank'         => 'Bank Pembangunan Lancar',
             'alamat_bank'       => 'Jl. Lurus',
+            'kd_admin'          => 1
+        ]);
+
+        // Untuk Produk Tabungan
+
+        DB::table('sys_produk_tabungan')->insert([
+            'kd_produk'         => 'WADIAH',
+            'nama_produk'       => 'Tabungan Wadiah',
+            'keterangan'        => 'Tabungan berakad Wadiah',
             'kd_admin'          => 1
         ]);
 

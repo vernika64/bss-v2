@@ -10,7 +10,7 @@ class CustomerIdentificationFile extends Controller
     public function getDataCIF()
     {
         try {
-            $ModelCIF = BankCIF::get();
+            $ModelCIF = BankCIF::get(['id', 'kd_identitas', 'nama_sesuai_identitas']);
 
             return response()->json([
                 'data'      => $ModelCIF,

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Administrator;
 use App\Http\Controllers\Auth;
 use App\Http\Controllers\CustomerIdentificationFile;
+use App\Http\Controllers\Tabungan;
 use App\Http\Controllers\UserManagement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -59,4 +60,10 @@ Route::get('/listUserDesc', [UserManagement::class, 'getDataUserWithDesc']);
 // Sub CIF
 
 Route::get('/bank/listCIF', [CustomerIdentificationFile::class, 'getDataCIFForTabel']);
+Route::get('/bank/listCIFAll', [CustomerIdentificationFile::class, 'getDataCIF']);
 Route::post('/bank/tambahCIF', [CustomerIdentificationFile::class, 'insertDataCIF']);
+
+// Sub Tabungan
+
+Route::get('/bank/listProdukTabungan', [Tabungan::class, 'getDataProdukTabungan']);
+Route::post('/bank/listProdukTabungan/Add', [Tabungan::class, 'insertDataTabungan']);
