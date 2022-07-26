@@ -36,7 +36,7 @@
         <div class="flex justify-center">
             <div class="bg-white w-[1000px] p-4 mt-[200px] rounded-lg">
                 <div class="grid grid-rows-1">
-                    <h1 class="text-2xl text-black mb-10">Tambah Bank Baru</h1>
+                    <h1 class="text-2xl text-black mb-10">Tambah Tabungan Baru</h1>
                     <div class="grid grid-rows-1 gap-2 mb-10">
                         <label class="font-bold text-black">Target Nasabah</label>
                             <select class="border bg-white p-2" v-model="formTabunganBaru.kd_cif">
@@ -51,7 +51,7 @@
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <button class="bg-slate-300 text-black p-2 rounded-md" @click="openModalAddTabungan = false">Tutup</button>
-                        <button class="bg-blue-600 text-white p-2 rounded-md" @click="''">Simpan</button>
+                        <button class="bg-blue-600 text-white p-2 rounded-md" @click="tambahTabungan">Simpan</button>
                     </div>
                 </div>
             </div>
@@ -69,16 +69,21 @@ export default {
     {
         axios.get('/api/bank/listCIFAll').then(res => {
             this.listNasabah = res.data.data
-            console.log(this.listNasabah)
+            // console.log(this.listNasabah)
         }).catch(err1 => {
             console.log(err1)
         })
 
-        axios.get('/api/bank/listProdukTabungan').then(res2 => {
-            this.listProdukTabungan = res2.data.data
-            console.log(this.listProdukTabungan)
+        axios.get('/api/bank/listTabunganTabel').then(res2 => {
+            this.tabelTabungan = res2.data.data
+            // console.log(this.tabelTabungan)
         }).catch(err2 => {
             console.log(err2)
+        })
+
+        axios.get('/api/bank/listProdukTabungan').then(res3 => {
+            this.listProdukTabungan = res3.data.data
+            // console.log(this.listProdukTabungan)
         })
     },
     data() {
@@ -91,23 +96,16 @@ export default {
                 kd_produk_tabungan  : '',
                 kd_cif              : ''
             },
-            tabelTabungan           : [
-                {
-                    kd_buku_tabungan        : '210-2022-04-01-1',
-                    nama_produk             : 'Tabungan Wadiah',
-                    nama_sesuai_identitas   : 'Mohammad Basori Wahyudi'
-                },
-                {
-                    kd_buku_tabungan        : '210-2022-04-14-2',
-                    nama_produk             : 'Tabungan Wadiah',
-                    nama_sesuai_identitas   : 'Junaedi'
-                }
-            ]
+            tabelTabungan           : []
         }
     },
     methods: {
         tambahTabungan() {
-            console.log(formTabunganBaru)
+            axios.post('/api/bank/listTabungan/Add', this.formTabunganBaru).then(nxt => {
+                console.log(nxt.data)
+            }).catch(err_nxt => {
+                console.log(err_nxt.data)
+            })
         }
     }
 }

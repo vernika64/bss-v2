@@ -4,6 +4,7 @@ use App\Http\Controllers\Administrator;
 use App\Http\Controllers\Auth;
 use App\Http\Controllers\CustomerIdentificationFile;
 use App\Http\Controllers\Tabungan;
+use App\Http\Controllers\Testing;
 use App\Http\Controllers\UserManagement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -22,6 +23,10 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// Untuk Testing
+
+Route::get('/tesCookie', [Testing::class, 'tesCookie']);
 
 // Untuk Login
 Route::post('/super/login', [Auth::class, 'login']);
@@ -66,4 +71,5 @@ Route::post('/bank/tambahCIF', [CustomerIdentificationFile::class, 'insertDataCI
 // Sub Tabungan
 
 Route::get('/bank/listProdukTabungan', [Tabungan::class, 'getDataProdukTabungan']);
-Route::post('/bank/listProdukTabungan/Add', [Tabungan::class, 'insertDataTabungan']);
+Route::get('/bank/listTabunganTabel', [Tabungan::class, 'getDataTabunganForTabel']);
+Route::post('/bank/listTabungan/Add', [Tabungan::class, 'insertDataTabungan']);

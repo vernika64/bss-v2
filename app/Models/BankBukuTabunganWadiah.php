@@ -12,6 +12,7 @@ class BankBukuTabunganWadiah extends Model
     protected $table        = 'bank_buku_tabungan_wadiah';
     protected $primaryKey   = 'id';
     protected $fillable     = [
+        'id',
         'kd_produk_tabungan',
         'kd_buku_tabungan',
         'kd_cif',
