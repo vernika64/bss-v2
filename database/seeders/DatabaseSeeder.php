@@ -83,7 +83,7 @@ class DatabaseSeeder extends Seeder
             'tipe_id'                   => 'ktm',
             'nama_sesuai_identitas'     => 'Mohammad Basori Wahyudi',
             'tempat_lahir'              => 'Kota Malang',
-            'tgl_lahir'                 => '2022-09-01',
+            'tgl_lahir'                 => '1997/09/01',
             'jenis_kelamin'             => 'laki',
             'status_kawin'              => 'belum',
             'kewarganegaraan'           => 'Indonesia',
@@ -99,7 +99,35 @@ class DatabaseSeeder extends Seeder
             'nama_ibu_kandung'          => 'Robiah Siarah',
             'status_pekerjaan'          => 'Mahasiswa',
             'kd_user'                   => 1,
-            'kd_bank'                   => 1
+            'kd_bank'                   => 1,
+            'created_at'                => Carbon::now(),
+            'updated_at'                => Carbon::now()
+        ]);
+
+        DB::table('bank_cif')->insert([
+            'kd_identitas'              => '1742530023',
+            'tipe_id'                   => 'ktm',
+            'nama_sesuai_identitas'     => 'Junaedi bin Jotor',
+            'tempat_lahir'              => 'Kota Malang',
+            'tgl_lahir'                 => '2000/12/04',
+            'jenis_kelamin'             => 'laki',
+            'status_kawin'              => 'belum',
+            'kewarganegaraan'           => 'Indonesia',
+            'alamat_sekarang'           => 'Jl. Plaosan Timur',
+            'rt_rw'                     => '04/014',
+            'desa_kelurahan'            => 'Kelurahan Pandanwangi',
+            'kecamatan'                 => 'Blimbing',
+            'kabupaten_kota'            => 'Kota Malang',
+            'provinsi'                  => 'Jawa Timur',
+            'kode_pos'                  => '65124',
+            'no_telp'                   => '0812121212',
+            'email'                     => 'junaedi@gmail.com',
+            'nama_ibu_kandung'          => 'Sutiyem',
+            'status_pekerjaan'          => 'Swasta',
+            'kd_user'                   => 1,
+            'kd_bank'                   => 1,
+            'created_at'                => Carbon::now(),
+            'updated_at'                => Carbon::now()
         ]);
 
         // Untuk Tabungan
