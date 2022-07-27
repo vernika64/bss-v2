@@ -32,12 +32,10 @@
                 
             </div>
             <div class="bg-white border p-4 m-2" v-if="keputusan == 'terima'">
-                <label>Barang dari Inventory</label>
-                <select class="w-full p-2 border">
-                    <option>-- Pilih Barang --</option>
-                </select>
+                <label>Nama Barang</label>
+                <input type="text" class="p-2 w-full border" />
                 <label>Harga barang</label>
-                <input type="number" class="w-full p-2 border" disabled />
+                <input type="text" class="w-full p-2 border" />
                 <label>Frekuensi Angsuran</label>
                 <select class="p-2 w-full border">
                     <option>-- Pilih Frekuensi Angsuran --</option>
@@ -48,7 +46,7 @@
                 <label>Surplus untuk Bank</label>
                 <input type="text" class="p-2 w-full border" />
                 <label>Total Biaya Jual Beli Akad Murabahah</label>
-                <input type="text" class="p-2 w-full border" />
+                <input type="text" class="p-2 w-full border" disabled />
                 <button class="w-full bg-blue-700 text-white p-2 mt-4">Simpan untuk menerima permintaan</button>
             </div>
         </div>
