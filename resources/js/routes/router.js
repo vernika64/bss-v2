@@ -16,11 +16,13 @@ import SuperUser            from "../views/Superadmin/SuperUser.vue"
 import SuperPekerjaan       from "../views/Superadmin/SuperPekerjaan.vue"
 
 // Aset untuk Cpanel Banking
-import BankingLogin         from '../views/CPanel/BankingLogin.vue'
-import BankingDashboard     from '../views/CPanel/BankingDashboard.vue'
-import BankingCIF           from '../views/CPanel/BankingCIF.vue'
-import BankingCIFAdd        from '../views/CPanel/Forms/BankingCIFNew.vue'
-import BankingTabungan      from '../views/CPanel/BankingTabungan.vue'
+import BankingLogin                         from '../views/CPanel/BankingLogin.vue'
+import BankingDashboard                     from '../views/CPanel/BankingDashboard.vue'
+import BankingCIF                           from '../views/CPanel/BankingCIF.vue'
+import BankingCIFAdd                        from '../views/CPanel/Forms/BankingCIFNew.vue'
+import BankingTabungan                      from '../views/CPanel/BankingTabungan.vue'
+import BankingJualBeliMurabahah             from '../views/CPanel/BankingJualBeliMurabahah.vue'
+import BankingJualBeliMurabahahDetail       from '../views/CPanel/Forms/BankingVerifikasiMurabahah.vue'
 
 
 // Untuk Pengembangan dan Testing
@@ -125,6 +127,19 @@ const routes = [
         name            : 'Tabungan'
     },
 
+    // Jual Beli Murabahah
+
+    {
+        path            : '/supercpl/devarea/jualbeli',
+        component       : BankingJualBeliMurabahah,
+        name            : 'JualBeliMurabahah'
+    },
+
+    {
+        path            : '/supercpl/devarea/jualbelidetail/',
+        component       : BankingJualBeliMurabahahDetail,
+        name            : 'JualBeliMurabahahDetail',
+    },
 
 
 

@@ -90,10 +90,11 @@ export default {
 
         this.tanggal = tgl.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric'})
         
-        if(localStorage.getItem('uname') != null)
-        {
-            this.userCpanel = localStorage.getItem('uname')
-        }
+        this.userCpanel = localStorage.getItem('uname')
+
+        // if(localStorage.getItem('uname') != null)
+        // {
+        // }
     },
     data()
     {

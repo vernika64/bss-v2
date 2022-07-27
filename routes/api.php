@@ -3,6 +3,7 @@
 use App\Http\Controllers\Administrator;
 use App\Http\Controllers\Auth;
 use App\Http\Controllers\CustomerIdentificationFile;
+use App\Http\Controllers\JualBeliMurabahah;
 use App\Http\Controllers\Tabungan;
 use App\Http\Controllers\Testing;
 use App\Http\Controllers\UserManagement;
@@ -65,6 +66,7 @@ Route::get('/listUserDesc', [UserManagement::class, 'getDataUserWithDesc']);
 // Sub CIF
 
 Route::get('/bank/listCIF', [CustomerIdentificationFile::class, 'getDataCIFForTabel']);
+Route::get('/bank/listCIF/{id}', [CustomerIdentificationFile::class, 'getDataCIFByIdForMurabahah']);
 Route::get('/bank/listCIFAll', [CustomerIdentificationFile::class, 'getDataCIF']);
 Route::post('/bank/tambahCIF', [CustomerIdentificationFile::class, 'insertDataCIF']);
 
@@ -73,3 +75,9 @@ Route::post('/bank/tambahCIF', [CustomerIdentificationFile::class, 'insertDataCI
 Route::get('/bank/listProdukTabungan', [Tabungan::class, 'getDataProdukTabungan']);
 Route::get('/bank/listTabunganTabel', [Tabungan::class, 'getDataTabunganForTabel']);
 Route::post('/bank/listTabungan/Add', [Tabungan::class, 'insertDataTabungan']);
+
+// Sub Jual Beli Murabahah
+
+Route::get('/bank/listJualBeliMurabahah', [JualBeliMurabahah::class, 'getDataTransaksiMurabahah']);
+Route::get('/bank/listJualBeliMurabahah/{id}', [JualBeliMurabahah::class, 'getDataTransaksiMurabahahById']);
+Route::post('/bank/listJualBeliMurabahah/Add', [JualBeliMurabahah::class, 'insertTransaksiMurabahah']);

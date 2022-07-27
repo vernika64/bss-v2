@@ -11,7 +11,5 @@ class SysUser extends Model
 
     protected $table = 'sys_user';
     protected $primaryKey = 'id';
-    protected $fillable = [
-        'id', 'username', 'password', 'role' , 'kd_bank'
-    ];
+    protected $fillable = ['id', 'username', 'password', 'role' , 'kd_bank'];
 }

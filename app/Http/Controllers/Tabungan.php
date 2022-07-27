@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\BankBukuTabunganWadiah;
 use App\Models\BankCIF;
+use App\Models\SysBank;
 use App\Models\SysProdukTabungan;
 use App\Models\SysToken;
 use App\Models\SysUser;
@@ -28,10 +29,29 @@ class Tabungan extends Controller
         }
     }
 
-    public function getDataTabunganForTabel()
+    public function getDataTabunganForTabel(Request $re)
     {
         try {
-            $ModelProdukTabungan = BankBukuTabunganWadiah::join('bank_cif', 'bank_cif.id', '=',  'bank_buku_tabungan_wadiah.kd_cif')
+
+            $getUserCookie = $re->cookie('tkn');
+
+            $ModelToken = SysToken::where('token', $getUserCookie)->first();
+
+            if(empty($ModelToken))
+            {
+                return response('Error 403 - Forbidden', 403);
+            }
+
+            $ModelUser = SysUser::where('username', $ModelToken->kd_user)->first();
+            
+            if(empty($ModelUser))
+            {
+                return response('Error 404 - User not found', 403);
+            }
+
+
+            $ModelProdukTabungan = BankBukuTabunganWadiah::where('bank_buku_tabungan_wadiah.kd_bank', $ModelUser->kd_bank)
+                                                            ->join('bank_cif', 'bank_cif.id', '=',  'bank_buku_tabungan_wadiah.kd_cif')
                                                             ->join('sys_produk_tabungan', 'sys_produk_tabungan.id', '=', 'bank_buku_tabungan_wadiah.kd_produk_tabungan')
                                                             ->get(['kd_buku_tabungan', 'nama_sesuai_identitas', 'nama_produk']);
 
@@ -50,19 +70,6 @@ class Tabungan extends Controller
     {
         try {
 
-            $cektabungan = BankBukuTabunganWadiah::where('kd_cif', $re->kd_cif)->first();
-
-            if(empty($cektabungan)) {
-                // No Action
-            } else if(!empty($cektabungan)) {
-                if($cektabungan->kd_produk_tabungan == $re->kd_produk_tabungan)
-                {
-                    return response()->json([
-                        'status' => 'tabungan sudah ada'
-                    ]);
-                }
-            }
-
             $getUserCookie = $re->cookie('tkn');
 
             $ModelToken = SysToken::where('token', $getUserCookie)->first();
@@ -73,10 +80,29 @@ class Tabungan extends Controller
             }
 
             $getUserData = SysUser::where('username', $ModelToken->kd_user)->first();
+            $getBankData = SysBank::find($getUserData->kd_bank);
 
+            if(empty($getBankData))
+            {
+                return response('Error 403 - Forbidden', 403);
+            }
 
-            $kodebank   = $getUserData->kd_bank;
-            $kdadmin    = $getUserData->id;
+            $cektabungan = BankBukuTabunganWadiah::where('kd_cif', $re->kd_cif)->first();
+
+            if(empty($cektabungan)) {
+                // No Action
+            } else if(!empty($cektabungan)) {
+                if($cektabungan->kd_produk_tabungan == $re->kd_produk_tabungan)
+                {
+                    return response()->json([
+                        'message' => 'Produk tabungan ini sudah terdaftar di data nasabah'
+                    ]);
+                }
+            }
+
+            $kodeunikbank   = $getBankData->kd_unik_bank;
+            $kodebank       = $getBankData->id;
+            $kdadmin        = $getUserData->id;
 
             // Data dari form
 
@@ -85,7 +111,7 @@ class Tabungan extends Controller
 
             $hitungtabungan = BankBukuTabunganWadiah::count() + 1;
 
-            $formatbukutabungan = $kodebank . '-' . Carbon::now()->format('Y-m-d') . '-' . $hitungtabungan;
+            $formatbukutabungan = $kodeunikbank . '-' . Carbon::now()->format('Y-m-d') . '-' . $hitungtabungan;
 
             $ModelBankBukuTabunganWadiah                        = new BankBukuTabunganWadiah;
             $ModelBankBukuTabunganWadiah->kd_produk_tabungan    = $produk_tabungan;
@@ -97,7 +123,7 @@ class Tabungan extends Controller
             $ModelBankBukuTabunganWadiah->save();
 
             return response()->json([
-                'status'        => 'insertdata_success'
+                'message'       => 'Tabungan berhasil disimpan'
             ]);
         } catch (\Throwable $th) {
             return response()->json([

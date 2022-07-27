@@ -76,7 +76,7 @@ export default {
 
         axios.get('/api/bank/listTabunganTabel').then(res2 => {
             this.tabelTabungan = res2.data.data
-            // console.log(this.tabelTabungan)
+            console.log(this.tabelTabungan)
         }).catch(err2 => {
             console.log(err2)
         })
@@ -103,6 +103,8 @@ export default {
         tambahTabungan() {
             axios.post('/api/bank/listTabungan/Add', this.formTabunganBaru).then(nxt => {
                 console.log(nxt.data)
+                alert(nxt.data.message)
+                return location.reload()
             }).catch(err_nxt => {
                 console.log(err_nxt.data)
             })

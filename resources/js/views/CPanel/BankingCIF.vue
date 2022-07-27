@@ -40,7 +40,7 @@ export default {
     mounted() {
         axios.get('/api/bank/listCIF').then(res => {
             this.isiTabelCIF = res.data.data
-            console.log(this.isiTabelCIF)
+            // console.log(this.isiTabelCIF)
         })
     },
     data() {

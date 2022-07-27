@@ -10,7 +10,5 @@ class SysRole extends Model
     use HasFactory;
 
     protected $table        = 'sys_role';
-    protected $fillable     = [
-        'id', 'kd_role', 'nama_role'
-    ];
+    protected $fillable     = ['id', 'kd_role', 'nama_role'];
 }
