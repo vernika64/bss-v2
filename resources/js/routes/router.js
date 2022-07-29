@@ -24,6 +24,7 @@ import BankingTabungan                      from '../views/CPanel/BankingTabunga
 import BankingJualBeliMurabahah             from '../views/CPanel/BankingJualBeliMurabahah.vue'
 import BankingJualBeliMurabahahDetail       from '../views/CPanel/Forms/BankingVerifikasiMurabahah.vue'
 import BankingPermintaanBarangMurabahah     from '../views/CPanel/BankingPermintaanBarangMurabahah.vue'
+import BankingAngsuranMurabahah             from '../views/CPanel/BankingAngsuranMurabahah.vue'
 
 
 // Untuk Pengembangan dan Testing
@@ -151,6 +152,14 @@ const routes = [
         path            : devurl + '/permintaanbarang/',
         component       : BankingPermintaanBarangMurabahah,
         name            : 'PermintaanBarangMurabahah',
+    },
+
+    // Untuk Angsuran Murabahah
+
+    {
+        path            : devurl + '/angsuranmurabahah/',
+        component       : BankingAngsuranMurabahah,
+        name            : 'AngsuranMurabahah'
     },
 
 

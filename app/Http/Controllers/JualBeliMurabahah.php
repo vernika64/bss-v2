@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\BankJualBeliMurabahah;
+use App\Models\BankJualBeliMurabahahAngsuran;
 use App\Models\BankPermintaanBarangMurabahah;
 use App\Models\SysBank;
 use App\Models\SysToken;
@@ -470,6 +471,203 @@ class JualBeliMurabahah extends Controller
             return response()->json([
                 'message'   => 'Barang telah dicatat keluar dari sistem'
             ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'data'      => $th->getMessage(),
+                'status'    => 'Server error',
+                'message'   => 'Server Error'
+            ]);
+        }
+    }
+
+    public function cariTransaksiMurabahahUntukAngsuran($id, Request $re)
+    {
+        try {
+            $getUserCookie = $re->cookie('tkn');
+
+            $ModelToken = SysToken::where('token', $getUserCookie)->first();
+
+            if(empty($ModelToken))
+            {
+                // return response('Error 403 - Forbidden', 403);
+                return response()->json([
+                    'message'   => 'Token tidak ditemukan'
+                ]);
+            }
+
+            $ModelUser = SysUser::where('username', $ModelToken->kd_user)->first();
+
+            if(empty($ModelUser))
+            {
+                // return response('Error 404 - User not found', 404);
+                return response()->json([
+                    'message'   => 'User tidak ditemukan'
+                ]);
+            }
+
+            $kodeadmin   = $ModelUser->id;
+            $kodebank    = $ModelUser->kd_bank;
+
+            $ModelJualBeli = BankJualBeliMurabahah::where('kd_transaksi_murabahah', $id)->first();
+            
+            if(empty($ModelJualBeli))
+            {
+                return response()->json([
+                    'message'       => 'Transaksi murabahah tidak ditemukan',
+                    'status'        => 'error'
+                ]);
+            } elseif($ModelJualBeli->status_transaksi == 'pending')
+            {
+                return response()->json([
+                    'message'       => 'Transaksi masih belum diverifikasi',
+                    'status'        => 'error'
+                ]);
+            } elseif($ModelJualBeli->status_transaksi == 'pass')
+            {
+                return response()->json([
+                    'message'       => 'Transaksi sudah lunas',
+                    'status'        => 'error'
+                ]);
+            } elseif($ModelJualBeli->status_transaksi == 'fail')
+            {
+                return response()->json([
+                    'message'       => 'Transaksi sudah diverifikasi gagal bayar',
+                    'status'        => 'error'
+                ]);
+            } elseif($ModelJualBeli->status_transaksi == 'reject')
+            {
+                return response()->json([
+                    'message'       => 'Transaksi tidak lolos verifikasi',
+                    'status'        => 'error'
+                ]);
+            }
+
+            $ModelAngsuran = BankJualBeliMurabahahAngsuran::where('kd_transaksi_murabahah', $id)->count();
+
+            if(empty($ModelAngsuran))
+            {
+                $ModelJualBeliAwal  = BankJualBeliMurabahah::where('bank_jualbeli_murabahah.kd_transaksi_murabahah', $id)->first();
+                $ModelJualBeliKedua = BankPermintaanBarangMurabahah::where('kd_transaksi_murabahah', $ModelJualBeliAwal->id)->first();
+                $data = [
+                    'kd_transaksi_murabahah'    => $ModelJualBeliAwal->kd_transaksi_murabahah,
+                    'nama_barang'               => $ModelJualBeliKedua->nama_barang,
+                    'jumlah_angsuran'           => $ModelJualBeliAwal->jumlah_angsuran,
+                    'frekuensi_angsuran'        => $ModelJualBeliAwal->frekuensi_angsuran,
+                    'angsuran_perbulan'         => $ModelJualBeliAwal->jumlah_angsuran / $ModelJualBeliAwal->frekuensi_angsuran
+                ];
+
+                return response()->json([
+                    'status'        => 'true',
+                    'message'       => 'Angsuran Pertama',
+                    'data'          => $data
+                ]);
+            }
+
+            return response()->json([
+                'data'              => $ModelAngsuran,
+                'status'            => 200
+            ]);
+            
+        } catch (\Throwable $th) {
+            return response()->json([
+                'data'      => $th->getMessage(),
+                'status'    => 'Server error',
+                'message'   => 'Server Error'
+            ]);
+        }
+    }
+
+    public function insertAngsuranMurabahah(Request $re)
+    {
+        try {
+
+            $getUserCookie = $re->cookie('tkn');
+
+            $ModelToken = SysToken::where('token', $getUserCookie)->first();
+
+            if(empty($ModelToken))
+            {
+                // return response('Error 403 - Forbidden', 403);
+                return response()->json([
+                    'message'   => 'Token tidak ditemukan'
+                ]);
+            }
+
+            $ModelUser = SysUser::where('username', $ModelToken->kd_user)->first();
+
+            if(empty($ModelUser))
+            {
+                // return response('Error 404 - User not found', 404);
+                return response()->json([
+                    'message'   => 'User tidak ditemukan'
+                ]);
+            }
+
+            $kodeadmin   = $ModelUser->id;
+            $kodebank    = $ModelUser->kd_bank;
+
+            $tipe_transaksi = $re->angsuran_pertama;
+
+            $CariTransaksi = BankJualBeliMurabahah::where('kd_transaksi_murabahah', $re->kd_transaksi_murabahah)->first();
+
+            if(empty($CariTransaksi))
+            {
+                return response()->json([
+                    'message'       => 'Transaksi tidak ditemukan'
+                ]);
+            }
+
+            $CountAngsuranAll  = BankJualBeliMurabahahAngsuran::count();
+            $KalkulasiAngsuran = $CountAngsuranAll + 1;
+
+            if($tipe_transaksi == true)
+            {
+                $ModelAngsuran      = new BankJualBeliMurabahahAngsuran;
+                $ModelAngsuran->kd_angsuran_murabahah   = 'JB-MA-' . Carbon::now()->format('Y-m-d') . $KalkulasiAngsuran;
+                $ModelAngsuran->kd_transaksi_murabahah  = $re->kd_transaksi_murabahah;
+                $ModelAngsuran->tgl_bayar_angsuran      = Carbon::now();
+                $ModelAngsuran->angsuran_ke             = 1;
+                $ModelAngsuran->nominal_bayar           = $re->angsuran_perbulan;
+                $ModelAngsuran->sisa_angsuran           = $re->frekuensi_angsuran - 1;
+                $ModelAngsuran->kd_admin                = $kodeadmin;
+                $ModelAngsuran->save();
+
+                return response()->json([
+                    'message'       => 'Angsuran Pertama berhasil disimpan'
+                ]);
+            } else if($tipe_transaksi == false)
+            {
+                $HitungAngsuran = BankJualBeliMurabahahAngsuran::where('kd_transaksi_murabahah', $re->kd_transaksi_murabahah)->count();
+
+                $Kalkulasi      = $HitungAngsuran + 1;
+                $SisaAngsuran   = $re->frekuensi_angsuran - $Kalkulasi;
+
+                $ModelAngsuranAda = new BankJualBeliMurabahahAngsuran;
+                $ModelAngsuranAda->kd_angsuran_murabahah   = 'JB-MA-' . Carbon::now()->format('Y-m-d') . $KalkulasiAngsuran;
+                $ModelAngsuranAda->kd_transaksi_murabahah  = $re->kd_transaksi_murabahah;
+                $ModelAngsuranAda->tgl_bayar_angsuran      = Carbon::now();
+                $ModelAngsuranAda->angsuran_ke             = $Kalkulasi;
+                $ModelAngsuranAda->nominal_bayar           = $re->angsuran_perbulan;
+                $ModelAngsuranAda->sisa_angsuran           = $SisaAngsuran;
+                $ModelAngsuranAda->kd_admin                = $kodeadmin;
+                $ModelAngsuranAda->save();
+                
+                if($SisaAngsuran == 0)
+                {
+                    $ModelJualBeliMurabahah = BankJualBeliMurabahah::where('kd_transaksi_murabahah', $re->kd_transaksi_murabahah)->first();
+                    $ModelJualBeliMurabahah->status_transaksi = 'pass';
+                    $ModelJualBeliMurabahah->save();
+
+                    return response()->json(['Angsuran berhasil disimpan dan sudah lunas']);
+                }
+                
+                return response()->json([
+                    'message'       => 'Angsuran berhasil disimpan'
+                ]);
+
+            } else {
+                return response('403 Forbidden', 403);
+            }
         } catch (\Throwable $th) {
             return response()->json([
                 'data'      => $th->getMessage(),
