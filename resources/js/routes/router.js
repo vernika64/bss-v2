@@ -23,11 +23,15 @@ import BankingCIFAdd                        from '../views/CPanel/Forms/BankingC
 import BankingTabungan                      from '../views/CPanel/BankingTabungan.vue'
 import BankingJualBeliMurabahah             from '../views/CPanel/BankingJualBeliMurabahah.vue'
 import BankingJualBeliMurabahahDetail       from '../views/CPanel/Forms/BankingVerifikasiMurabahah.vue'
+import BankingPermintaanBarangMurabahah     from '../views/CPanel/BankingPermintaanBarangMurabahah.vue'
 
 
 // Untuk Pengembangan dan Testing
 import DevArea              from '../views/Superadmin/Dev/DevelopmentArea.vue'
 
+
+let devurl      = '/dev'
+let releaseurl  = '/bank/'
 
 // import Test from '../views/Test/Test.vue'
 
@@ -100,7 +104,7 @@ const routes = [
 
 
     { 
-        path            : '/supercpl/devarea/',
+        path            : devurl,
         component       : DevArea,
         name            : 'DevelopmentArea'
     },
@@ -108,13 +112,13 @@ const routes = [
     // Customer Identification File
 
     { 
-        path            : '/supercpl/devarea/cif',
+        path            : devurl + '/cif',
         component       : BankingCIF,
         name            : 'CIF'
     },
 
     { 
-        path            : '/supercpl/devarea/cif/add',
+        path            : devurl + '/cif/add',
         component       : BankingCIFAdd,
         name            : 'CIFAdd'
     },
@@ -122,7 +126,7 @@ const routes = [
     // Tabungan Wadiah
 
     { 
-        path            : '/supercpl/devarea/tabungan',
+        path            : devurl + '/tabungan',
         component       : BankingTabungan,
         name            : 'Tabungan'
     },
@@ -130,15 +134,23 @@ const routes = [
     // Jual Beli Murabahah
 
     {
-        path            : '/supercpl/devarea/jualbeli',
+        path            : devurl + '/jualbeli',
         component       : BankingJualBeliMurabahah,
         name            : 'JualBeliMurabahah'
     },
 
     {
-        path            : '/supercpl/devarea/jualbelidetail/',
+        path            : devurl + '/jualbelidetail/',
         component       : BankingJualBeliMurabahahDetail,
         name            : 'JualBeliMurabahahDetail',
+    },
+
+    // Untuk Storage
+
+    {
+        path            : devurl + '/permintaanbarang/',
+        component       : BankingPermintaanBarangMurabahah,
+        name            : 'PermintaanBarangMurabahah',
     },
 
 

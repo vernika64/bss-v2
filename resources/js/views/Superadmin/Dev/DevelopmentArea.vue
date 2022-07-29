@@ -20,9 +20,9 @@
                 <currency-dollar-icon class="h-[50px] w-[50px] mb-4 mt-2" />
                 <h1>Deposito akad Mudharabah</h1>
             </router-link> -->
-            <router-link class="p-2 bg-white shadow-md grid justify-items-center" :to="''">
+            <router-link class="p-2 bg-white shadow-md grid justify-items-center" :to="{ name: 'PermintaanBarangMurabahah' }">
                 <cube-icon class="h-[50px] w-[50px] mb-4 mt-2" />
-                <h1>Daftar Barang</h1>
+                <h1>Permintaan Barang Murabahah</h1>
             </router-link>
             <router-link class="p-2 bg-white shadow-md grid justify-items-center" :to="''">
                 <cube-icon class="h-[50px] w-[50px] mb-4 mt-2" />

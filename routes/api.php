@@ -81,3 +81,11 @@ Route::post('/bank/listTabungan/Add', [Tabungan::class, 'insertDataTabungan']);
 Route::get('/bank/listJualBeliMurabahah', [JualBeliMurabahah::class, 'getDataTransaksiMurabahah']);
 Route::get('/bank/listJualBeliMurabahah/{id}', [JualBeliMurabahah::class, 'getDataTransaksiMurabahahById']);
 Route::post('/bank/listJualBeliMurabahah/Add', [JualBeliMurabahah::class, 'insertTransaksiMurabahah']);
+Route::put('/bank/tolakTransaksiMurabahah', [JualBeliMurabahah::class, 'rejectTransaksiMurabahah']);
+Route::post('/bank/terimaTransaksiMurabahah', [JualBeliMurabahah::class, 'acceptTransaksiMurabahah']);
+
+// Sub Permintaan barang murabahah
+
+Route::get('/bank/listPermintaanBarang', [JualBeliMurabahah::class, 'getDataPermintaanBarang']);
+Route::put('/bank/terimaBarangPermintaan', [JualBeliMurabahah::class, 'terimaBarangKeBank']);
+Route::put('/bank/keluarBarangPermintaan', [JualBeliMurabahah::class, 'keluarBarangKeNasabah']);
