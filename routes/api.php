@@ -94,3 +94,4 @@ Route::put('/bank/keluarBarangPermintaan', [JualBeliMurabahah::class, 'keluarBar
 
 Route::get('/bank/cariAngsuranMurabahah/{id}', [JualBeliMurabahah::class, 'cariTransaksiMurabahahUntukAngsuran']);
 Route::post('/bank/tambahAngsuranMurabahah', [JualBeliMurabahah::class, 'insertAngsuranMurabahah']);
+Route::get('/bank/historiDataAngsuran/{id}', [JualBeliMurabahah::class, 'ambilHistoriDataAngsuran']);

@@ -563,15 +563,71 @@ class JualBeliMurabahah extends Controller
                 ]);
             }
 
+            $ModelJB1 = BankJualBeliMurabahah::where('bank_jualbeli_murabahah.kd_transaksi_murabahah', $id)
+                       ->join('bank_permintaan_barang_murabahah', 'bank_jualbeli_murabahah.id', '=', 'bank_permintaan_barang_murabahah.kd_transaksi_murabahah')
+                       ->first(['bank_jualbeli_murabahah.kd_transaksi_murabahah', 'nama_barang', 'status_transaksi', 'jumlah_angsuran', 'frekuensi_angsuran']);
+
+            $ModelJB2 = BankJualBeliMurabahah::where('bank_jualbeli_murabahah.kd_transaksi_murabahah', $id)
+                       ->join('bank_permintaan_barang_murabahah', 'bank_jualbeli_murabahah.id', '=', 'bank_permintaan_barang_murabahah.kd_transaksi_murabahah')
+                       ->get(['bank_jualbeli_murabahah.kd_transaksi_murabahah', 'nama_barang', 'status_transaksi']);
+
+            $DataUntukForm = [
+                'kd_transaksi_murabahah'    => $ModelJB1->kd_transaksi_murabahah,
+                'nama_barang'               => $ModelJB1->nama_barang,
+                'jumlah_angsuran'           => $ModelJB1->jumlah_angsuran,
+                'frekuensi_angsuran'        => $ModelJB1->frekuensi_angsuran,
+                'angsuran_perbulan'         => $ModelJB1->jumlah_angsuran / $ModelJB1->frekuensi_angsuran
+            ];
+
             return response()->json([
-                'data'              => $ModelAngsuran,
-                'status'            => 200
+                'data1'              => $ModelJB2,
+                'data2'              => $DataUntukForm,
+                'status'            => 'false'
             ]);
             
         } catch (\Throwable $th) {
             return response()->json([
                 'data'      => $th->getMessage(),
-                'status'    => 'Server error',
+                'status'    => 'Server Error',
+                'message'   => 'Server Error'
+            ]);
+        }
+    }
+
+    public function ambilHistoriDataAngsuran($id, Request $re)
+    {
+        try {
+            $getUserCookie = $re->cookie('tkn');
+
+            $ModelToken = SysToken::where('token', $getUserCookie)->first();
+
+            if(empty($ModelToken))
+            {
+                // return response('Error 403 - Forbidden', 403);
+                return response()->json([
+                    'message'   => 'Token tidak ditemukan'
+                ]);
+            }
+
+            $ModelUser = SysUser::where('username', $ModelToken->kd_user)->first();
+
+            if(empty($ModelUser))
+            {
+                // return response('Error 404 - User not found', 404);
+                return response()->json([
+                    'message'   => 'User tidak ditemukan'
+                ]);
+            }
+
+            $ModelAngsuran = BankJualBeliMurabahahAngsuran::where('bank_jualbeli_murabahah_angsuran.kd_transaksi_murabahah', $id)->get(['tgl_bayar_angsuran', 'nominal_bayar']);
+
+            return response()->json([
+                'data'      => $ModelAngsuran
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'data'      => $th->getMessage(),
+                'status'    => 'Server Error',
                 'message'   => 'Server Error'
             ]);
         }
@@ -658,7 +714,9 @@ class JualBeliMurabahah extends Controller
                     $ModelJualBeliMurabahah->status_transaksi = 'pass';
                     $ModelJualBeliMurabahah->save();
 
-                    return response()->json(['Angsuran berhasil disimpan dan sudah lunas']);
+                    return response()->json([
+                        'message' => 'Angsuran berhasil disimpan dan sudah lunas'
+                    ]);
                 }
                 
                 return response()->json([
