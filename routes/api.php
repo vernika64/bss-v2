@@ -76,6 +76,9 @@ Route::get('/bank/listProdukTabungan', [Tabungan::class, 'getDataProdukTabungan'
 Route::get('/bank/listTabunganTabel', [Tabungan::class, 'getDataTabunganForTabel']);
 Route::post('/bank/listTabungan/Add', [Tabungan::class, 'insertDataTabungan']);
 
+Route::get('/bank/listTabungan/{id}', [Tabungan::class, 'getDataTabunganForTransaksi']);
+Route::post('/bank/tambahTransaksiTabungan', [Tabungan::class, 'insertTransaksiTabungan']);
+
 // Sub Jual Beli Murabahah
 
 Route::get('/bank/listJualBeliMurabahah', [JualBeliMurabahah::class, 'getDataTransaksiMurabahah']);
