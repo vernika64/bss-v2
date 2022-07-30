@@ -21,8 +21,7 @@ import BankingDashboard                     from '../views/CPanel/BankingDashboa
 import BankingCIF                           from '../views/CPanel/BankingCIF.vue'
 import BankingCIFAdd                        from '../views/CPanel/Forms/BankingCIFNew.vue'
 import BankingTabungan                      from '../views/CPanel/BankingTabungan.vue'
-import BankingTabunganSetorTunai            from '../views/CPanel/BankingTabunganSetorTunai.vue'
-import BankingTabunganTarikTunai            from '../views/CPanel/BankingTabunganTarikTunai.vue'
+import BankingTabunganTarikSetorTunai       from '../views/CPanel/BankingTabunganTarikSetorTunai.vue'
 import BankingTabunganTransferUang          from '../views/CPanel/BankingTabunganTransfer.vue'
 import BankingJualBeliMurabahah             from '../views/CPanel/BankingJualBeliMurabahah.vue'
 import BankingJualBeliMurabahahDetail       from '../views/CPanel/Forms/BankingVerifikasiMurabahah.vue'
@@ -137,15 +136,9 @@ const routes = [
     },
 
     {
-        path            : devurl + '/tabungan/setor_tunai',
-        component       : BankingTabunganSetorTunai,
-        name            : 'TabunganSetorTunai'
-    },
-
-    {
-        path            : devurl + '/tabungan/tarik_tunai',
-        component       : BankingTabunganTarikTunai,
-        name            : 'TabunganTarikTunai'
+        path            : devurl + '/tabungan/tarik_setor_tunai',
+        component       : BankingTabunganTarikSetorTunai,
+        name            : 'TabunganTarikSetorTunai'
     },
 
     {

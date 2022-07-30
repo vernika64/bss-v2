@@ -28,13 +28,9 @@
                 <cube-icon class="h-[50px] w-[50px] mb-4 mt-2" />
                 <h1>Bayar Angsuran Murabahah</h1>
             </router-link>
-            <router-link class="p-2 bg-white shadow-md grid justify-items-center" :to="{ name: 'TabunganTarikTunai' }">
+            <router-link class="p-2 bg-white shadow-md grid justify-items-center" :to="{ name: 'TabunganTarikSetorTunai' }">
                 <cube-icon class="h-[50px] w-[50px] mb-4 mt-2" />
-                <h1>Tabungan Tarik Tunai</h1>
-            </router-link>
-            <router-link class="p-2 bg-white shadow-md grid justify-items-center" :to="{ name: 'TabunganSetorTunai' }">
-                <cube-icon class="h-[50px] w-[50px] mb-4 mt-2" />
-                <h1>Tabungan Setor Tunai</h1>
+                <h1>Tarik / Setor Tabungan</h1>
             </router-link>
             <router-link class="p-2 bg-white shadow-md grid justify-items-center" :to="{ name: 'TabunganTransferUang' }">
                 <cube-icon class="h-[50px] w-[50px] mb-4 mt-2" />
