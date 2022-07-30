@@ -176,18 +176,10 @@ const routes = [
         component       : BankingAngsuranMurabahah,
         name            : 'AngsuranMurabahah'
     },
-
-
-
-
-    
-
-
+ 
     // { path: '/supercpl/supermahasiswa/',    component: SuperMahasiswa,      name: 'SuperMahasiswa'},
 
     // { path: '/supercpl/supergrup/',         component: SuperGrup,           name: 'SuperGrup'},
-
-
 
 ]
 
