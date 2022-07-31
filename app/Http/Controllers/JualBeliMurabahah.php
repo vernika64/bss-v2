@@ -6,6 +6,9 @@ use App\Models\BankJualBeliMurabahah;
 use App\Models\BankJualBeliMurabahahAngsuran;
 use App\Models\BankPermintaanBarangMurabahah;
 use App\Models\SysBank;
+use App\Models\SysBukuAkuntansi;
+use App\Models\SysBukuJurnalUmum;
+use App\Models\SysBukuJurnalUmumDetail;
 use App\Models\SysToken;
 use App\Models\SysUser;
 use Carbon\Carbon;
@@ -13,6 +16,22 @@ use Illuminate\Http\Request;
 
 class JualBeliMurabahah extends Controller
 {
+    protected $JurnalAkuntansi;
+
+    protected $CountJurnalUmum;
+    protected $CountJurnalUmumDetail;
+
+    protected $JurnalUmumDetail;
+    
+    public function __construct(JurnalAkuntansi $jurnalakuntansi) {
+        $this->JurnalAkuntansi = $jurnalakuntansi;
+        
+        $this->CountJurnalUmum          = SysBukuJurnalUmum::count();
+        $this->CountJurnalUmumDetail    = SysBukuJurnalUmumDetail::count();
+
+        $this->JurnalUmumDetail         = new \App\Models\SysBukuJurnalUmumDetail;
+    }
+
     public function getDataTransaksiMurabahah(Request $re)
     {
         try {
@@ -304,6 +323,21 @@ class JualBeliMurabahah extends Controller
             $ModelPermintaanBarang->status_barang                   = 'pending';
             $ModelPermintaanBarang->kd_admin_buat                   = $kodeadmin;
             $ModelPermintaanBarang->save();
+
+            // Tambahkan Pencatatan ke Jurnal Umum
+            
+            $HitungJumlahJurnalUmum     = $this->CountJurnalUmum + 1;
+                
+            $kd_transaksi       = 'JB-MA' . '-' . Carbon::now()->format('Y-m-d') . '-' . $HitungJumlahJurnalUmum;
+            $tgl_pencatatan     = Carbon::now();
+            $judul_transaksi    = 'Penjualan Produk Akad Murabahah';
+            $total_biaya        = ($hargabarangsatuan * $kuantitas) + $surplus;
+            
+            $this->JurnalAkuntansi->insertJurnalUmum($kd_transaksi, $tgl_pencatatan, $judul_transaksi, $total_biaya, '', $kodeadmin, $kodebank);
+
+            $this->JurnalAkuntansi->insertJurnalUmumDetail('debit', 13201, $kd_transaksi, $total_biaya, 'Debet dari Kas Operasional', $kodeadmin, $kodebank);
+
+            $this->JurnalAkuntansi->insertJurnalUmumDetail('kredit', 11001, $kd_transaksi, $total_biaya, 'Kredit ke Piutang Murabahah', $kodeadmin, $kodebank);
 
             return response()->json([
                 'message'       => 'Permintaan berhasil diverifikasi dan bisa mulai proses pembelian barang dari supplier'
@@ -688,9 +722,25 @@ class JualBeliMurabahah extends Controller
                 $ModelAngsuran->kd_admin                = $kodeadmin;
                 $ModelAngsuran->save();
 
+                // Untuk Pencatatan di Jurnal Umum
+                $HitungJumlahJurnalUmum     = $this->CountJurnalUmum + 1;
+                                
+                $kd_transaksi       = 'JB-MA' . '-' . Carbon::now()->format('Y-m-d') . '-' . $HitungJumlahJurnalUmum;
+                $tgl_pencatatan     = Carbon::now();
+                $nama_transaksi     = 'Angsuran Pertama Produk Jual Beli Akad Murabahah dengan kode transaksi : ' . $re->kd_transaksi_murabahah;
+                $nilai_transaksi  = $re->angsuran_perbulan;
+                $deskripsi          = 'Angsuran Produk Jual Beli Akad Murabahah';
+
+                $this->JurnalAkuntansi->insertJurnalUmum($kd_transaksi, $tgl_pencatatan, $nama_transaksi, $nilai_transaksi, $deskripsi, $kodeadmin, $kodebank);
+
+                $this->JurnalAkuntansi->insertJurnalUmumDetail('debit', 11002, $kd_transaksi, $nilai_transaksi, 'Debet dari Piutang Murabahah', $kodeadmin, $kodebank);
+
+                $this->JurnalAkuntansi->insertJurnalUmumDetail('kredit', 13201, $kd_transaksi, $nilai_transaksi, 'Kredit ke Kas Penjualan Produk JB Murabahah', $kodeadmin, $kodebank);
+
                 return response()->json([
                     'message'       => 'Angsuran Pertama berhasil disimpan'
                 ]);
+
             } else if($tipe_transaksi == false)
             {
                 $HitungAngsuran = BankJualBeliMurabahahAngsuran::where('kd_transaksi_murabahah', $re->kd_transaksi_murabahah)->count();
@@ -708,6 +758,22 @@ class JualBeliMurabahah extends Controller
                 $ModelAngsuranAda->kd_admin                = $kodeadmin;
                 $ModelAngsuranAda->save();
                 
+                // Untuk Pencatatan di Jurnal Umum
+                
+                $HitungJumlahJurnalUmum     = $this->CountJurnalUmum + 1;
+                
+                $kd_transaksi  = 'JB-MA' . '-' . Carbon::now()->format('Y-m-d') . '-' . $HitungJumlahJurnalUmum;
+                $tgl_pencatatan     = Carbon::now();
+                $nama_transaksi     = 'Angsuran Produk Jual Beli Akad Murabahah dengan kode transaksi : ' . $re->kd_transaksi_murabahah;
+                $nilai_transaksi  = $re->angsuran_perbulan;
+                $deskripsi          = 'Angsuran Produk Jual Beli Akad Murabahah';
+
+                $this->JurnalAkuntansi->insertJurnalUmum($kd_transaksi, $tgl_pencatatan, $nama_transaksi, $nilai_transaksi, $deskripsi, $kodeadmin, $kodebank);
+
+                $this->JurnalAkuntansi->insertJurnalUmumDetail('debit', 11002, $kd_transaksi, $nilai_transaksi, 'Debet dari Piutang Murabahah', $kodeadmin, $kodebank);
+
+                $this->JurnalAkuntansi->insertJurnalUmumDetail('kredit', 13201, $kd_transaksi, $nilai_transaksi, 'Kredit ke Kas Penjualan Produk JB Murabahah', $kodeadmin, $kodebank);
+
                 if($SisaAngsuran == 0)
                 {
                     $ModelJualBeliMurabahah = BankJualBeliMurabahah::where('kd_transaksi_murabahah', $re->kd_transaksi_murabahah)->first();

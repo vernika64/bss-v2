@@ -13,65 +13,45 @@ use Illuminate\Http\Request;
 
 class JurnalAkuntansi extends Controller
 {
-    protected $JModelUser;
-    protected $JModelBank;
-    // protected $JModelBukuAkuntansi;
-    // protected $JModelJurnalUmum;
-    // protected $JModelJurnalUmumDetail;
-    protected $CountJurnalUmum;
-    protected $CountJurnalUmumDetail;
 
-    public function __construct() {
-        $getusercookie = cookie('tkn');
-
-        $ModelToken = SysToken::where('token', $getusercookie)->first();
-
-        if(empty($ModelToken))
-        {
-            return response('Error 403 - Forbidden', 403);
-        }
-
-        $this->JModelUser = SysUser::where('username', $ModelToken->kd_user)->first();
-
-        if(empty($JModelUser))
-        {
-            return response('Error 403 - Forbidden', 403);
-        }
-
-        $this->JModelBank = SysBank::find($this->JModelUser->kd_bank);
-
-        $this->CountJurnalUmum          = SysBukuJurnalUmum::count();
-        $this->CountJurnalUmumDetail    = SysBukuJurnalUmumDetail::count();
-
-    }
-
-    public function insertJurnalUmum($status, $buku_akuntansi, $tgl_pencatatan, $nama_transaksi, $nominal_transaksi, $deskripsi)
+    public function insertJurnalUmum($kode_transaksi, $tanggal_pencatatan, $transaction_name, $cash, $desc, $userid, $bankid)
     {
         try {
-            $CariBukuAkuntansi = SysBukuAkuntansi::
-                                 where([
-                                    'kd_sub_master_buku' => $buku_akuntansi,
-                                    'kd_bank'            => $this->JModelUser->kd_bank
-                                 ])->first();
+            $ModelJurnalUmum                         = new SysBukuJurnalUmum;
+            $ModelJurnalUmum->kd_transaksi_akuntansi = $kode_transaksi;
+            $ModelJurnalUmum->tgl_pencatatan_jurnal  = $tanggal_pencatatan;
+            $ModelJurnalUmum->nama_transaksi         = $transaction_name;
+            $ModelJurnalUmum->nominal_transaksi      = $cash;
+            $ModelJurnalUmum->deskripsi              = $desc;
+            $ModelJurnalUmum->status_transaksi       = 'open';
+            $ModelJurnalUmum->kd_admin               = $userid;
+            $ModelJurnalUmum->kd_bank                = $bankid;
+            return $ModelJurnalUmum->save();
 
-            if(empty($CariBukuAkuntansi))
-            {
-                return response('Error 403 - Forbidden dalam mencari buku akuntansi', 403);
+        } catch (\Throwable $th) {
+            return response('500 Internal Server Error <br>' . $th->getMessage(), 500);
+        }
+    }
+
+    public function insertJurnalUmumDetail($tipe_transaksi, $buku_akuntansi, $kode_transaksi, $cash, $desc, $userid, $bankid)
+    {
+        try {
+            $ModelJurnalUmumDetail                              = new SysBukuJurnalUmumDetail;
+            $ModelJurnalUmumDetail->kd_transaksi_akuntansi      = $kode_transaksi;
+            $ModelJurnalUmumDetail->kd_buku_akuntansi           = $buku_akuntansi;
+            if($tipe_transaksi == 'debit') {
+                $ModelJurnalUmumDetail->nominal_debit           = $cash;
+                $ModelJurnalUmumDetail->nominal_kredit          = 0;
+            } elseif($tipe_transaksi == 'kredit') {
+                $ModelJurnalUmumDetail->nominal_debit           = 0;
+                $ModelJurnalUmumDetail->nominal_kredit          = $cash;
             }
+            $ModelJurnalUmumDetail->deskripsi                   = $desc;
+            $ModelJurnalUmumDetail->kd_admin                    = $userid;
+            $ModelJurnalUmumDetail->kd_bank                     = $bankid;
+            $ModelJurnalUmumDetail->save();
 
-            $HitungJumlahJurnalUmum     = $this->CountJurnalUmum + 1;
-            $FormatPenulisanJurnalUmum  = $buku_akuntansi . '-' . Carbon::now()->format('Y-m-d') . '-' . $HitungJumlahJurnalUmum;
-
-            $ModelJurnalUmum    = new SysBukuJurnalUmum;
-            $ModelJurnalUmum->kd_transaksi_akuntansi = $FormatPenulisanJurnalUmum;
-            $ModelJurnalUmum->tgl_pencatatan_jurnal  = Carbon::now();
-            $ModelJurnalUmum->nama_transaksi         = $nama_transaksi;
-            $ModelJurnalUmum->nominal_transaksi      = $nominal_transaksi;
-            $ModelJurnalUmum->deskripsi              = $deskripsi;
-            $ModelJurnalUmum->kd_admin               = $this->JModelUser->id;
-            $ModelJurnalUmum->kd_bank                = $this->JModelUser->kd_bank;
-            $ModelJurnalUmum->save();
-
+            return $ModelJurnalUmumDetail->refresh();
         } catch (\Throwable $th) {
             return response('500 Internal Server Error <br>' . $th->getMessage(), 500);
         }

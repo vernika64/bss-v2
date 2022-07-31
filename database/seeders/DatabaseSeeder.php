@@ -155,6 +155,17 @@ class DatabaseSeeder extends Seeder
 
         DB::table('sys_buku_akuntansi')->insert([
             'kd_master_buku'        => 1,
+            'kd_sub_master_buku'    => 11002,
+            'kd_bank'               => 1,
+            'nama_buku'             => 'Kas Penjualan Produk Jasa Jual Beli Akad Murabahah',
+            'nominal'               => 0,
+            'kd_admin'              => 1,
+            'created_at'            => Carbon::now(),
+            'updated_at'            => Carbon::now(),
+        ]);
+
+        DB::table('sys_buku_akuntansi')->insert([
+            'kd_master_buku'        => 1,
             'kd_sub_master_buku'    => 13101,
             'kd_bank'               => 1,
             'nama_buku'             => 'Tabungan Wadiah',
