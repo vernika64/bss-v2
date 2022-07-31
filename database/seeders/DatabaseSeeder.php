@@ -140,6 +140,85 @@ class DatabaseSeeder extends Seeder
             'kd_admin'                  => 1
         ]);
 
+        // Untuk Starter Buku Akuntansi Bank dengan id 1
+
+        DB::table('sys_buku_akuntansi')->insert([
+            'kd_master_buku'        => 1,
+            'kd_sub_master_buku'    => 11001,
+            'kd_bank'               => 1,
+            'nama_buku'             => 'Kas Operasional',
+            'nominal'               => 0,
+            'kd_admin'              => 1,
+            'created_at'            => Carbon::now(),
+            'updated_at'            => Carbon::now(),
+        ]);
+
+        DB::table('sys_buku_akuntansi')->insert([
+            'kd_master_buku'        => 1,
+            'kd_sub_master_buku'    => 13101,
+            'kd_bank'               => 1,
+            'nama_buku'             => 'Tabungan Wadiah',
+            'nominal'               => 0,
+            'kd_admin'              => 1,
+            'created_at'            => Carbon::now(),
+            'updated_at'            => Carbon::now(),
+        ]);
+
+        DB::table('sys_buku_akuntansi')->insert([
+            'kd_master_buku'        => 1,
+            'kd_sub_master_buku'    => 13201,
+            'kd_bank'               => 1,
+            'nama_buku'             => 'Piutang Murabahah',
+            'nominal'               => 0,
+            'kd_admin'              => 1,
+            'created_at'            => Carbon::now(),
+            'updated_at'            => Carbon::now(),
+        ]);
+
+        DB::table('sys_buku_akuntansi')->insert([
+            'kd_master_buku'        => 1,
+            'kd_sub_master_buku'    => 13202,
+            'kd_bank'               => 1,
+            'nama_buku'             => 'Aset Fisik Akad Murabahah',
+            'nominal'               => 0,
+            'kd_admin'              => 1,
+            'created_at'            => Carbon::now(),
+            'updated_at'            => Carbon::now(),
+        ]);
+
+        DB::table('sys_buku_akuntansi')->insert([
+            'kd_master_buku'        => 3,
+            'kd_sub_master_buku'    => 33105,
+            'kd_bank'               => 1,
+            'nama_buku'             => 'Tabungan Wadiah',
+            'nominal'               => 0,
+            'kd_admin'              => 1,
+            'created_at'            => Carbon::now(),
+            'updated_at'            => Carbon::now(),
+        ]);
+
+        DB::table('sys_buku_akuntansi')->insert([
+            'kd_master_buku'        => 3,
+            'kd_sub_master_buku'    => 31002,
+            'kd_bank'               => 1,
+            'nama_buku'             => 'Hutang Dari Bank Lain',
+            'nominal'               => 0,
+            'kd_admin'              => 1,
+            'created_at'            => Carbon::now(),
+            'updated_at'            => Carbon::now(),
+        ]);
+
+        DB::table('sys_buku_akuntansi')->insert([
+            'kd_master_buku'        => 4,
+            'kd_sub_master_buku'    => 21005,
+            'kd_bank'               => 1,
+            'nama_buku'             => 'Dari Pemilik',
+            'nominal'               => 0,
+            'kd_admin'              => 1,
+            'created_at'            => Carbon::now(),
+            'updated_at'            => Carbon::now(),
+        ]);
+
         // DB::table('sys_superadmin')->insert([
         //     'username'          => 'admin',
         //     'password'          => Hash::make('admin'),
