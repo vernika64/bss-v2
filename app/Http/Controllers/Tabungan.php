@@ -6,6 +6,8 @@ use App\Models\BankBukuTabunganWadiah;
 use App\Models\BankCIF;
 use App\Models\BankTransaksiTabunganWadiah;
 use App\Models\SysBank;
+use App\Models\SysBukuJurnalUmum;
+use App\Models\SysBukuJurnalUmumDetail;
 use App\Models\SysProdukTabungan;
 use App\Models\SysToken;
 use App\Models\SysUser;
@@ -14,6 +16,23 @@ use Illuminate\Http\Request;
 
 class Tabungan extends Controller
 {
+    protected $JurnalAkuntansi;
+
+    protected $CountJurnalUmum;
+    protected $CountJurnalUmumDetail;
+
+    protected $JurnalUmumDetail;
+
+    public function __construct(JurnalAkuntansi $jurnalakuntansi)
+    {
+        $this->JurnalAkuntansi = $jurnalakuntansi;
+
+        $this->CountJurnalUmum          = SysBukuJurnalUmum::count();
+        $this->CountJurnalUmumDetail    = SysBukuJurnalUmumDetail::count();
+
+        $this->JurnalUmumDetail         = new \App\Models\SysBukuJurnalUmumDetail;
+    }
+
     public function getDataProdukTabungan()
     {
         try {
@@ -38,23 +57,21 @@ class Tabungan extends Controller
 
             $ModelToken = SysToken::where('token', $getUserCookie)->first();
 
-            if(empty($ModelToken))
-            {
+            if (empty($ModelToken)) {
                 return response('Error 403 - Forbidden', 403);
             }
 
             $ModelUser = SysUser::where('username', $ModelToken->kd_user)->first();
-            
-            if(empty($ModelUser))
-            {
+
+            if (empty($ModelUser)) {
                 return response('Error 404 - User not found', 403);
             }
 
 
             $ModelProdukTabungan = BankBukuTabunganWadiah::where('bank_buku_tabungan_wadiah.kd_bank', $ModelUser->kd_bank)
-                                                            ->join('bank_cif', 'bank_cif.id', '=',  'bank_buku_tabungan_wadiah.kd_cif')
-                                                            ->join('sys_produk_tabungan', 'sys_produk_tabungan.id', '=', 'bank_buku_tabungan_wadiah.kd_produk_tabungan')
-                                                            ->get(['kd_buku_tabungan', 'nama_sesuai_identitas', 'nama_produk']);
+                ->join('bank_cif', 'bank_cif.id', '=',  'bank_buku_tabungan_wadiah.kd_cif')
+                ->join('sys_produk_tabungan', 'sys_produk_tabungan.id', '=', 'bank_buku_tabungan_wadiah.kd_produk_tabungan')
+                ->get(['kd_buku_tabungan', 'nama_sesuai_identitas', 'nama_produk']);
 
             return response()->json([
                 'data'          => $ModelProdukTabungan
@@ -75,26 +92,23 @@ class Tabungan extends Controller
 
             $ModelToken = SysToken::where('token', $getUserCookie)->first();
 
-            if(empty($ModelToken))
-            {
+            if (empty($ModelToken)) {
                 return response('Error 403 - Forbidden', 403);
             }
 
             $getUserData = SysUser::where('username', $ModelToken->kd_user)->first();
             $getBankData = SysBank::find($getUserData->kd_bank);
 
-            if(empty($getBankData))
-            {
+            if (empty($getBankData)) {
                 return response('Error 403 - Forbidden', 403);
             }
 
             $cektabungan = BankBukuTabunganWadiah::where('kd_cif', $re->kd_cif)->first();
 
-            if(empty($cektabungan)) {
+            if (empty($cektabungan)) {
                 // No Action
-            } else if(!empty($cektabungan)) {
-                if($cektabungan->kd_produk_tabungan == $re->kd_produk_tabungan)
-                {
+            } else if (!empty($cektabungan)) {
+                if ($cektabungan->kd_produk_tabungan == $re->kd_produk_tabungan) {
                     return response()->json([
                         'message' => 'Produk tabungan ini sudah terdaftar di data nasabah'
                     ]);
@@ -141,8 +155,7 @@ class Tabungan extends Controller
 
             $ModelToken = SysToken::where('token', $getUserCookie)->first();
 
-            if(empty($ModelToken))
-            {
+            if (empty($ModelToken)) {
                 // return response('Error 403 - Forbidden', 403);
                 return response()->json([
                     'message'   => 'Token tidak ditemukan'
@@ -151,8 +164,7 @@ class Tabungan extends Controller
 
             $ModelUser = SysUser::where('username', $ModelToken->kd_user)->first();
 
-            if(empty($ModelUser))
-            {
+            if (empty($ModelUser)) {
                 // return response('Error 404 - User not found', 404);
                 return response()->json([
                     'message'   => 'User tidak ditemukan'
@@ -161,26 +173,23 @@ class Tabungan extends Controller
 
             $kodeadmin   = $ModelUser->id;
             $kodebank    = $ModelUser->kd_bank;
-            
+
             $ModelTabungan          = BankBukuTabunganWadiah::where('kd_buku_tabungan', $id)->first();
 
 
-            if($ModelTabungan->kd_bank == $kodebank)
-            {
+            if ($ModelTabungan->kd_bank == $kodebank) {
                 $ModelCIF               = BankCIF::find($ModelTabungan->kd_cif);
 
                 $ModelProdukTabungan            = SysProdukTabungan::find($ModelTabungan->kd_produk_tabungan);
                 $ModelNotaTransaksiTabungan     = BankTransaksiTabunganWadiah::count();
                 $TambahIntervalUntukNotaFisik   = $ModelNotaTransaksiTabungan + 1;
 
-                if(empty($ModelCIF))
-                {
+                if (empty($ModelCIF)) {
                     return response()->json([
                         'message'       => 'Nasabah tidak ditemukan',
                         'status'        => false
                     ]);
-                } elseif(empty($ModelProdukTabungan))
-                {
+                } elseif (empty($ModelProdukTabungan)) {
                     return response()->json([
                         'message'       => 'Produk Tabungan Tidak Terdaftar',
                         'status'        => false
@@ -200,14 +209,12 @@ class Tabungan extends Controller
                     'status'    => true,
                     'data'      => $data
                 ]);
-            } else if($ModelTabungan->kd_bank != $kodebank) {
+            } else if ($ModelTabungan->kd_bank != $kodebank) {
                 return response()->json([
                     'message'   => 'Tabungan tidak terdaftar di bank ini',
                     'status'    => false
                 ]);
             }
-            
-            
         } catch (\Throwable $th) {
             return response()->json([
                 'data'      => $th->getMessage(),
@@ -223,8 +230,7 @@ class Tabungan extends Controller
 
             $ModelToken = SysToken::where('token', $getUserCookie)->first();
 
-            if(empty($ModelToken))
-            {
+            if (empty($ModelToken)) {
                 // return response('Error 403 - Forbidden', 403);
                 return response()->json([
                     'message'   => 'Token tidak ditemukan'
@@ -233,8 +239,7 @@ class Tabungan extends Controller
 
             $ModelUser = SysUser::where('username', $ModelToken->kd_user)->first();
 
-            if(empty($ModelUser))
-            {
+            if (empty($ModelUser)) {
                 // return response('Error 404 - User not found', 404);
                 return response()->json([
                     'message'   => 'User tidak ditemukan'
@@ -246,19 +251,17 @@ class Tabungan extends Controller
 
             $ModelTabungan = BankBukuTabunganWadiah::where('kd_buku_tabungan', $re->kd_buku_tabungan)->first();
 
-            if(empty($ModelTabungan))
-            {
+            if (empty($ModelTabungan)) {
                 return response()->json([
                     'message'   => 'Tabungan tidak terdaftar di bank ini',
                     'status'    => false
                 ]);
             }
 
-            if($re->jenis_transaksi == 'tarik') {
+            if ($re->jenis_transaksi == 'tarik') {
                 $HitungSisaTabungan = $ModelTabungan->total_nilai - $re->nominal_transaksi;
 
-                if($HitungSisaTabungan < 0)
-                {
+                if ($HitungSisaTabungan < 0) {
                     return response()->json([
                         'message'   => 'Tabungan tidak cukup',
                         'status'    => false
@@ -281,17 +284,18 @@ class Tabungan extends Controller
                 $ModelUpdateNominalTabungan                 = BankBukuTabunganWadiah::where('kd_buku_tabungan', $re->kd_buku_tabungan)->first();
                 $ModelUpdateNominalTabungan->total_nilai    = $HitungSisaTabungan;
                 $ModelUpdateNominalTabungan->save();
-                
+
+
+
                 return response()->json([
                     'message'       => 'Transaksi Tarik Tunai Berhasil disimpan',
                     'status'        => true
                 ]);
-
-            } else if($re->jenis_transaksi == 'setor') {
+            } else if ($re->jenis_transaksi == 'setor') {
                 $TambahTabungan = $ModelTabungan->total_nilai + $re->nominal_transaksi;
 
                 $ModelIsiTabungan = new BankTransaksiTabunganWadiah;
-                
+
                 $CountIsiTabel          = BankTransaksiTabunganWadiah::count();
                 $KalkulasiCount         = $CountIsiTabel + 1;
                 $FormatKodeTabungan     = 'TB-TK-' . Carbon::now()->format('Y-m-d') . '-' . $KalkulasiCount;
@@ -326,5 +330,4 @@ class Tabungan extends Controller
             ]);
         }
     }
-
 }
