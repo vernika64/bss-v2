@@ -27,12 +27,11 @@ import BankingJualBeliMurabahah             from '../views/CPanel/BankingJualBel
 import BankingJualBeliMurabahahDetail       from '../views/CPanel/Forms/BankingVerifikasiMurabahah.vue'
 import BankingPermintaanBarangMurabahah     from '../views/CPanel/BankingPermintaanBarangMurabahah.vue'
 import BankingAngsuranMurabahah             from '../views/CPanel/BankingAngsuranMurabahah.vue'
-
-
+import BankingDaftarJurnalUmum              from '../views/CPanel/BankingJurnalUmum.vue'
+import BankingDaftarJurnalUmumDetail        from '../views/CPanel/BankingJurnalUmumDetail.vue'
 
 // Untuk Pengembangan dan Testing
 import DevArea              from '../views/Superadmin/Dev/DevelopmentArea.vue'
-
 
 let devurl      = '/dev'
 let releaseurl  = '/bank/'
@@ -175,6 +174,20 @@ const routes = [
         path            : devurl + '/angsuranmurabahah/',
         component       : BankingAngsuranMurabahah,
         name            : 'AngsuranMurabahah'
+    },
+
+    // Untuk Jurnal Umum
+
+    {
+        path            : devurl + '/daftarjurnalumum',
+        component       : BankingDaftarJurnalUmum,
+        name            : 'DaftarJurnalUmum'
+    },
+
+    {
+        path            : devurl + '/daftarjurnalumum/',
+        component       : BankingDaftarJurnalUmumDetail,
+        name            : 'DaftarJurnalUmumDetail'
     },
  
     // { path: '/supercpl/supermahasiswa/',    component: SuperMahasiswa,      name: 'SuperMahasiswa'},

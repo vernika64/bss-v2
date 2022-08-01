@@ -4,6 +4,7 @@ use App\Http\Controllers\Administrator;
 use App\Http\Controllers\Auth;
 use App\Http\Controllers\CustomerIdentificationFile;
 use App\Http\Controllers\JualBeliMurabahah;
+use App\Http\Controllers\JurnalAkuntansi;
 use App\Http\Controllers\Tabungan;
 use App\Http\Controllers\Testing;
 use App\Http\Controllers\UserManagement;
@@ -98,3 +99,7 @@ Route::put('/bank/keluarBarangPermintaan', [JualBeliMurabahah::class, 'keluarBar
 Route::get('/bank/cariAngsuranMurabahah/{id}', [JualBeliMurabahah::class, 'cariTransaksiMurabahahUntukAngsuran']);
 Route::post('/bank/tambahAngsuranMurabahah', [JualBeliMurabahah::class, 'insertAngsuranMurabahah']);
 Route::get('/bank/historiDataAngsuran/{id}', [JualBeliMurabahah::class, 'ambilHistoriDataAngsuran']);
+
+// Sub Jurnal Umum
+Route::get('/bank/ambilDataJurnalUmum', [JurnalAkuntansi::class, 'getDataJurnalAkuntansi']);
+Route::get('/bank/ambilDataJurnalUmum/{id}', [JurnalAkuntansi::class, 'getDataJurnalAkuntansiDetail']);

@@ -56,4 +56,83 @@ class JurnalAkuntansi extends Controller
             return response('500 Internal Server Error <br>' . $th->getMessage(), 500);
         }
     }
+
+    public function getDataJurnalAkuntansi(Request $re)
+    {
+        try {
+            $getUserCookie = $re->cookie('tkn');
+
+            $ModelToken = SysToken::where('token', $getUserCookie)->first();
+
+            if(empty($ModelToken))
+            {
+                return response('Error 403 - Forbidden', 403);
+            }
+
+            $ModelUser = SysUser::where('username', $ModelToken->kd_user)->first();
+        
+            if(empty($ModelUser))
+            {
+                return response('Error 404 - User not found', 403);
+            }
+
+            $kodeadmin  = $ModelUser->id;
+            $kodebank   = $ModelUser->kd_bank;
+
+            $ModelJurnalUmum = SysBukuJurnalUmum::where('kd_bank', $kodebank)->get();
+
+            if(empty($ModelJurnalUmum))
+            {
+                return response('500 Internal Server Error <br>', 500);
+            }
+
+            return response()->json([
+                'data'      => $ModelJurnalUmum,
+                'status'    => true
+            ]);
+
+        } catch (\Throwable $th) {
+            return response('500 Internal Server Error <br>' . $th->getMessage(), 500);
+        }
+    }
+
+    public function getDataJurnalAkuntansiDetail($id, Request $re)
+    {
+        try {
+            $getUserCookie = $re->cookie('tkn');
+
+            $ModelToken = SysToken::where('token', $getUserCookie)->first();
+
+            if(empty($ModelToken))
+            {
+                return response('Error 403 - Forbidden', 403);
+            }
+
+            $ModelUser = SysUser::where('username', $ModelToken->kd_user)->first();
+        
+            if(empty($ModelUser))
+            {
+                return response('Error 404 - User not found', 403);
+            }
+
+            $kodeadmin  = $ModelUser->id;
+            $kodebank   = $ModelUser->kd_bank;
+
+            $ModelJurnalUmum = SysBukuJurnalUmum::where('kd_bank', $kodebank)->get();
+            $ModelJurnalUmumDetail = SysBukuJurnalUmumDetail::where('kd_transaksi_akuntansi', $id)->get();
+
+            if(empty($ModelJurnalUmum))
+            {
+                return response('500 Internal Server Error <br>', 500);
+            }
+
+            return response()->json([
+                'data'      => $ModelJurnalUmumDetail,
+                'status'    => true
+            ]);
+
+        } catch (\Throwable $th) {
+            return response('500 Internal Server Error <br>' . $th->getMessage(), 500);
+        }
+    }
 }
