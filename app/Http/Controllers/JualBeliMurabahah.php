@@ -145,7 +145,7 @@ class JualBeliMurabahah extends Controller
             $status             = 'pending';                    // Pertama kali status dipending dahulu untuk diverifikasi oleh petugas back office
             
             $ModelJualBeli              = new BankJualBeliMurabahah;
-            $ModelJualBeli->kd_transaksi_murabahah      = 'JB-MB-' . Carbon::now()->format('Y-m-d') . $countadd;
+            $ModelJualBeli->kd_transaksi_murabahah      = 'JB-MB-' . Carbon::now()->format('Y-m-d') . '-' .$countadd;
             $ModelJualBeli->tanggal_transaksi_murabahah = Carbon::now();
             $ModelJualBeli->kd_bank                     = $kodebank;
             $ModelJualBeli->kd_cif                      = $nasabah;
@@ -327,19 +327,152 @@ class JualBeliMurabahah extends Controller
             $ModelPermintaanBarang->save();
 
             // Tambahkan Pencatatan ke Jurnal Umum
-            
-            $HitungJumlahJurnalUmum     = $this->CountJurnalUmum + 1;
-                
-            $kd_transaksi       = 'JB-MA' . '-' . Carbon::now()->format('Y-m-d') . '-' . $HitungJumlahJurnalUmum;
-            $tgl_pencatatan     = Carbon::now();
-            $judul_transaksi    = 'Penjualan Produk Akad Murabahah';
-            $total_biaya        = ($hargabarangsatuan * $kuantitas) + $surplus;
-            
-            $this->JurnalAkuntansi->insertJurnalUmum($kd_transaksi, $tgl_pencatatan, $judul_transaksi, $total_biaya, '', $kodeadmin, $kodebank);
 
-            $this->JurnalAkuntansi->insertJurnalUmumDetail('debit', 13201, $kd_transaksi, $total_biaya, 'Debet dari Kas Operasional', $kodeadmin, $kodebank);
+            $hargabrgsatuan     = $re->harga_barang_satuan;
+            $brgqty             = $re->qty_barang;
+            $brgdp              = $re->uang_muka;
+            $brgmargin          = $re->surplus_untuk_bank;
 
-            $this->JurnalAkuntansi->insertJurnalUmumDetail('kredit', 11001, $kd_transaksi, $total_biaya, 'Kredit ke Piutang Murabahah', $kodeadmin, $kodebank);
+            $total_biaya        = ($hargabrgsatuan * $brgqty) + $brgmargin;
+
+            // Untuk Pendanaan Barang Permintaan
+            
+            $count_jurnal_one           = SysBukuJurnalUmum::count() + 1;
+            $kd_transaksi_pendanaan     = 'JB-MA' . '-' . Carbon::now()->format('Y-m-d') . '-' . $count_jurnal_one;
+            $total_harga_barang         = $re->harga_barang_satuan * $re->qty_barang;
+            
+            $this->JurnalAkuntansi->insertJurnalUmum(
+                $kd_transaksi_pendanaan,
+                Carbon::now(),
+                'Pendanaan Barang untuk Jual Beli Murabahah',
+                $total_harga_barang,
+                'Alokasi dana untuk pendanaan barang jual beli murabahah',
+                $kodeadmin,
+                $kodebank
+            );
+
+            $this->JurnalAkuntansi->insertJurnalUmumDetail(
+                'debit',
+                13202,
+                $kd_transaksi_pendanaan,
+                $total_harga_barang,
+                'Tambah Credit untuk Pendanaan Barang Jual Beli Murabahah',
+                $kodeadmin,
+                $kodebank
+            );
+
+            $this->JurnalAkuntansi->insertJurnalUmumDetail(
+                'kredit',
+                11001,
+                $kd_transaksi_pendanaan,
+                $total_harga_barang,
+                'Kurangi Credit Kas ke Aset Pendanaan Barang Jual Beli Murabahah',
+                $kodeadmin,
+                $kodebank
+            );
+            
+            // Untuk Penerimaan Uang Muka
+            
+            $count_jurnal_two               = SysBukuJurnalUmum::count() + 1;
+            $kd_transaksi_dp                = 'JB-MA' . '-' . Carbon::now()->format('Y-m-d') . '-' . $count_jurnal_two;
+
+            $this->JurnalAkuntansi->insertJurnalUmum(
+                $kd_transaksi_dp,
+                Carbon::now(),
+                'Terima Credit Dari bayar DP Jual Beli Murabahah',
+                $re->uang_muka,
+                'Terima Credit Dari bayar DP Jual Beli Murabahah',
+                $kodeadmin,
+                $kodebank
+            );
+
+            $this->JurnalAkuntansi->insertJurnalUmumDetail(
+                'debit',
+                11001,
+                $kd_transaksi_dp,
+                $re->uang_muka,
+                'Tambah penghasilan dari pembayaran uang muka produk jual beli murabahah',
+                $kodeadmin,
+                $kodebank
+            );
+
+            $this->JurnalAkuntansi->insertJurnalUmumDetail(
+                'kredit',
+                11003,
+                $kd_transaksi_dp,
+                $re->uang_muka,
+                'Kurangi Credit',
+                $kodeadmin,
+                $kodebank
+            );
+
+            // Untuk Pengukuhan Akad
+            
+            $count_jurnal_three                      = SysBukuJurnalUmum::count() + 1;
+            $kd_transaksi_pengukuhan                 = 'JB-MA' . '-' . Carbon::now()->format('Y-m-d') . '-' . $count_jurnal_three;
+            $total_biaya_pengukuhan                  = ($hargabrgsatuan * $brgqty) + $brgmargin;
+            
+            $this->JurnalAkuntansi->insertJurnalUmum(
+                $kd_transaksi_pengukuhan, 
+                Carbon::now(), 
+                'Pengukuhan Akad Murabahah', 
+                $total_biaya_pengukuhan,
+                'Pengukuhan transaksi jual beli akad murabahah', 
+                $kodeadmin, 
+                $kodebank
+            );
+
+            $this->JurnalAkuntansi->insertJurnalUmumDetail(
+                'debit', 
+                13201, 
+                $kd_transaksi_pengukuhan, 
+                $total_biaya, 
+                'Tambah Credit Piutang Murabahah', 
+                $kodeadmin, 
+                $kodebank
+            );
+
+            $this->JurnalAkuntansi->insertJurnalUmumDetail(
+                'kredit', 
+                11002, 
+                $kd_transaksi_pengukuhan, 
+                $re->surplus_untuk_bank, 
+                'Pindah marjin keuntungan ke Piutang Murabahah', 
+                $kodeadmin, 
+                $kodebank
+            );
+
+            $sumhargabarang = $re->harga_barang_satuan * $re->qty_barang;
+
+            $this->JurnalAkuntansi->insertJurnalUmumDetail(
+                'kredit',
+                13202,
+                $kd_transaksi_pengukuhan,
+                $sumhargabarang,
+                'Alokasikan dana ke Piutang Murabahah',
+                $kodeadmin,
+                $kodebank
+            );
+
+            $this->JurnalAkuntansi->insertJurnalUmumDetail(
+                'debit',
+                11003,
+                $kd_transaksi_pengukuhan,
+                $re->uang_muka,
+                'Impaskan uang muka yang sudah dipindah ke kas sebelumnya',
+                $kodeadmin,
+                $kodebank
+            );
+
+            $this->JurnalAkuntansi->insertJurnalUmumDetail(
+                'kredit',
+                13201,
+                $kd_transaksi_pengukuhan,
+                $re->uang_muka,
+                'Potongan dari Uang Muka',
+                $kodeadmin,
+                $kodebank
+            );
 
             return response()->json([
                 'message'       => 'Permintaan berhasil diverifikasi dan bisa mulai proses pembelian barang dari supplier'
@@ -736,9 +869,25 @@ class JualBeliMurabahah extends Controller
 
                 $this->JurnalAkuntansi->insertJurnalUmum($kd_transaksi, $tgl_pencatatan, $nama_transaksi, $nilai_transaksi, $deskripsi, $kodeadmin, $kodebank);
 
-                $this->JurnalAkuntansi->insertJurnalUmumDetail('debit', 11002, $kd_transaksi, $nilai_transaksi, 'Debet dari Piutang Murabahah', $kodeadmin, $kodebank);
+                $this->JurnalAkuntansi->insertJurnalUmumDetail(
+                    'debit', 
+                    11001, 
+                    $kd_transaksi, 
+                    $nilai_transaksi, 
+                    'Pendapatan dari Angsuran Produk Jual Beli Murabahah', 
+                    $kodeadmin, 
+                    $kodebank
+                );
 
-                $this->JurnalAkuntansi->insertJurnalUmumDetail('kredit', 13201, $kd_transaksi, $nilai_transaksi, 'Kredit ke Kas Penjualan Produk JB Murabahah', $kodeadmin, $kodebank);
+                $this->JurnalAkuntansi->insertJurnalUmumDetail(
+                    'kredit', 
+                    13201, 
+                    $kd_transaksi, 
+                    $nilai_transaksi, 
+                    'Piutang Murabahah dialokasikan ke Kas', 
+                    $kodeadmin, 
+                    $kodebank
+                );
 
                 return response()->json([
                     'message'       => 'Angsuran Pertama berhasil disimpan'

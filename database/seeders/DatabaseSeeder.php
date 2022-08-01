@@ -157,7 +157,18 @@ class DatabaseSeeder extends Seeder
             'kd_master_buku'        => 1,
             'kd_sub_master_buku'    => 11002,
             'kd_bank'               => 1,
-            'nama_buku'             => 'Kas Penjualan Produk Jasa Jual Beli Akad Murabahah',
+            'nama_buku'             => 'Marjin Produk Murabahah',
+            'nominal'               => 0,
+            'kd_admin'              => 1,
+            'created_at'            => Carbon::now(),
+            'updated_at'            => Carbon::now(),
+        ]);
+
+        DB::table('sys_buku_akuntansi')->insert([
+            'kd_master_buku'        => 1,
+            'kd_sub_master_buku'    => 11003,
+            'kd_bank'               => 1,
+            'nama_buku'             => 'Uang Muka Produk Jual Beli Murabahah',
             'nominal'               => 0,
             'kd_admin'              => 1,
             'created_at'            => Carbon::now(),

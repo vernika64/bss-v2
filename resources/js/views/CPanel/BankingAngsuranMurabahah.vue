@@ -281,6 +281,7 @@ export default {
 
                     let data = proses2.data
                     alert(data.message)
+                    return location.reload()
                 }).catch(proses2_error => {
                     console.log(proses2_error)
                 })
