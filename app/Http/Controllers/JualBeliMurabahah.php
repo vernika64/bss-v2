@@ -291,6 +291,7 @@ class JualBeliMurabahah extends Controller
             $surplus            = $re->surplus_untuk_bank;
             $totalbiaya         = $re->total_biaya_akad_murabahah;
             $totalhargabarang   = $re->total_harga_barang;
+            $totaldp            = $re->uang_muka;
 
             $ModelJualBeli                          = BankJualBeliMurabahah::find($kdtransaksi);
 
@@ -304,6 +305,7 @@ class JualBeliMurabahah extends Controller
             $ModelJualBeli->harga_barang_satuan     = $hargabarangsatuan;
             $ModelJualBeli->kuantitas_barang        = $kuantitas;
             $ModelJualBeli->tipe_kuantitas          = $tipekuantitas;
+            $ModelJualBeli->uang_muka               = $totaldp;
             $ModelJualBeli->frekuensi_angsuran      = $frekuensi;
             $ModelJualBeli->jumlah_angsuran         = $totalbiaya;
             $ModelJualBeli->surplus_murabahah       = $surplus;
@@ -587,7 +589,7 @@ class JualBeliMurabahah extends Controller
                     'nama_barang'               => $ModelJualBeliKedua->nama_barang,
                     'jumlah_angsuran'           => $ModelJualBeliAwal->jumlah_angsuran,
                     'frekuensi_angsuran'        => $ModelJualBeliAwal->frekuensi_angsuran,
-                    'angsuran_perbulan'         => $ModelJualBeliAwal->jumlah_angsuran / $ModelJualBeliAwal->frekuensi_angsuran
+                    'angsuran_perbulan'         => ((($ModelJualBeliAwal->harga_barang_satuan * $ModelJualBeliAwal->frekuensi_angsuran)+ $ModelJualBeliAwal->surplus_murabahah)- $ModelJualBeliAwal->uang_muka) / $ModelJualBeliAwal->frekuensi_angsuran
                 ];
 
                 return response()->json([
@@ -597,9 +599,9 @@ class JualBeliMurabahah extends Controller
                 ]);
             }
 
-            $ModelJB1 = BankJualBeliMurabahah::where('bank_jualbeli_murabahah.kd_transaksi_murabahah', $id)
-                       ->join('bank_permintaan_barang_murabahah', 'bank_jualbeli_murabahah.id', '=', 'bank_permintaan_barang_murabahah.kd_transaksi_murabahah')
-                       ->first(['bank_jualbeli_murabahah.kd_transaksi_murabahah', 'nama_barang', 'status_transaksi', 'jumlah_angsuran', 'frekuensi_angsuran']);
+            $ModelJB1           = BankJualBeliMurabahah::where('kd_transaksi_murabahah', $id)->first();
+            $GetJB1ID           = $ModelJB1->id;
+            $ModelJBPersediaan  = BankPermintaanBarangMurabahah::where('kd_transaksi_murabahah', $GetJB1ID)->first();
 
             $ModelJB2 = BankJualBeliMurabahah::where('bank_jualbeli_murabahah.kd_transaksi_murabahah', $id)
                        ->join('bank_permintaan_barang_murabahah', 'bank_jualbeli_murabahah.id', '=', 'bank_permintaan_barang_murabahah.kd_transaksi_murabahah')
@@ -607,16 +609,16 @@ class JualBeliMurabahah extends Controller
 
             $DataUntukForm = [
                 'kd_transaksi_murabahah'    => $ModelJB1->kd_transaksi_murabahah,
-                'nama_barang'               => $ModelJB1->nama_barang,
+                'nama_barang'               => $ModelJBPersediaan->nama_barang,
                 'jumlah_angsuran'           => $ModelJB1->jumlah_angsuran,
                 'frekuensi_angsuran'        => $ModelJB1->frekuensi_angsuran,
-                'angsuran_perbulan'         => $ModelJB1->jumlah_angsuran / $ModelJB1->frekuensi_angsuran
+                'angsuran_perbulan'         => ((($ModelJB1->harga_barang_satuan * $ModelJB1->frekuensi_angsuran)+ $ModelJB1->surplus_murabahah)- $ModelJB1->uang_muka) / $ModelJB1->frekuensi_angsuran
             ];
 
             return response()->json([
                 'data1'              => $ModelJB2,
                 'data2'              => $DataUntukForm,
-                'status'            => 'false'
+                'status'             => 'false'
             ]);
             
         } catch (\Throwable $th) {

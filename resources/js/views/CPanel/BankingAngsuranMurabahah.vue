@@ -86,7 +86,7 @@
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white">
-                                    <tr v-for="(bb, index) in tabelHistoriAngsuran" class="even:bg-slate-200 even:text-black">
+                                    <tr v-for="(bb, index) in tabelHistoriAngsuran" class="even:bg-slate-200 even:text-black" :key="index">
                                         <td>{{ index + 1 }}</td>
                                         <td>{{ bb.tgl_bayar_angsuran }}</td>
                                         <td>{{ konversiKeRp(bb.nominal_bayar) }}</td>

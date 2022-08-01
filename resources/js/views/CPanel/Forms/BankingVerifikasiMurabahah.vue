@@ -16,7 +16,11 @@
                 </div>
                 <div>
                     <p class="text-lg mb-2">Deskripsi</p>
-                    <textarea class="text-md text-justify overflow-auto w-full border p-2" disabled>{{ formTransaksi.deskripsi_permintaan }}</textarea>
+                    <textarea class="text-md text-justify overflow-auto w-full border p-2 bg-slate-200" v-model="formTransaksi.deskripsi_permintaan" readonly></textarea>
+                </div>
+                <div>
+                    <p class="text-lg mb-2">Link Dokumen Pendukung</p>
+                    <input class="text-md text-justify w-full border p-2 bg-slate-200" v-model="formTransaksi.link_lampiran" />
                 </div>
                 <div>
                     <label class="font-bold">Aksi</label>
@@ -52,7 +56,7 @@
                 <input class="p-2 w-full border bg-slate-200" v-model="formDummy.total_biaya_akad_murabahah" placeholder="Total Biaya yang akan dibayarkan oleh nasabah sampai akhir akad" readonly />
 
                 <label>Uang Muka</label>
-                <input class="p-2 w-full border" v-model="formDummy.uang_muka" />
+                <input class="p-2 w-full border" v-model="formDummy.uang_muka" @keyup="kalkulasiBiayaSetelahDP" />
 
                 <label>Total Biaya Jual Beli setelah dikurangi Uang Muka</label>
                 <input class="p-2 w-full border bg-slate-200" v-model="formDummy.total_biaya_setelah_dp" readonly />
@@ -91,6 +95,7 @@ export default {
             this.formTransaksi.status_admin_pembuat     = res.data.data.status_admin_pembuat
             this.formTransaksi.kd_cif                   = res.data.data.kd_cif,
             this.formTransaksi.deskripsi_permintaan     = res.data.data.deskripsi_permintaan
+            this.formTransaksi.link_lampiran            = res.data.data.link_lampiran
 
             // console.log(this.formTransaksi)
 
@@ -118,6 +123,7 @@ export default {
                 status_admin_pembuat        : '',
                 nama_sesuai_identitas       : '',
                 deskripsi_permintaan        : '',
+                link_lampiran               : ''
             },
 
             formReject      : {
@@ -202,10 +208,10 @@ export default {
         },
         kalkulasiAngsuran()
         {
-            let totalbiayamurabahah = parseInt(this.formDummy.total_biaya_akad_murabahah)
-            let kuantitas           = parseInt(this.formDummy.frekuensi_angsuran)
+            let tbmurabahahsetelahdp = parseInt(this.formDummy.total_biaya_setelah_dp)
+            let kuantitas            = parseInt(this.formDummy.frekuensi_angsuran)
 
-            return this.formDummy.angsuran_per_bulan = totalbiayamurabahah / kuantitas
+            return this.formDummy.angsuran_per_bulan = tbmurabahahsetelahdp / kuantitas
         },
         resetTransaksi()
         {

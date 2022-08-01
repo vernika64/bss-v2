@@ -26,7 +26,6 @@
                         <td class="border border-white p-3">{{ jb.nama_permintaan }}</td>
                         <td class="border border-white p-3">{{ displayStatus(jb.status_transaksi) }}</td>
                         <td class="border border-white p-3 text-center">
-                            <router-link class="p-2 text-white bg-blue-600 w-auto text-sm ml-4" :to="''">Details</router-link>
                             <router-link class="p-2 text-white bg-blue-800 w-auto text-sm ml-4" v-if="jb.status_transaksi == 'pending'" :to="{ name: 'JualBeliMurabahahDetail', query: { id: jb.id }}">Verifikasi</router-link>
                         </td>
                     </tr>
