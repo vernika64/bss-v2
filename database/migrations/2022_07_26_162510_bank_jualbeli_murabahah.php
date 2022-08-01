@@ -24,6 +24,7 @@ class BankJualbeliMurabahah extends Migration
             $table->bigInteger('harga_barang_satuan')->nullable();
             $table->integer('kuantitas_barang')->nullable();
             $table->enum('tipe_kuantitas', ['qty'])->nullable();
+            $table->bigInteger('uang_muka')->nullable();
             $table->integer('frekuensi_angsuran')->nullable();
             $table->bigInteger('jumlah_angsuran')->nullable();
             $table->bigInteger('surplus_murabahah')->nullable();

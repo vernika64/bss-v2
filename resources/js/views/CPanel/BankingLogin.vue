@@ -2,7 +2,7 @@
 
 <div class="grid grid-cols-3 text-center">
     <div class="col-span-2 h-screen">
-        <img :src="'../Assets/Images/nepu.jpg'" class="h-full" />
+        
     </div>
     <div class="p-4 flex flex-col align-middle justify-center text-center">
         <div>

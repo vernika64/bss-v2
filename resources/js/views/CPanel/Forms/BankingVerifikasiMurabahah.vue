@@ -46,17 +46,26 @@
                 </div>
                 <label>Total Harga Barang</label>
                 <input class="p-2 w-full border bg-slate-200" v-model="formDummy.total_harga_barang" placeholder="Total Harga Barang (Terisi otomatis oleh sistem)" />
-                <label>Surplus untuk Bank</label>
+                <label>Margin untuk Bank</label>
                 <input class="p-2 w-full border" v-model="formDummy.surplus_untuk_bank" @keyup="kalkulasiSurplusBank" />
-                <label>Total Biaya Jual Beli Akad Murabahah</label>
+                <label>Total Biaya Jual Beli Akad Murabahah tanpa Uang Muka</label>
                 <input class="p-2 w-full border bg-slate-200" v-model="formDummy.total_biaya_akad_murabahah" placeholder="Total Biaya yang akan dibayarkan oleh nasabah sampai akhir akad" readonly />
+
+                <label>Uang Muka</label>
+                <input class="p-2 w-full border" v-model="formDummy.uang_muka" />
+
+                <label>Total Biaya Jual Beli setelah dikurangi Uang Muka</label>
+                <input class="p-2 w-full border bg-slate-200" v-model="formDummy.total_biaya_setelah_dp" readonly />
+
                 <label>Frekuensi Angsuran</label>
                 <select class="p-2 w-full border" v-model="formDummy.frekuensi_angsuran" @change="kalkulasiAngsuran">
                     <option :value="''">-- Pilih Frekuensi Angsuran --</option>
                     <option v-for="brg in frekuensiAngsuran" :key="brg.item" :value="brg.item">{{ brg.item }} Bulan</option>
                 </select>
-                <label>Biaya Angsuran Per Bulan</label>
-                <input class="p-2 w-full border bg-slate-200" v-model="formDummy.angsuran_per_bulan" />
+
+                <label>Angsuran Per Bulan</label>
+                <input class="p-2 w-full border bg-slate-200" v-model="formDummy.angsuran_per_bulan" readonly />
+
                 <button class="w-full bg-blue-700 text-white p-2 mt-4" @click="simpanTransaksi">Simpan untuk menerima permintaan</button>
                 <button class="w-full bg-blue-900 text-white p-2 mt-4" @click="resetTransaksi">Reset</button>
             </div>
@@ -126,7 +135,9 @@ export default {
                 frekuensi_angsuran          : '',
                 surplus_untuk_bank          : '',
                 total_biaya_akad_murabahah  : '',
-                angsuran_per_bulan          : ''
+                angsuran_per_bulan          : '',
+                total_biaya_akad_margin     : '',
+                total_biaya_setelah_dp      : ''
             },
 
             // formAccept      : {
@@ -177,6 +188,18 @@ export default {
 
             return this.formDummy.total_biaya_akad_murabahah = totalhargabarang + surplusbank
         },
+        kalkulasiBiayaSetelahDP(){
+            if(this.formDummy.total_biaya_akad_murabahah == 0 || this.formDummy.total_biaya_akad_murabahah == null)
+            {
+                return alert('Mohon diisi form sesuai urutan')
+            }
+
+            let totalbiayasblmdp          = parseInt(this.formDummy.total_biaya_akad_murabahah)
+            let uangmuka                  = parseInt(this.formDummy.uang_muka)
+
+            return this.formDummy.total_biaya_setelah_dp = totalbiayasblmdp - uangmuka
+
+        },
         kalkulasiAngsuran()
         {
             let totalbiayamurabahah = parseInt(this.formDummy.total_biaya_akad_murabahah)
@@ -195,6 +218,8 @@ export default {
             this.formDummy.surplus_untuk_bank          = ''
             this.formDummy.total_biaya_akad_murabahah  = ''
             this.formDummy.angsuran_per_bulan          = ''
+            this.formDummy.uang_muka                   = ''
+            this.formDummy.total_biaya_setelah_dp      = ''
 
             return true
         },
