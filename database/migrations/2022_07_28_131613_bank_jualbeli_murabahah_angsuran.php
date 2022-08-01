@@ -18,9 +18,9 @@ class BankJualbeliMurabahahAngsuran extends Migration
             $table->string('kd_angsuran_murabahah');
             $table->string('kd_transaksi_murabahah');
             $table->date('tgl_bayar_angsuran');
-            $table->string('angsuran_ke');
-            $table->string('nominal_bayar');
-            $table->string('sisa_angsuran');
+            $table->integer('angsuran_ke');
+            $table->bigInteger('nominal_bayar');
+            $table->integer('sisa_angsuran');
             $table->integer('kd_admin');
             $table->timestamps();
         });

@@ -723,6 +723,7 @@ class JualBeliMurabahah extends Controller
                 $ModelAngsuran->save();
 
                 // Untuk Pencatatan di Jurnal Umum
+                
                 $HitungJumlahJurnalUmum     = $this->CountJurnalUmum + 1;
                                 
                 $kd_transaksi       = 'JB-MA' . '-' . Carbon::now()->format('Y-m-d') . '-' . $HitungJumlahJurnalUmum;

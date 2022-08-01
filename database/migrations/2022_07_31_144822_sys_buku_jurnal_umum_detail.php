@@ -17,8 +17,8 @@ class SysBukuJurnalUmumDetail extends Migration
             $table->bigIncrements('id');
             $table->string('kd_transaksi_akuntansi');
             $table->integer('kd_buku_akuntansi');
-            $table->string('nominal_debit');
-            $table->string('nominal_kredit');
+            $table->bigInteger('nominal_debit');
+            $table->bigInteger('nominal_kredit');
             $table->string('deskripsi')->nullable();
             $table->integer('kd_admin');
             $table->integer('kd_bank');

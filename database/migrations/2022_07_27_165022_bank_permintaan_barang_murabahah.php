@@ -22,8 +22,8 @@ class BankPermintaanBarangMurabahah extends Migration
             $table->integer('kd_bank');
             $table->string('kd_invoice_barang')->nullable();
             $table->string('nama_barang');
-            $table->string('harga_barang_satuan');
-            $table->string('kuantitas_barang');
+            $table->bigInteger('harga_barang_satuan');
+            $table->integer('kuantitas_barang');
             $table->enum('tipe_kuantitas', ['qty']);
             $table->string('foto_barang')->nullable();
             $table->text('keterangan')->nullable();

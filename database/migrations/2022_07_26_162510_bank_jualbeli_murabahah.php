@@ -21,12 +21,12 @@ class BankJualbeliMurabahah extends Migration
             $table->integer('kd_cif');
             $table->string('nama_permintaan');
             $table->text('deskripsi_permintaan');
-            $table->string('harga_barang_satuan')->nullable();
-            $table->string('kuantitas_barang')->nullable();
+            $table->bigInteger('harga_barang_satuan')->nullable();
+            $table->integer('kuantitas_barang')->nullable();
             $table->enum('tipe_kuantitas', ['qty'])->nullable();
-            $table->string('frekuensi_angsuran')->nullable();
-            $table->string('jumlah_angsuran')->nullable();
-            $table->string('surplus_murabahah')->nullable();
+            $table->integer('frekuensi_angsuran')->nullable();
+            $table->bigInteger('jumlah_angsuran')->nullable();
+            $table->bigInteger('surplus_murabahah')->nullable();
             $table->string('link_lampiran')->nullable();
             $table->enum('status_transaksi', ['pending', 'active', 'pass', 'fail', 'reject']);
             $table->integer('status_admin_pembuat')->nullable();

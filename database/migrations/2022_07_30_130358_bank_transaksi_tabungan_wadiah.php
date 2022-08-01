@@ -19,7 +19,7 @@ class BankTransaksiTabunganWadiah extends Migration
             $table->string('kd_buku_tabungan');
             $table->enum('jenis_transaksi', ['tarik', 'setor']);
             $table->string('no_nota_fisik');
-            $table->string('nominal_transaksi');
+            $table->bigInteger('nominal_transaksi');
             $table->integer('kd_admin');
             $table->integer('kd_bank');
             $table->timestamps();
