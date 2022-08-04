@@ -9,5 +9,9 @@ class SysGrup extends Model
 {
     use HasFactory;
 
-    protected $table = 'sys_grup';
+    // protected $table = 'sys_grup';
+    // protected $primaryKey   = 'id';
+    // protected $fillable     = [
+    //     ''
+    // ];
 }

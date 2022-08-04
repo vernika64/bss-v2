@@ -16,6 +16,7 @@ class SysBank extends Migration
         Schema::create('sys_bank', function(Blueprint $table) {
             $table->id();
             $table->string('kd_bank');      // TAHUN-BULAN-HARI-BANK_COUNT_IN_DATABASE
+            $table->integer('kd_unik_bank')->unique();
             $table->string('nama_bank');
             $table->string('alamat_bank');
             $table->string('kd_admin');

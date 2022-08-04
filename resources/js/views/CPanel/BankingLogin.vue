@@ -2,8 +2,9 @@
 
 <div class="grid grid-cols-3 text-center">
     <div class="col-span-2 h-screen">
+        
     </div>
-    <div class="grid grid-rows-1 p-4">
+    <div class="p-4 flex flex-col align-middle justify-center text-center">
         <div>
             <h1 class="text-2xl mb-4">Syariah Multi</h1>
             <p class="mb-4">Silahkan login untuk melanjutkan</p>
@@ -23,6 +24,7 @@
 <script>
 import axios from 'axios'
 import router from '../../routes/router'
+import LoginImage from '../Assets/Images/nepu.jpg'
 
 export default {
 
@@ -58,7 +60,8 @@ export default {
             formLogin: {
                 username: '',
                 password: ''
-            }
+            },
+            LoginImage
         }
     }
 }

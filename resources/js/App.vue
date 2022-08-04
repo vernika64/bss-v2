@@ -7,7 +7,7 @@
     </template>
     <template v-else>
         <div class="flex">
-            <div class="bg-sidebar text-white w-[300px]">
+            <div class="bg-sidebar text-white w-[300px] bg-fixed">
                 <ul class="grid gap-4 pr-5 pl-5">
                     <li class="mb-4 mt-4 ml-6 italic text-lg bg-">Syariah Multi</li>
                     <li class="bg-slate-900 p-4 rounded-md ">
@@ -30,11 +30,11 @@
                             <users-icon class="h-7 w-7 mr-3" /> Pekerjaan
                         </router-link>
                     </li>
-                    <li class="bg-slate-900 p-4 rounded-md ">
+                    <!-- <li class="bg-slate-900 p-4 rounded-md ">
                         <router-link :to="{ name: ''}" class="flex">
                             <document-report-icon class="h-7 w-7 mr-3" /> Laporan <p class="ml-2 bg-white text-black rounded-sm italic">(experimental)</p>
                         </router-link>
-                    </li>
+                    </li> -->
                     <li class="bg-slate-900 p-4 rounded-md ">
                         <router-link :to="{ name: 'DevelopmentArea'}" class="flex">
                             <code-icon class="h-7 w-7 mr-3" /> Development Area
@@ -90,10 +90,11 @@ export default {
 
         this.tanggal = tgl.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric'})
         
-        if(localStorage.getItem('uname') != null)
-        {
-            this.userCpanel = localStorage.getItem('uname')
-        }
+        this.userCpanel = localStorage.getItem('uname')
+
+        // if(localStorage.getItem('uname') != null)
+        // {
+        // }
     },
     data()
     {

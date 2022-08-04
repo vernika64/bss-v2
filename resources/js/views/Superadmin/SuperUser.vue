@@ -19,7 +19,7 @@
                 <tbody class="bg-white">
                     <tr v-for="(user, index) in listUser" :key="index" class="even:bg-slate-100 even:text-black hover:bg-slate-300">
                        <td class="text-center border border-white p-2">{{ index + 1 }}</td>
-                       <td class="border border-white p-3">{{ user.username }}</td>
+                       <td class="border border-white p-3">{{ user.fname }}</td>
                        <td class="border border-white p-3">{{ user.nama_bank }}</td>
                        <td class="border border-white p-3">{{ user.nama_role }}</td>
                        <td class="border border-white p-3 text-center"><router-link class="bg-blue-500 p-2 text-white text-sm rounded-md" :to="''">Details</router-link></td>
