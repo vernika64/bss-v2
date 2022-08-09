@@ -8,7 +8,7 @@
     <template v-else>
         <div class="flex">
             <div class="bg-sidebar text-white w-[300px] bg-fixed">
-                <ul class="grid gap-4 pr-5 pl-5">
+                <ul class="grid gap-4 pr-5 pl-5" v-if="userRole == 'admin'">
                     <li class="mb-4 mt-4 ml-6 italic text-lg bg-">Syariah Multi</li>
                     <li class="bg-slate-900 p-4 rounded-md ">
                         <router-link :to="{ name: 'SuperDashboard'}" class="flex">
@@ -44,6 +44,40 @@
                         <button @click="logout" class="flex"><logout-icon class="h-7 w-7 mr-3"/>Logout</button>
                     </li>
                 </ul>
+
+                <!-- Untuk user dengan role office -->
+
+                <ul class="grid gap-4 pr-5 pl-5" v-else-if="userRole == 'office'">
+                    <li class="mb-4 mt-4 ml-6 italic text-lg bg-">Syariah Multi</li>
+                    <li class="bg-slate-900 p-4 rounded-md ">
+                        <router-link :to="{ name: 'BankingDashboard'}" class="flex">
+                        <home-icon class="h-7 w-7 mr-3" />Dashboard
+                        </router-link>
+                    </li>
+                    <li class="bg-slate-900 p-4 rounded-md ">
+                        <router-link :to="{ name: 'CIF' }" class="flex">
+                        <users-icon class="h-7 w-7 mr-3" />Customer Identification File
+                        </router-link>
+                    </li>
+                    <li class="bg-slate-900 p-4 rounded-md ">
+                        <router-link :to="{ name: 'Tabungan' }" class="flex">
+                        <home-icon class="h-7 w-7 mr-3" />Tabungan Wadiah
+                        </router-link>
+                    </li>
+                    <li class="bg-slate-900 p-4 rounded-md ">
+                        <router-link :to="{ name: 'JualBeliMurabahah' }" class="flex">
+                        <view-grid-icon class="h-7 w-7 mr-3" />Jual Beli Murabahah
+                        </router-link>
+                    </li>
+                    <li class="bg-slate-900 p-4 rounded-md ">
+                        <router-link :to="{ name: 'DaftarJurnalUmum'}" class="flex">
+                        <book-open-icon class="h-7 w-7 mr-3" />Jurnal Umum
+                        </router-link>
+                    </li>
+                    <li class="bg-slate-900 p-4 rounded-md ">
+                        <button @click="logout" class="flex"><logout-icon class="h-7 w-7 mr-3"/>Logout</button>
+                    </li>
+                </ul>
             </div>
             <div class="flex-1">
                 <div class="grid grid-cols-5 bg-white text-black w-full">
@@ -56,7 +90,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="bg-slate-200">
+                <div class="bg-white">
                     <div class="h-screen">
                         <router-view />
                     </div>
@@ -69,8 +103,8 @@
 <script>
 import axios from 'axios'
 import router from './routes/router'
-import { HomeIcon, IdentificationIcon, OfficeBuildingIcon, DocumentReportIcon, UsersIcon, CodeIcon } from '@heroicons/vue/solid'
-import { LogoutIcon } from '@heroicons/vue/outline'
+import { HomeIcon, IdentificationIcon, OfficeBuildingIcon, DocumentReportIcon, UsersIcon, CodeIcon, BookOpenIcon } from '@heroicons/vue/solid'
+import { LogoutIcon, ViewGridIcon } from '@heroicons/vue/outline'
 
 export default {
 
@@ -83,7 +117,9 @@ export default {
         DocumentReportIcon,
         LogoutIcon,
         UsersIcon,
-        CodeIcon
+        CodeIcon,
+        BookOpenIcon,
+        ViewGridIcon
         },
     mounted() {
         var tgl = new Date()
@@ -92,15 +128,16 @@ export default {
         
         this.userCpanel = localStorage.getItem('uname')
 
-        // if(localStorage.getItem('uname') != null)
-        // {
-        // }
+        axios.get('/api/super/tknCheck').then(loggedin => {
+            this.userRole = loggedin.data.role
+        })
     },
     data()
     {
         return {
-            tanggal: '',
-            userCpanel: 'User'
+            tanggal         : '',
+            userCpanel      : 'User',
+            userRole        : ''
         }
     },
     methods: {
@@ -108,7 +145,10 @@ export default {
             axios.get('/api/super/keluar').then(out => {
                 console.log('Logout berhasil')
                 console.log(out.data)
-                return router.push({name: 'BankingLogin'})
+
+                this.userCpanel = ''
+                this.userRole   = ''
+                return router.go({name: 'BankingLogin'})
             }).catch(out_err => {
                 console.log('Logout Error')
                 console.log(out_err.data)

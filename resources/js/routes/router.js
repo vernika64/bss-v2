@@ -34,7 +34,7 @@ import BankingDaftarJurnalUmumDetail        from '../views/CPanel/BankingJurnalU
 import DevArea              from '../views/Superadmin/Dev/DevelopmentArea.vue'
 
 let devurl      = '/dev'
-let releaseurl  = '/bank/'
+let releaseurl  = '/bank'
 
 // import Test from '../views/Test/Test.vue'
 
@@ -115,13 +115,13 @@ const routes = [
     // Customer Identification File
 
     { 
-        path            : devurl + '/cif',
+        path            : releaseurl + '/cif',
         component       : BankingCIF,
         name            : 'CIF'
     },
 
     { 
-        path            : devurl + '/cif/add',
+        path            : releaseurl + '/cif/add',
         component       : BankingCIFAdd,
         name            : 'CIFAdd'
     },

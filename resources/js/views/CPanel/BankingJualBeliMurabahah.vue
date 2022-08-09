@@ -1,11 +1,15 @@
 <template>
 
 <div>
-    <div class="p-3 bg-white border-t flex flex-row">
+    <div class="p-3 bg-white border-t border-b flex flex-row">
         <h1 class="text-2xl italic">{{ judulNavbar }}</h1>
         <button class="p-2 text-white bg-blue-600 w-auto text-sm ml-4" @click="openModalAddJualBeli = true">Tambah Transaksi Baru</button>
     </div>
     <div class="p-2">
+        <div class="flex mb-2">
+            <input class="w-full p-2 border" placeholder="Cari Transaksi berdasarkan Kode Transaksi" />
+            <button class="bg-blue-500 p-2 text-white w-[100px] ml-2">Cari</button>
+        </div>
         <div>
             <table class="border border-white w-full">
                 <thead class="bg-slate-500 text-white">

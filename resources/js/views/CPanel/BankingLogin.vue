@@ -45,9 +45,9 @@ export default {
                 localStorage.setItem('uname', res.data.nama)
                 if(res.data.role == 'admin')
                 {
-                    router.push({name: 'SuperDashboard'})
+                    router.go({name: 'SuperDashboard'})
                 } else if(res.data.role == 'office') {
-                    router.push({name: 'BankingDashboard'})
+                    router.go({name: 'BankingDashboard'})
                 } else {
                     alert('Server error, silahkan hubungi web administrator')
                 }
