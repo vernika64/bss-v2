@@ -1,6 +1,6 @@
 <template>
 <div class="grid grid-rows-1">
-    <div class="p-3 bg-white border-t">
+    <div class="p-3 bg-white border-t border-b">
         <h1 class="text-2xl italic">{{ detailBank.nama_bank }}</h1>
     </div>
     <div class="p-4 grid grid-cols-2 gap-3">

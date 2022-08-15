@@ -14,7 +14,7 @@
                         <th class="p-4 bold font-md text-left font-semibold">Judul Transaksi</th>
                         <th class="p-4 bold font-md text-left font-semibold">Nominal Debit</th>
                         <th class="p-4 bold font-md text-left font-semibold">Nominal Kredit</th>
-                        <th class="p-4 bold font-md text-center font-semibold">Aksi</th>
+                        <!-- <th class="p-4 bold font-md text-center font-semibold">Aksi</th> -->
                     </tr>
                 </thead>
                 <tbody class="bg-white">
@@ -24,11 +24,11 @@
                         <td class="border border-white p-3">{{ ju.deskripsi }}</td> 
                         <td class="border border-white p-3">{{ convertKeRupiah(ju.nominal_debit) }}</td> 
                         <td class="border border-white p-3">{{ convertKeRupiah(ju.nominal_kredit) }}</td> 
-                        <td class="border border-white p-3 text-center">
+                        <!-- <td class="border border-white p-3 text-center">
                             <router-link class="p-2 bg-blue-600 text-white rounded-md text-sm" :to="''">
                                 Details
                             </router-link>
-                        </td>
+                        </td> -->
                     </tr>
                 </tbody>
             </table>

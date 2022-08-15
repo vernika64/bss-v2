@@ -19,7 +19,7 @@ class Administrator extends Controller
 
 
             $ModelUser = SysUser::whereNotIn('sys_user.id', [1])
-                ->join('sys_bank', 'sys_user.kd_bank', '=', 'sys_bank.kd_bank')
+                ->join('sys_bank', 'sys_user.kd_bank', '=', 'sys_bank.id')
                 ->join('sys_role', 'sys_user.role', '=', 'sys_role.kd_role')
                 ->get(['fname', 'nama_bank', 'nama_role']);
 
@@ -32,6 +32,7 @@ class Administrator extends Controller
                 'data'      => $ModelUser,
                 'status'    => 'getdata_success'
             ]);
+
         } catch (\Throwable $th) {
             return response()->json([
                 'data'      => $th->getMessage(),
@@ -43,7 +44,17 @@ class Administrator extends Controller
     public function getMemberDataByBankId($bankKeys)
     {
         try {
-            $ModelUser = SysUser::where('kd_bank', $bankKeys)
+            $ModelBank = SysBank::where('kd_bank', $bankKeys)->first();
+
+            if(empty($ModelBank))
+            {
+                return response()->json([
+                    'message'   => 'Bank tidak ditemukan',
+                    'status'    => false
+                ]);
+            }
+
+            $ModelUser = SysUser::where('kd_bank', $ModelBank->id)
                          ->join('sys_role', 'sys_user.role', '=', 'sys_role.kd_role')
                          ->get(['username', 'nama_role']);
 
@@ -87,7 +98,7 @@ class Administrator extends Controller
     public function getBankList()
     {
         try {
-            $ModelBank = SysBank::get(['kd_bank', 'nama_bank', 'alamat_bank']);
+            $ModelBank = SysBank::get(['id', 'kd_bank', 'nama_bank', 'alamat_bank']);
 
             return response()->json([
                 'data'          => $ModelBank,

@@ -1,14 +1,11 @@
 <template>
 
-<div class="grid grid-cols-3 text-center">
-    <div class="col-span-2 h-screen">
-        
-    </div>
-    <div class="p-4 flex flex-col align-middle justify-center text-center">
-        <div>
+<div class="w-full h-full" style="background-image: url('/bg/utah_road.jpg');">
+    <div class="flex h-screen">
+        <div class="m-auto w-[500px] p-4 border bg-white">
             <h1 class="text-2xl mb-4">Syariah Multi</h1>
             <p class="mb-4">Silahkan login untuk melanjutkan</p>
-            <form class="grid grid-rows-1 gap-2">
+            <form class="grid gap-2">
                 <input v-model="formLogin.username" type="text" class="border p-2" placeholder="Username" />
                 <input v-model="formLogin.password" type="password" class="border p-2" placeholder="Password" />
         
@@ -17,6 +14,16 @@
         </div>
     </div>
 </div>
+
+
+<!-- <div class="grid grid-cols-3 text-center">
+    <div class="col-span-2 h-screen">
+        
+    </div>
+    <div class="p-4 flex flex-col align-middle justify-center text-center">
+        
+    </div>
+</div> -->
 
 
 </template>

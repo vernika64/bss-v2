@@ -44,7 +44,7 @@
                                 <label class="font-bold text-black">Bank Tujuan</label>
                                 <select class="border border-slate-500 bg-white p-1" v-model="formTambahUser.bankTujuan">
                                     <option :value="0">-- Pilih Bank Tujuan --</option>
-                                    <option v-for="bnk in listBank" :key="bnk.kd_bank" :value="bnk.kd_bank">{{ bnk.kd_bank }} - {{ bnk.nama_bank }}</option>
+                                    <option v-for="bnk in listBank" :key="bnk.kd_bank" :value="bnk.id">{{ bnk.kd_bank }} - {{ bnk.nama_bank }}</option>
                                 </select>
 
                                 <label class="font-bold text-black">Pekerjaan</label>
@@ -91,7 +91,7 @@ export default {
 
         axios.get('/api/super/roleList').then(hsl3 => {
             this.listRole = hsl3.data.data
-            console.log(this.listRole)
+            // console.log(this.listRole)
         })
 
 

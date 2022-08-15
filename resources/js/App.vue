@@ -65,8 +65,23 @@
                         </router-link>
                     </li>
                     <li class="bg-slate-900 p-4 rounded-md ">
+                        <router-link :to="{ name: 'TabunganTarikSetorTunai' }" class="flex">
+                        <home-icon class="h-7 w-7 mr-3" />Tarik / Setor Tunai
+                        </router-link>
+                    </li>
+                    <li class="bg-slate-900 p-4 rounded-md ">
                         <router-link :to="{ name: 'JualBeliMurabahah' }" class="flex">
                         <view-grid-icon class="h-7 w-7 mr-3" />Jual Beli Murabahah
+                        </router-link>
+                    </li>
+                    <li class="bg-slate-900 p-4 rounded-md ">
+                        <router-link :to="{ name: 'PermintaanBarangMurabahah' }" class="flex">
+                        <view-grid-icon class="h-7 w-7 mr-3" />Aset Jual Beli Murabahah
+                        </router-link>
+                    </li>
+                    <li class="bg-slate-900 p-4 rounded-md ">
+                        <router-link :to="{ name: 'AngsuranMurabahah' }" class="flex">
+                        <view-grid-icon class="h-7 w-7 mr-3" />Angsur Jual Beli Murabahah
                         </router-link>
                     </li>
                     <li class="bg-slate-900 p-4 rounded-md ">

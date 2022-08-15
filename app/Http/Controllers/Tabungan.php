@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 
 class Tabungan extends Controller
 {
-    
+
     public function getDataProdukTabungan()
     {
         try {
@@ -302,13 +302,14 @@ class Tabungan extends Controller
             } else {
                 return response()->json([
                     'message'       => 'Jenis Transaksi Tidak terdaftar',
-                    'status'        => true
+                    'status'        => false
                 ]);
             }
         } catch (\Throwable $th) {
             return response()->json([
                 'data'      => $th->getMessage(),
-                'status'    => 'Server error'
+                'message'   => 'Unknown Error',
+                'status'    => false
             ]);
         }
     }
@@ -338,7 +339,6 @@ class Tabungan extends Controller
 
             $kodeadmin   = $ModelUser->id;
             $kodebank    = $ModelUser->kd_bank;
-
         } catch (\Throwable $th) {
             return response()->json([
                 'data'      => $th->getMessage(),

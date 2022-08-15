@@ -1,6 +1,6 @@
 <template>
 <div>
-    <div class="p-3 bg-white border-t flex flex-row">
+    <div class="p-3 bg-white border-t border-b flex flex-row">
         <h1 class="text-2xl italic">{{ judulNavbar }}</h1>
     </div>
     <!-- <div class="grid grid-cols-2 mt-4 gap-4">
@@ -108,7 +108,7 @@ export default {
     methods: {
         cariTabungan() {
             axios.get('/api/bank/listTabungan/' + this.inputCariTabungan).then(tb => {
-                // console.log(tb.data)
+                console.log(tb.data)
 
                 if(tb.data.status == false)
                 {
@@ -125,7 +125,7 @@ export default {
                     this.labelTransaksi.nilai_tabungan  = 'Rp. ' + new Intl.NumberFormat(['ban', 'id']).format(tb.data.data.nilai_tabungan) + ',-'
                     this.labelTransaksi.produk_tabungan = tb.data.data.produk_tabungan
                 } else {
-                    alert('Server Error')
+                    alert(tb.data.status)
                 }
             }).catch(tb_error => {
                 console.log(tb_error)
