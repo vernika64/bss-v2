@@ -134,6 +134,19 @@ class CustomerIdentificationFile extends Controller
                 return response('Error 403 - Forbidden', 403);
             }
 
+            $cekidentitas   = BankCIF::where([
+                'tipe_id'       => $re->kd_tipe,
+                'kd_identitas'  => $re->kd_identitas
+            ])->count();
+
+            if($cekidentitas != 0)
+            {
+                return response()->json([
+                    'message'       => 'CIF tidak bisa disimpan, Kode Identitas Sudah Terdaftar di sistem',
+                    'status'        => false
+                ]);
+            }
+
             $ModelCIF = new BankCIF;
 
             $ModelCIF->kd_identitas                 = $re->kd_identitas;
@@ -160,12 +173,14 @@ class CustomerIdentificationFile extends Controller
             $ModelCIF->save();
 
             return response()->json([
-                'status'    => 'insertdata_success'
+                'status'    => true,
+                'message'   => 'CIF atasnama ' . $re->nama . ' berhasil disimpan'
             ]);
         } catch (\Throwable $th) {
             return response()->json([
-                'data'      => $th->getMessage(),
-                'status'    => 'Username atau Password salah'
+                'data'       => $th->getMessage(),
+                'message'    => 'Server Error!',
+                'status'       => false
             ]);
         }
     }

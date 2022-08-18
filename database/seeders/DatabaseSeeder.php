@@ -45,7 +45,7 @@ class DatabaseSeeder extends Seeder
             'password'          => Hash::make('arjuna'),
             'fname'             => 'Arjuna',
             'role'              => 'office',
-            'kd_bank'           => '2022-06-13-2'
+            'kd_bank'           => 2
         ]);
 
 

@@ -117,7 +117,7 @@ export default {
     methods: {
         simpanCIF() {
             axios.post('/api/bank/tambahCIF', this.formCIF).then(insert => {
-                alert('Data berhasil disimpan')
+                alert(insert.data.message)
                 console.log(insert.data)
             }).catch(error => {
                 console.log(error)
