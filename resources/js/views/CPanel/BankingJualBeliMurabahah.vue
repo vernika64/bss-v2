@@ -7,8 +7,8 @@
     </div>
     <div class="p-2">
         <div class="flex mb-2">
-            <input class="w-full p-2 border" placeholder="Cari Transaksi berdasarkan Kode Transaksi" />
-            <button class="bg-blue-500 p-2 text-white w-[100px] ml-2">Cari</button>
+            <input class="w-full p-2 border" placeholder="Cari Transaksi berdasarkan Kode Transaksi" v-model="inputPencarian" />
+            <button class="bg-blue-500 p-2 text-white w-[100px] ml-2" @click="cariTransaksi">Cari</button>
         </div>
         <div>
             <table class="border border-white w-full">
@@ -42,8 +42,8 @@
     <!-- Modal Section -->
     <div class="w-full h-full overflow-auto bg-slate-900 left-0 top-0 fixed bg-opacity-70" v-if="openModalAddJualBeli == true">
         <!-- Modal Content -->
-        <div class="flex justify-center">
-            <div class="bg-white w-[1000px] p-4 mt-[200px] rounded-lg">
+        <div class="flex h-screen">
+            <div class="bg-white w-[1000px] m-auto p-4 rounded-lg">
                 <div class="grid grid-rows-1">
                     <h1 class="text-2xl text-black mb-10">Tambah Transaksi Murabahah Baru</h1>
                     <div class="grid grid-rows-1 gap-2 mb-10">
@@ -101,7 +101,8 @@ export default {
                 deskripsi_permintaan    : '',
                 link_pendukung          : ''
             },
-            tabelJualBeli               : []
+            tabelJualBeli               : [],
+            inputPencarian              : ''
         }
     },
     methods: {
@@ -138,6 +139,15 @@ export default {
                     return 'Error'
                     break;
             }
+        },
+        cariTransaksi() {
+            return console.log(this.inputPencarian)
+
+            // axios.get('').then(pencarian => {
+            //     return console.log(pencarian.data)
+            // }).catch(error_pencarian => {
+            //     return console.log(error_pencarian.data)
+            // })
         }
     }
 }

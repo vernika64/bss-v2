@@ -138,13 +138,26 @@ export default {
                 return alert('Mohon diisi jenis transaksi')
             } else if(this.formTransaksi.jenis_transaksi == 'setor' || this.formTransaksi.jenis_transaksi == 'tarik')
             {
-                axios.post('/api/bank/tambahTransaksiTabungan', this.formTransaksi).then(transaksi => {
-                    console.log(transaksi.data)
-                    return alert(transaksi.data.message)
-                }).catch(transaksi_error => {
-                    console.log(transaksi_error)
-                    return alert('Server Error')
-                })
+                let konfirmasi = confirm('Apakah anda yakin nominal transaksi sudah benar ?')
+
+                if(konfirmasi == true)
+                {
+                    axios.post('/api/bank/tambahTransaksiTabungan', this.formTransaksi).then(transaksi => {
+                        console.log(transaksi.data)
+                        return alert(transaksi.data.message)
+                    }).catch(transaksi_error => {
+                        console.log(transaksi_error)
+                        return alert('Server Error')
+                    })
+                } 
+                else if(konfirmasi == false)
+                {
+                    return false
+                }
+                else {
+                    return alert('Server error, silahkan hubungi web administrator')
+                }
+                
             } else {
                 return alert('Browser Error, Please Reload the website')
             }

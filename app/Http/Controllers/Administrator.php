@@ -84,13 +84,17 @@ class Administrator extends Controller
             $ModelUser->kd_bank        = $re->bankTujuan;
             $ModelUser->save();
 
+            $ModelBank = SysBank::find($re->bankTujuan);
+            
             return response()->json([
-                'status'      => 'insert_success'
+                'status'      => true,
+                'message'     => $username . ' berhasil ditambahkan dan terdaftar di ' . $ModelBank->nama_bank
             ]);
         } catch (\Throwable $th) {
             return response()->json([
                 'data'      => $th->getMessage(),
-                'status'    => 'server_error'
+                'status'    => false,
+                'message'   => 'Server Error!'
             ]);
         }
     }
@@ -151,12 +155,15 @@ class Administrator extends Controller
             $ModelBank->save();
 
             return response()->json([
-                'status'      => 'insert_success'
+                'status'        => true,
+                'message'       => $re->namabank . ' berhasil ditambahkan'
             ]);
+
         } catch (\Throwable $th) {
             return response()->json([
                 'data'      => $th->getMessage(),
-                'status'    => 'server_error'
+                'status'    => false,
+                'message'   => 'Server Error!'
             ]);
         }
     }

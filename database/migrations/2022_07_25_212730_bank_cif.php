@@ -15,7 +15,7 @@ class BankCif extends Migration
     {
         Schema::create('bank_cif', function(Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('kd_identitas')->unique();
+            $table->string('kd_identitas');
             $table->enum('tipe_id', ['ktp', 'ktm']);
             $table->string('nama_sesuai_identitas');
             $table->string('tempat_lahir');
@@ -37,6 +37,7 @@ class BankCif extends Migration
             $table->integer('kd_user');
             $table->integer('kd_bank');
             $table->timestamps();
+            $table->unique(['kd_identitas', 'tipe_id'], 'index_kode_cif');
         });
     }
 

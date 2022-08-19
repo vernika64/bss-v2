@@ -92,10 +92,10 @@ export default {
                 alamatbank      : this.formBankBaru.alamatbank
             }
             axios.post('/api/super/addNewBank', dataBank).then(res2 => {
-                alert(res2.data.status)
+                alert(res2.data.message)
                 location.reload()
             }).catch(err2 => {
-                alert('Mohon maaf, server sedang mengalami gangguan, mohon untuk menghubungi Web Administrator')
+                alert(err2.data.message)
             })
         }
     }

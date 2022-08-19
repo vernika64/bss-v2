@@ -124,9 +124,11 @@ export default {
             }
 
             axios.post('/api/super/addNewMember', dataUserBaru).then(qry => {
-                console.log(qry.data)
-                alert(qry.data.status)
-                location.reload()
+                // console.log(qry.data)
+                alert(qry.data.message)
+                return location.reload()
+            }).catch(errors => {
+                return alert(errors.data.message)
             })
         }
     }
