@@ -142,82 +142,144 @@ class DatabaseSeeder extends Seeder
 
         // Untuk Starter Buku Akuntansi Bank dengan Kode Admin 1 + Kode Bank 1
 
-        DB::table('sys_buku_akuntansi')->insert([
-            'kd_master_buku'        => 1,
-            'kd_sub_master_buku'    => 11001,
-            'kd_bank'               => 1,
-            'nama_buku'             => 'Kas Operasional',
-            'nominal'               => 0,
-            'kd_admin'              => 1,
-            'created_at'            => Carbon::now(),
-            'updated_at'            => Carbon::now(),
-        ]);
+        DB::table('sys_master_buku_akuntansi')->insert(
+            [
+                [
+                    'kd_master_buku'        => '1',
+                    'kd_sub_master_buku'    => '11001',
+                    'nama_buku'             => 'Kas Operasional',
+                    'kd_admin'              => 1,
+                    'created_at'            => Carbon::now(),
+                    'updated_at'            => Carbon::now()
+                ],
+                [
+                    'kd_master_buku'        => '1',
+                    'kd_sub_master_buku'    => '11002',
+                    'nama_buku'             => 'Marjin Produk Murabahah',
+                    'kd_admin'              => 1,
+                    'created_at'            => Carbon::now(),
+                    'updated_at'            => Carbon::now()
+                ],
+                [
+                    'kd_master_buku'        => '1',
+                    'kd_sub_master_buku'    => '11003',
+                    'nama_buku'             => 'Uang Muka Produk Jual Beli Murabahah',
+                    'kd_admin'              => 1,
+                    'created_at'            => Carbon::now(),
+                    'updated_at'            => Carbon::now()
+                ],
+                [
+                    'kd_master_buku'        => '1',
+                    'kd_sub_master_buku'    => '13201',
+                    'nama_buku'             => 'Piutang Murabahah',
+                    'kd_admin'              => 1,
+                    'created_at'            => Carbon::now(),
+                    'updated_at'            => Carbon::now()
+                ],
+                [
+                    'kd_master_buku'        => '1',
+                    'kd_sub_master_buku'    => '13202',
+                    'nama_buku'             => 'Aset Fisik Pembiayaan Murabahah',
+                    'kd_admin'              => 1,
+                    'created_at'            => Carbon::now(),
+                    'updated_at'            => Carbon::now()
+                ],
+                [
+                    'kd_master_buku'        => '3',
+                    'kd_sub_master_buku'    => '31002',
+                    'nama_buku'             => 'Hutang dari Bank',
+                    'kd_admin'              => 1,
+                    'created_at'            => Carbon::now(),
+                    'updated_at'            => Carbon::now()
+                ],
+                [
+                    'kd_master_buku'        => '4',
+                    'kd_sub_master_buku'    => '41101',
+                    'nama_buku'             => 'Ekuitas dari Bank Utama',
+                    'kd_admin'              => 1,
+                    'created_at'            => Carbon::now(),
+                    'updated_at'            => Carbon::now()
+                ]
+            ]
 
-        DB::table('sys_buku_akuntansi')->insert([
-            'kd_master_buku'        => 1,
-            'kd_sub_master_buku'    => 11002,
-            'kd_bank'               => 1,
-            'nama_buku'             => 'Marjin Produk Murabahah',
-            'nominal'               => 0,
-            'kd_admin'              => 1,
-            'created_at'            => Carbon::now(),
-            'updated_at'            => Carbon::now(),
-        ]);
+        );
 
-        DB::table('sys_buku_akuntansi')->insert([
-            'kd_master_buku'        => 1,
-            'kd_sub_master_buku'    => 11003,
-            'kd_bank'               => 1,
-            'nama_buku'             => 'Uang Muka Produk Jual Beli Murabahah',
-            'nominal'               => 0,
-            'kd_admin'              => 1,
-            'created_at'            => Carbon::now(),
-            'updated_at'            => Carbon::now(),
-        ]);
+        // DB::table('sys_buku_akuntansi')->insert([
+        //     'kd_master_buku'        => 1,
+        //     'kd_sub_master_buku'    => 11001,
+        //     'kd_bank'               => 1,
+        //     'nama_buku'             => 'Kas Operasional',
+        //     'nominal'               => 0,
+        //     'kd_admin'              => 1,
+        //     'created_at'            => Carbon::now(),
+        //     'updated_at'            => Carbon::now(),
+        // ]);
 
-        DB::table('sys_buku_akuntansi')->insert([
-            'kd_master_buku'        => 1,
-            'kd_sub_master_buku'    => 13201,
-            'kd_bank'               => 1,
-            'nama_buku'             => 'Piutang Murabahah',
-            'nominal'               => 0,
-            'kd_admin'              => 1,
-            'created_at'            => Carbon::now(),
-            'updated_at'            => Carbon::now(),
-        ]);
+        // DB::table('sys_buku_akuntansi')->insert([
+        //     'kd_master_buku'        => 1,
+        //     'kd_sub_master_buku'    => 11002,
+        //     'kd_bank'               => 1,
+        //     'nama_buku'             => 'Marjin Produk Murabahah',
+        //     'nominal'               => 0,
+        //     'kd_admin'              => 1,
+        //     'created_at'            => Carbon::now(),
+        //     'updated_at'            => Carbon::now(),
+        // ]);
 
-        DB::table('sys_buku_akuntansi')->insert([
-            'kd_master_buku'        => 1,
-            'kd_sub_master_buku'    => 13202,
-            'kd_bank'               => 1,
-            'nama_buku'             => 'Aset Fisik Akad Murabahah',
-            'nominal'               => 0,
-            'kd_admin'              => 1,
-            'created_at'            => Carbon::now(),
-            'updated_at'            => Carbon::now(),
-        ]);
+        // DB::table('sys_buku_akuntansi')->insert([
+        //     'kd_master_buku'        => 1,
+        //     'kd_sub_master_buku'    => 11003,
+        //     'kd_bank'               => 1,
+        //     'nama_buku'             => 'Uang Muka Produk Jual Beli Murabahah',
+        //     'nominal'               => 0,
+        //     'kd_admin'              => 1,
+        //     'created_at'            => Carbon::now(),
+        //     'updated_at'            => Carbon::now(),
+        // ]);
 
-        DB::table('sys_buku_akuntansi')->insert([
-            'kd_master_buku'        => 3,
-            'kd_sub_master_buku'    => 31002,
-            'kd_bank'               => 1,
-            'nama_buku'             => 'Hutang Dari Bank Lain',
-            'nominal'               => 0,
-            'kd_admin'              => 1,
-            'created_at'            => Carbon::now(),
-            'updated_at'            => Carbon::now(),
-        ]);
+        // DB::table('sys_buku_akuntansi')->insert([
+        //     'kd_master_buku'        => 1,
+        //     'kd_sub_master_buku'    => 13201,
+        //     'kd_bank'               => 1,
+        //     'nama_buku'             => 'Piutang Murabahah',
+        //     'nominal'               => 0,
+        //     'kd_admin'              => 1,
+        //     'created_at'            => Carbon::now(),
+        //     'updated_at'            => Carbon::now(),
+        // ]);
 
-        DB::table('sys_buku_akuntansi')->insert([
-            'kd_master_buku'        => 4,
-            'kd_sub_master_buku'    => 41001,
-            'kd_bank'               => 1,
-            'nama_buku'             => 'Dari Pemilik',
-            'nominal'               => 0,
-            'kd_admin'              => 1,
-            'created_at'            => Carbon::now(),
-            'updated_at'            => Carbon::now(),
-        ]);
+        // DB::table('sys_buku_akuntansi')->insert([
+        //     'kd_master_buku'        => 1,
+        //     'kd_sub_master_buku'    => 13202,
+        //     'kd_bank'               => 1,
+        //     'nama_buku'             => 'Aset Fisik Akad Murabahah',
+        //     'nominal'               => 0,
+        //     'kd_admin'              => 1,
+        //     'created_at'            => Carbon::now(),
+        //     'updated_at'            => Carbon::now(),
+        // ]);
+
+        // DB::table('sys_buku_akuntansi')->insert([
+        //     'kd_master_buku'        => 3,
+        //     'kd_sub_master_buku'    => 31002,
+        //     'kd_bank'               => 1,
+        //     'nama_buku'             => 'Hutang Dari Bank Lain',
+        //     'nominal'               => 0,
+        //     'kd_admin'              => 1,
+        //     'created_at'            => Carbon::now(),
+        //     'updated_at'            => Carbon::now(),
+        // ]);
+
+        // DB::table('sys_buku_akuntansi')->insert([
+        //     'kd_master_buku'        => 4,
+        //     'kd_sub_master_buku'    => 41001,
+        //     'kd_bank'               => 1,
+        //     'nama_buku'             => 'Dari Pemilik',
+        //     'nominal'               => 0,
+        //     'kd_admin'              => 1,
+        //     'created_at'            => Carbon::now(),
+        //     'updated_at'            => Carbon::now(),
+        // ]);
 
         // DB::table('sys_superadmin')->insert([
         //     'username'          => 'admin',

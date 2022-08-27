@@ -99,7 +99,7 @@ class CustomerIdentificationFile extends Controller
                 return response('Error 403 - Forbidden', 403);
             }
 
-            $ModelCIF = BankCIF::where('kd_bank', $ModelUser->kd_bank)->get(['kd_identitas', 'nama_sesuai_identitas', 'created_at']);
+            $ModelCIF = BankCIF::where('kd_bank', $ModelUser->kd_bank)->get(['id', 'kd_identitas', 'nama_sesuai_identitas', 'created_at']);
 
             return response()->json([
                 'data'      => $ModelCIF,
@@ -113,7 +113,48 @@ class CustomerIdentificationFile extends Controller
         }
     }
 
+    public function getDataCIFById($id, Request $re)
+    {
+        try {
+            $getUserCookie = $re->cookie('tkn');
 
+            $ModelToken = SysToken::where('token', $getUserCookie)->first();
+
+            if(empty($ModelToken))
+            {
+                return response('Error 403 - Forbidden', 403);
+            }
+
+            $ModelUser = SysUser::where('username', $ModelToken->kd_user)->first();
+            
+            if(empty($ModelUser))
+            {
+                return response('Error 403 - Forbidden', 403);
+            }
+
+            $ModelCIF = BankCIF::find($id);
+
+            if(empty($ModelCIF)) {
+                return response()->json([
+                    'status'    => false,
+                    'message'   => 'Data tidak ditemukan'
+                ]);
+            }
+
+            return response()->json([
+                'status'    => true,
+                'message'   => 'Data CIF tersedia',
+                'data'      => $ModelCIF
+            ]);
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                'data'      => $th->getMessage(),
+                'status'    => false,
+                'message'   => 'Server error'
+            ]);
+        }
+    }
 
     public function insertDataCIF(Request $re)
     {

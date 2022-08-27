@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\SysBank;
+use App\Models\SysBukuAkuntansi;
+use App\Models\SysMasterBukuAkuntansi;
 use App\Models\SysRole;
+use App\Models\SysToken;
 use App\Models\SysUser;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -154,6 +157,11 @@ class Administrator extends Controller
             $ModelBank->kd_admin        = $this->admin_test;
             $ModelBank->save();
 
+            $ModelBukuAkuntansi = new SysBukuAkuntansi;
+
+            // Kelompok Buku, Kode Akun, Kode Bank, 
+            $BukuKasOperasional = [1, 11001, 1, ];
+
             return response()->json([
                 'status'        => true,
                 'message'       => $re->namabank . ' berhasil ditambahkan'
@@ -181,6 +189,81 @@ class Administrator extends Controller
             return response()->json([
                 'data'      => $th->getMessage(),
                 'status'    => 'server_error'
+            ]);
+        }
+    }
+
+    public function getSysMasterBukuAkuntansiAll(Request $re)
+    {
+        try {
+            $getUserCookie = $re->cookie('tkn');
+
+            $ModelToken = SysToken::where('token', $getUserCookie)->first();
+
+            if(empty($ModelToken))
+            {
+                return response('Error 403 - Forbidden', 403);
+            }
+
+            $ModelUser = SysUser::where('username', $ModelToken->kd_user)->first();
+
+            if(empty($ModelUser))
+            {
+                return response('Error 404 - User not found', 403);
+            }
+
+            $ModelMasterBukuAkuntansi = SysMasterBukuAkuntansi::all();
+
+            return response()->json([
+                'data'      => $ModelMasterBukuAkuntansi,
+                'status'    => true
+            ]);
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                'data'      => $th->getMessage(),
+                'status'    => false
+            ]);
+        }
+    }
+
+    public function cekSubMasterBukuAkuntansi($id, Request $re)
+    {
+        try {
+            $getUserCookie = $re->cookie('tkn');
+
+            $ModelToken = SysToken::where('token', $getUserCookie)->first();
+
+            if(empty($ModelToken))
+            {
+                return response('Error 403 - Forbidden', 403);
+            }
+
+            $ModelUser = SysUser::where('username', $ModelToken->kd_user)->first();
+
+            if(empty($ModelUser))
+            {
+                return response('Error 404 - User not found', 403);
+            }
+
+            $ModelMasterBukuAkuntansi = SysMasterBukuAkuntansi::where('kd_sub_master_buku', $id)->first();
+
+            if(!empty($ModelMasterBukuAkuntansi))
+            {
+                return response()->json([
+                    'message'       => 'Nomor akun sudah dipakai, coba isikan nomor lain',
+                    'status'        => false
+                ]);
+            }
+
+            return response()->json([
+                'message'           => 'Nomor akun dapat dipakai',
+                'status'            => true
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'data'      => $th->getMessage(),
+                'status'    => false
             ]);
         }
     }

@@ -23,7 +23,7 @@
                         <td class="border border-white p-3">{{ dat.kd_identitas }}</td>
                         <td class="border border-white p-3">{{ dat.nama_sesuai_identitas }}</td>
                         <td class="border border-white p-3">{{ convertTanggal(dat.created_at) }}</td>
-                        <td class="border border-white p-3 text-center"><router-link :to="''" class="p-2 text-white bg-blue-600 w-auto text-sm ml-4">Details</router-link></td>
+                        <td class="border border-white p-3 text-center"><router-link :to="{ name: 'CIFDetail', query: { id: dat.id } }" class="p-2 text-white bg-blue-600 w-auto text-sm ml-4">Details</router-link></td>
                     </tr>
                 </tbody>
             </table>
@@ -40,7 +40,7 @@ export default {
     mounted() {
         axios.get('/api/bank/listCIF').then(res => {
             this.isiTabelCIF = res.data.data
-            // console.log(this.isiTabelCIF)
+            console.log(this.isiTabelCIF)
         })
     },
     data() {

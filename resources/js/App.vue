@@ -30,6 +30,11 @@
                             <users-icon class="h-7 w-7 mr-3" /> Pekerjaan
                         </router-link>
                     </li>
+                    <li class="bg-slate-900 p-4 rounded-md ">
+                        <router-link :to="{ name: 'SuperAkunAkuntansi'}" class="flex">
+                            <book-open-icon class="h-7 w-7 mr-3" /> Buku Akuntansi
+                        </router-link>
+                    </li>
                     <!-- <li class="bg-slate-900 p-4 rounded-md ">
                         <router-link :to="{ name: ''}" class="flex">
                             <document-report-icon class="h-7 w-7 mr-3" /> Laporan <p class="ml-2 bg-white text-black rounded-sm italic">(experimental)</p>

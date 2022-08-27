@@ -57,7 +57,11 @@ Route::post('/super/addNewBank', [Administrator::class, 'addBankNew']);
 // Sub Manajemen Role / Jenis Pekerjaan
 Route::get('/super/roleList', [Administrator::class, 'getRoleList']);
 
-// Untuk banking
+// Sub Manajemen Buku Akuntansi
+Route::get('/super/bukuakuntansi', [Administrator::class, 'getSysMasterBukuAkuntansiAll']);
+Route::get('/super/cekbukuakuntansi/{id}', [Administrator::class, 'cekSubMasterBukuAkuntansi']);
+
+// Untuk Banking
 
 
 Route::get('/listUser', [UserManagement::class, 'getDataUserAll']);
@@ -70,6 +74,7 @@ Route::get('/bank/listCIF', [CustomerIdentificationFile::class, 'getDataCIFForTa
 Route::get('/bank/listCIF/{id}', [CustomerIdentificationFile::class, 'getDataCIFByIdForMurabahah']);
 Route::get('/bank/listCIFAll', [CustomerIdentificationFile::class, 'getDataCIF']);
 Route::post('/bank/tambahCIF', [CustomerIdentificationFile::class, 'insertDataCIF']);
+Route::get('/bank/cariCIF/{id}', [CustomerIdentificationFile::class, 'getDataCIFById']);
 
 // Sub Tabungan
 
@@ -85,6 +90,7 @@ Route::post('/bank/tambahTransaksiTabungan', [Tabungan::class, 'insertTransaksiT
 Route::get('/bank/listJualBeliMurabahah', [JualBeliMurabahah::class, 'getDataTransaksiMurabahah']);
 Route::get('/bank/listJualBeliMurabahah/{id}', [JualBeliMurabahah::class, 'getDataTransaksiMurabahahById']);
 Route::post('/bank/listJualBeliMurabahah/Add', [JualBeliMurabahah::class, 'insertTransaksiMurabahah']);
+Route::get('/bank/cariJualBeliMurabahah/{id}', [JualBeliMurabahah::class, 'getDataTransaksiMurabahahForTabel']);
 Route::put('/bank/tolakTransaksiMurabahah', [JualBeliMurabahah::class, 'rejectTransaksiMurabahah']);
 Route::post('/bank/terimaTransaksiMurabahah', [JualBeliMurabahah::class, 'acceptTransaksiMurabahah']);
 

@@ -186,11 +186,11 @@ export default {
             this.formAngsuranPertama.frekuensi_angsuran         = ''
             this.formAngsuranPertama.angsuran_perbulan          = ''
 
-            this.formAngsuranLama.kd_transaksi_murabahah     = ''
-            this.formAngsuranLama.nama_barang                = ''
-            this.formAngsuranLama.jumlah_angsuran            = ''
-            this.formAngsuranLama.frekuensi_angsuran         = ''
-            this.formAngsuranLama.angsuran_perbulan          = ''
+            this.formAngsuranLama.kd_transaksi_murabahah        = ''
+            this.formAngsuranLama.nama_barang                   = ''
+            this.formAngsuranLama.jumlah_angsuran               = ''
+            this.formAngsuranLama.frekuensi_angsuran            = ''
+            this.formAngsuranLama.angsuran_perbulan             = ''
 
             this.tabelAngsuran = []
 

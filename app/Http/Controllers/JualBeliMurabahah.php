@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BankCIF;
 use App\Models\BankJualBeliMurabahah;
 use App\Models\BankJualBeliMurabahahAngsuran;
 use App\Models\BankPermintaanBarangMurabahah;
@@ -107,6 +108,73 @@ class JualBeliMurabahah extends Controller
                 'status'    => 'Server error'
             ]);
         }
+    }
+
+    public function getDataTransaksiMurabahahForTabel($id, Request $re)
+    {
+        try {
+
+            $getUserCookie = $re->cookie('tkn');
+
+            $ModelToken = SysToken::where('token', $getUserCookie)->first();
+
+            if(empty($ModelToken))
+            {
+                return response('Error 403 - Forbidden', 403);
+            }
+
+            $ModelUser = SysUser::where('username', $ModelToken->kd_user)->first();
+            $ModelBank = $ModelUser->kd_bank;
+
+            if(empty($ModelUser))
+            {
+                return response('Error 404 - User not found', 403);
+            }
+
+            $CariData = BankJualBeliMurabahah::where(['kd_transaksi_murabahah' => $id])->first();
+            
+            if(empty($CariData))
+            {
+                return response()->json([
+                    'message'   => 'Data tidak ditemukan',
+                    'status'    => false
+                ]);
+            } else if($CariData->kd_bank != $ModelBank)
+            {
+                return response()->json([
+                    'message'   => 'Data ditemukan namun terdaftar di bank lain',
+                    'status'    => false
+                ]);
+            }
+
+            $CariDataNasabah    = BankCIF::find($CariData->kd_cif);
+
+            if(empty($CariDataNasabah))
+            {
+                return response()->json([
+                    'message'   => 'Data nasabah tidak ditemukan',
+                    'status'    => false
+                ]);
+            }
+            
+            return response()->json([
+                'data'      => [[
+                    'kd_transaksi_murabahah'    => $CariData->kd_transaksi_murabahah,
+                    'nama_sesuai_identitas'     => $CariDataNasabah->nama_sesuai_identitas,
+                    'nama_permintaan'           => $CariData->nama_permintaan,
+                    'status_transaksi'          => $CariData->status_transaksi
+                    ]],
+                'status'    => true
+            ]);
+            
+        } catch (\Throwable $th) {
+            return response()->json([
+                'data'      => $th->getMessage(),
+                'status'    => 'Server error'
+            ]);
+        }
+
+
     }
     
     public function insertTransaksiMurabahah(Request $re)
