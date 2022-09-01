@@ -13,7 +13,7 @@
                         <th class="p-4 bold font-md text-left font-semibold">Kelompok Akun</th>
                         <th class="p-4 bold font-md text-left font-semibold">Kode Sub Akun</th>
                         <th class="p-4 bold font-md text-left font-semibold">Nama Akun</th>
-                        <!-- <th class="p-4 bold font-md text-center font-semibold">Aksi</th> -->
+                        <th class="p-4 bold font-md text-center font-semibold">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white">
@@ -22,6 +22,11 @@
                         <td class="border border-white p-3">{{ deskripsiMasterAkuntansi(itm.kd_master_buku) }}</td> 
                         <td class="border border-white p-3">{{ itm.kd_sub_master_buku }}</td> 
                         <td class="border border-white p-3">{{ itm.nama_buku }}</td> 
+                        <td class="border border-white p-3 text-center">
+                            <button class="bg-blue-500 p-1 text-white rounded-md text-sm" @click="openModalEditBuku(itm.id)">
+                                Edit Nama
+                            </button>
+                        </td>
                         <!-- <td class="border border-white p-3 text-center">
                             <router-link class="p-2 bg-blue-600 text-white rounded-md text-sm" :to="{ name: 'SuperBankDetail', params: { bankID: bk.kd_bank }}">
                                 Details
@@ -35,7 +40,7 @@
     </div>
     
 
-    <!-- Modal Section -->
+    <!-- Modal Tambah Buku Akuntansi -->
     <div class="w-full h-full overflow-auto bg-slate-900 left-0 top-0 fixed bg-opacity-70" v-if="modalTambahBuku == true">
         <div class="flex h-screen">
             <div class="bg-white m-auto w-[1000px] p-4 rounded-lg">
@@ -44,18 +49,18 @@
                     <div class="grid gap-2 mb-10">
                         <div class="flex flex-col">
                             <label class="font-bold text-black">Kelompok Akun</label>
-                            <select class="border border-slate-500 bg-white p-1">
-                                <option>-- Pilih Kelompok Akun --</option>
-                                <option>Aktiva Lancar</option>
-                                <option>Aktiva Tetap</option>
-                                <option>Hutang</option>
-                                <option>Ekuitas</option>
+                            <select class="border border-slate-500 bg-white p-1" v-model="formInputBukuBaru.kd_master_buku">
+                                <option :value="''">-- Pilih Kelompok Akun --</option>
+                                <option :value="1">Aktiva Lancar</option>
+                                <option :value="2">Aktiva Tetap</option>
+                                <option :value="3">Hutang</option>
+                                <option :value="4">Ekuitas</option>
                             </select>
                         </div>
                         <div class="flex flex-col">
                             <label class="font-bold text-black">Nomor Akun</label>
                             <div class="flex">
-                                <input type="text" class="border border-slate-500 bg-white p-1 w-full" v-model="inputPencarianBukuAkuntansi" />
+                                <input type="text" class="border border-slate-500 bg-white p-1 w-full" v-model="formInputBukuBaru.kd_sub_master_buku" maxlength="5" />
                                 <button class="bg-blue-500 text-white p-1 w-[80px] ml-2" @click="cekBukuAkuntansi">Cek</button>
                             </div>
                             <label class="bg-green-500 mt-2 p-1" v-if="formInputBukuBaru.statusInputBuku == true">Nomor akun dapat dipakai</label>
@@ -64,7 +69,7 @@
                         </div>
                         <div class="flex flex-col">
                             <label class="font-bold text-black">Nama Akun</label>
-                            <input type="text" class="border border-slate-500 bg-white p-1" />
+                            <input type="text" class="border border-slate-500 bg-white p-1" v-model="formInputBukuBaru.nama_buku" />
                         </div>
                     </div>
                     <div class="grid grid-cols-2 gap-4">
@@ -76,6 +81,38 @@
         </div>
     </div>
     <!--  -->
+
+    <!-- Modal Tambah Buku Akuntansi -->
+    <div class="w-full h-full overflow-auto bg-slate-900 left-0 top-0 fixed bg-opacity-70" v-if="modalEditBuku == true">
+        <div class="flex h-screen">
+            <div class="bg-white m-auto w-[1000px] p-4 rounded-lg">
+                <div class="grid grid-rows-1">
+                    <h1 class="text-2xl text-black mb-10">Tambah Buku Akuntansi Baru</h1>
+                    <div class="grid gap-2 mb-10">
+                        <div class="flex flex-col">
+                            <label class="font-bold text-black">Nomor Akun</label>
+                            <input type="text" class="border border-slate-500 bg-slate-200 p-1 w-full" v-model="formEditBuku.kd_sub_master_buku" readonly />
+                        </div>
+                        <div class="flex flex-col">
+                            <label class="font-bold text-black">Nama Akun Lama</label>
+                            <input type="text" class="border border-slate-500 bg-slate-200 p-1" v-model="formEditBuku.nama_buku_lama" readonly />
+                        </div>
+                        <div class="flex flex-col">
+                            <label class="font-bold text-black">Nama Akun Baru</label>
+                            <input type="text" class="border border-slate-500 bg-white p-1" v-model="formEditBuku.nama_buku_baru" />
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <button class="bg-slate-300 text-black p-2 rounded-md" @click="modalEditBuku = false">Tutup</button>
+                        <button class="bg-blue-600 text-white p-2 rounded-md" @click="simpanEditBukuAkuntansi">Simpan</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--  -->
+
+
 
 </div>
 </template>
@@ -104,11 +141,18 @@ export default {
             tabelBukuAkuntansi              : [],
             inputPencarianBukuAkuntansi     : '',
             modalTambahBuku                 : false,
+            modalEditBuku                   : false,
             formInputBukuBaru               : {
                 kd_master_buku          : '',
                 kd_sub_master_buku      : '',
                 nama_buku               : '',
                 statusInputBuku         : null,
+            },
+            formEditBuku                    : {
+                kd_buku                 : '',
+                kd_sub_master_buku      : '',
+                nama_buku_lama          : '',
+                nama_buku_baru          : ''
             }
         }
     },
@@ -130,9 +174,12 @@ export default {
             }
         },
         cekBukuAkuntansi() {
+
+            let nomorBukuAkuntansi = this.formInputBukuBaru.kd_sub_master_buku
+
             this.formInputBukuBaru.statusInputBuku  = null
 
-            axios.get('/api/super/cekbukuakuntansi/' + this.inputPencarianBukuAkuntansi).then(hslbuku => {
+            axios.get('/api/super/cekbukuakuntansi/' + nomorBukuAkuntansi).then(hslbuku => {
                 console.log(hslbuku.data)
                 let kondisi                             = hslbuku.data.status
 
@@ -144,14 +191,68 @@ export default {
             })
         },
         simpanBukuAkuntansi() {
-            let cekNomorBuku = this.formInputBukuBaru.statusInputBuku
+            let cekNomorBuku    = this.formInputBukuBaru.statusInputBuku
+            let isiForm         = this.formInputBukuBaru
 
             if(cekNomorBuku == false || cekNomorBuku == null)
             {
                 return alert('Nomor Akun belum lolos pengecekan duplikasi, silahkan mengecek nomor akun terlebih dahulu sebelum menyimpan data')
             }
 
-            return console.log(this.formInputBukuBaru)
+            axios.post('/api/super/addbukuakuntansi', isiForm).then(hslinput => {
+                // console.log(hslinput.data)
+
+                alert('Data berhasil disimpan')
+
+                return location.reload()
+
+            }).catch(hslinputerr => {
+                console.log(hslinputerr)
+
+                alert('Server Error')
+                return location.reload()
+            })
+
+        },
+        openModalEditBuku(ids) {
+            console.log(ids)
+
+            this.formEditBuku.kd_buku                   = ''
+            this.formEditBuku.kd_sub_master_buku        = ''
+            this.formEditBuku.nama_buku_lama            = ''
+            this.formEditBuku.nama_buku_baru            = ''
+
+            axios.get('/api/super/tabelcekbukuakuntansi/'+ ids).then(hsltbl => {
+                console.log(hsltbl.data)
+
+                this.formEditBuku.kd_buku                   = hsltbl.data.data.id
+                this.formEditBuku.kd_sub_master_buku        = hsltbl.data.data.kd_sub_master_buku
+                this.formEditBuku.nama_buku_lama            = hsltbl.data.data.nama_buku
+
+                this.modalEditBuku                          = true
+
+            }).catch(hsltblerr => {
+                console.log(hsltblerr)
+            })
+        },
+        simpanEditBukuAkuntansi() {
+            console.log(this.formEditBuku)
+
+            let isiFormEdit = this.formEditBuku
+
+            axios.put('/api/super/editbukuakuntansi', isiFormEdit).then(hsledt => {
+                if(hsledt.data.status == true)
+                {
+                    alert('Data berhasil diedit')
+                    return location.reload()
+                } else if(hsledt.data.status == false)
+                {
+                    alert('Server Error')
+                    return location.reload()
+                }
+            }).catch(hsledterr => {
+                console.log(hsledterr)
+            })
         }
     }
 }

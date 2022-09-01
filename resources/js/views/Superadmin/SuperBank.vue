@@ -93,7 +93,8 @@ export default {
             }
             axios.post('/api/super/addNewBank', dataBank).then(res2 => {
                 alert(res2.data.message)
-                location.reload()
+                console.log(res2)
+                // location.reload()
             }).catch(err2 => {
                 alert(err2.data.message)
             })

@@ -54,12 +54,18 @@ Route::get('/super/bankList', [Administrator::class, 'getBankList']);
 Route::get('/super/bankList/{keys}', [Administrator::class, 'getBankListById']);
 Route::post('/super/addNewBank', [Administrator::class, 'addBankNew']);
 
+// Sub Manajemen Bank - Fitur
+Route::get('/super/neraca/{id}', [Administrator::class, 'getBallanceSheet']);
+
 // Sub Manajemen Role / Jenis Pekerjaan
 Route::get('/super/roleList', [Administrator::class, 'getRoleList']);
 
 // Sub Manajemen Buku Akuntansi
 Route::get('/super/bukuakuntansi', [Administrator::class, 'getSysMasterBukuAkuntansiAll']);
 Route::get('/super/cekbukuakuntansi/{id}', [Administrator::class, 'cekSubMasterBukuAkuntansi']);
+Route::get('/super/tabelcekbukuakuntansi/{id}', [Administrator::class, 'cekSubMasterBukuAkuntansiById']);
+Route::post('/super/addbukuakuntansi', [Administrator::class, 'insertSubMasterBukuAkuntansi']);
+Route::put('/super/editbukuakuntansi', [Administrator::class, 'editSubMasterBukuAkuntansi']);
 
 // Untuk Banking
 
