@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BankBukuAkuntansi;
 use App\Models\SysBank;
 use App\Models\SysBukuAkuntansi;
 use App\Models\SysBukuJurnalUmum;
 use App\Models\SysBukuJurnalUmumDetail;
+use App\Models\SysMasterBukuAkuntansi;
 use App\Models\SysToken;
 use App\Models\SysUser;
 use Carbon\Carbon;
@@ -119,15 +121,40 @@ class JurnalAkuntansi extends Controller
             $kodebank   = $ModelUser->kd_bank;
 
             $ModelJurnalUmum = SysBukuJurnalUmum::where('kd_bank', $kodebank)->get();
-            $ModelJurnalUmumDetail = SysBukuJurnalUmumDetail::where('kd_transaksi_akuntansi', $id)->get();
 
             if(empty($ModelJurnalUmum))
             {
                 return response('500 Internal Server Error <br>', 500);
             }
 
+            $ModelJurnalUmumDetail = SysBukuJurnalUmumDetail::where('kd_transaksi_akuntansi', $id)->get();
+            $DaftarJurnal          = [];
+            foreach($ModelJurnalUmumDetail as $mju)
+            {
+                $ModelMasterJurnal = SysMasterBukuAkuntansi::where('kd_sub_master_buku', $mju['kd_buku_akuntansi'])->first();
+
+                if(empty($ModelMasterJurnal))
+                {
+                    // No Action
+                }
+
+                $DataArray         = [
+                    'kd_transaksi_akuntansi'    => $mju['kd_transaksi_akuntansi'],
+                    'kd_buku_akuntansi'         => $mju['kd_buku_akuntansi'],
+                    'nominal_debit'             => $mju['nominal_debit'],
+                    'nominal_kredit'            => $mju['nominal_kredit'],
+                    'deskripsi'                 => $mju['deskripsi'],
+                    'kd_admin'                  => $mju['kd_admin'],
+                    'kd_bank'                   => $mju['kd_bank'],
+                    'nama_buku_akuntansi'       => $ModelMasterJurnal->nama_buku
+                ];
+                
+                array_push($DaftarJurnal, $DataArray);
+            }
+
+
             return response()->json([
-                'data'      => $ModelJurnalUmumDetail,
+                'data'      => $DaftarJurnal,
                 'status'    => true
             ]);
 

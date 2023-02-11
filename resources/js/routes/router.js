@@ -14,7 +14,7 @@ import SuperBank            from "../views/Superadmin/SuperBank.vue"
 import SuperBankDetail      from "../views/Superadmin/SuperBankDetails.vue"
 import SuperUser            from "../views/Superadmin/SuperUser.vue"
 import SuperPekerjaan       from "../views/Superadmin/SuperPekerjaan.vue"
-import SuperAkunAkuntansi   from "../views/Superadmin/SuperAkunAkuntansi.vue"
+import SuperAkunAkuntansi   from "../views/Superadmin/SuperBukuAkuntansi.vue"
 
 // Aset untuk Cpanel Banking
 import BankingLogin                         from '../views/CPanel/BankingLogin.vue'

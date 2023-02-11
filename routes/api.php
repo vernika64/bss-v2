@@ -54,6 +54,10 @@ Route::get('/super/bankList', [Administrator::class, 'getBankList']);
 Route::get('/super/bankList/{keys}', [Administrator::class, 'getBankListById']);
 Route::post('/super/addNewBank', [Administrator::class, 'addBankNew']);
 
+Route::get('/super/cekDataJurnal/{id}', [Administrator::class, 'cekKelengkapanJurnal']);
+
+Route::post('/super/updateDataJurnal', [Administrator::class, 'updateKelengkapanBukuAkuntansi']);
+
 // Sub Manajemen Bank - Fitur
 Route::get('/super/neraca/{id}', [Administrator::class, 'getBallanceSheet']);
 
@@ -115,3 +119,10 @@ Route::get('/bank/historiDataAngsuran/{id}', [JualBeliMurabahah::class, 'ambilHi
 // Sub Jurnal Umum
 Route::get('/bank/ambilDataJurnalUmum', [JurnalAkuntansi::class, 'getDataJurnalAkuntansi']);
 Route::get('/bank/ambilDataJurnalUmum/{id}', [JurnalAkuntansi::class, 'getDataJurnalAkuntansiDetail']);
+
+// Untuk testing
+Route::get('/teskoneksi', function() {
+    return response()->json([
+        'message'       => 'koneksi OK'
+    ]);
+});

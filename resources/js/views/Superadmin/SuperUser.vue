@@ -1,8 +1,8 @@
 <template>
 
     <div>
-        <div class="p-3 bg-white border-t flex flex-row">
-            <h1 class="text-2xl italic">List User untuk Bank</h1>
+        <div class="p-3 bg-white flex flex-row">
+            <h1 class="text-2xl italic">List User</h1>
             <button class="p-2 text-white bg-blue-600 w-auto text-sm ml-4" @click="openModalAddUser = true">Tambah User baru</button>
         </div>
         <div class="p-2">
@@ -36,7 +36,7 @@
             <div class="flex justify-center">
                 <div class="bg-white w-[1000px] p-4 mt-[100px] rounded-lg">
                     <div class="grid grid-rows-1">
-                        <h1 class="text-2xl text-black mb-10">Tambah Bank Baru</h1>
+                        <h1 class="text-2xl text-black mb-10">Tambah User Baru</h1>
                         <div class="grid grid-rows-1 gap-2 mb-10">
                                 <label class="font-bold text-black">Username</label>
                                 <input type="text" class="border border-slate-500 bg-white p-1" v-model="formTambahUser.username" placeholder="Username hanya bisa menggunakan satu kata tanpa spasi, Contoh: Junaedi" />

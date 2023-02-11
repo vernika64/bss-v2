@@ -20,7 +20,7 @@
                 </div>
                 <div>
                     <p class="text-lg mb-2">Link Dokumen Pendukung</p>
-                    <input class="text-md text-justify w-full border p-2 bg-slate-200" v-model="formTransaksi.link_lampiran" />
+                    <input class="text-md text-justify w-full border p-2 bg-slate-200" v-model="formTransaksi.link_lampiran" readonly />
                 </div>
                 <div>
                     <label class="font-bold">Aksi</label>
@@ -34,6 +34,29 @@
                     <p class="text-lg mb-2">Alasan Penolakan</p>
                     <textarea class="w-full h-[100px] border p-2" v-model="formReject.desc_penolakan" placeholder="Alasan ditolak"></textarea>
                     <button class="bg-red-700 text-white w-full p-2 mt-2"  @click="konfirmasi">Simpan untuk menolak permintaan</button>
+                </div>
+            </div>
+            <div class="bg-white border p-4 m-2 row-span-2" v-if="keputusan == 'terima'">
+                <div>
+                    <label>Nama Barang</label>
+                    <input type="text" class="p-2 w-full border" v-model="formDummy.nama_barang" placeholder="Nama barang yang dipesan nasabah" />
+                </div>
+                <div>
+                    <label>Harga barang Satuan</label>
+                    <input type="text" class="w-full p-2 border" v-model="formDummy.harga_barang_satuan" placeholder="Harga satuan barang" />
+                </div>
+                <div>
+                    <label>Kuantitas barang</label>
+                    <div class="flex">
+                        <input class="w-full p-2 border" v-model="formDummy.qty_barang" placeholder="Kuantitas Barang" @keyup="kalkulasiTotalHargaBarang" />
+                        <select class="w-auto p-2 ml-2 flex-1 border" v-model="formDummy.qty_type">
+                            <option :value="'qty'">qty</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label>Margin untuk Bank</label>
+                    <input class="p-2 w-full border" v-model="formDummy.surplus_untuk_bank" @keyup="kalkulasiSurplusBank" />
                 </div>
             </div>
             <div class="bg-white border p-4 m-2 row-span-2" v-if="keputusan == 'terima'">

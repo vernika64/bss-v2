@@ -124,7 +124,7 @@ export default {
 
             axios.post('/api/bank/listJualBeliMurabahah/Add', this.formJualBeli).then(hsl => {
                 console.log(hsl.data)
-                return alert(hsl.data.message)
+                alert(hsl.data.message)
                 return location.reload()
             }).catch(hslerr => {
                 console.log(hslerr)
@@ -156,10 +156,9 @@ export default {
         cariTransaksi() {
             console.log(this.inputPencarian)
 
-            axios.get('/api/bank/cariJualBeliMurabahah/'+ this.inputPencarian).then(pencarian => {
+            axios.get('/api/bank/cariJualBeliMurabahah/' + this.inputPencarian).then(pencarian => {
                 console.log(pencarian.data)
-                if(pencarian.data.status == false)
-                {
+                if (pencarian.data.status == false) {
                     return alert('Data tidak ditemukan')
                 }
                 this.tabelJualBeli = pencarian.data.data

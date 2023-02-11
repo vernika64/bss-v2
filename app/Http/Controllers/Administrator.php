@@ -133,7 +133,7 @@ class Administrator extends Controller
     {
         try {
 
-            $ModelBank = SysBank::where('kd_bank', '2022-06-13-1')->firstOrFail();
+            $ModelBank = SysBank::where('kd_bank', $keys)->firstOrFail();
 
             if (!$ModelBank) {
                 return response()->json([
@@ -507,4 +507,156 @@ class Administrator extends Controller
             ]);
         }
     }
+
+    public function cekKelengkapanJurnal($id, Request $re)
+    {
+        try {
+            $getUserCookie = $re->cookie('tkn');
+
+            $ModelToken = SysToken::where('token', $getUserCookie)->first();
+
+            if(empty($ModelToken))
+            {
+                return response('Error 403 - Forbidden', 403);
+            }
+
+            $ModelUser = SysUser::where('username', $ModelToken->kd_user)->first();
+        
+            if(empty($ModelUser))
+            {
+                return response('Error 404 - User not found', 403);
+            }
+
+            // $kodeadmin  = $ModelUser->id;
+            // $kodebank   = $ModelUser->kd_bank;
+
+            $ModelBank              = SysBank::where('kd_bank', $id)->first();
+
+            if(empty($ModelBank)) {
+                return response()->json([
+                    'status'        => false,
+                    'message'       => 'Bank tidak terdaftar'
+                ]);
+            }
+
+            $BukuAkuntansiSistem        = SysMasterBukuAkuntansi::get('id');
+            $JumlahBukuAkuntansiSistem  = SysMasterBukuAkuntansi::count();
+            $DataBukuTersedia           = [];
+            $JumlahBukuTersedia         = 0;
+            $DataBukuKosong           = [];
+            $JumlahBukuKosong         = 0;
+
+            for ($i=0; $i < $JumlahBukuAkuntansiSistem; $i++) { 
+                $CekKetersediaanJurnal  = BankBukuAkuntansi::where([
+                    'kd_akun_akuntansi' => $BukuAkuntansiSistem[$i]['id'],
+                    'kd_bank'           => $ModelBank->id
+                ])->get();
+                 
+                $a  = $BukuAkuntansiSistem[$i];
+
+                if($CekKetersediaanJurnal->count() == 0)
+                {
+                    // array_push($DataBukuKosong, $a);
+                    $JumlahBukuKosong++;
+
+                    $ModelMasterBkAkuntansi = SysMasterBukuAkuntansi::find($BukuAkuntansiSistem[$i]['id']);
+                    $DataBukuKosong[] = [
+                        'indeks'        => $ModelMasterBkAkuntansi->id,
+                        'kd_buku'       => $ModelMasterBkAkuntansi->kd_sub_master_buku, 
+                        'nama_buku'     => $ModelMasterBkAkuntansi->nama_buku,
+                    ];
+
+                } else if($CekKetersediaanJurnal->count() == 1){
+                    // array_push($DataBukuTersedia, $a);
+                    $DataBukuTersedia[] = $a;
+                    $JumlahBukuTersedia++;
+                }
+            }
+
+            if($JumlahBukuKosong > 0) {
+                $StatusBukuAkuntansi    = false;
+            } else if($JumlahBukuKosong == 0) {
+                $StatusBukuAkuntansi    = true;
+            }
+
+            return response()->json([
+                'data_jurnal_tersedia'      => $DataBukuTersedia,
+                'count_jurnal_tersedia'     => $JumlahBukuTersedia,
+                'data_jurnal_kosong'        => $DataBukuKosong,
+                'count_jurnal_kosong'       => $JumlahBukuKosong,
+                'message'                   => 'Data jurnal bank berhasil diambil',
+                'status'                    => true,
+                'status_isi_buku'           => $StatusBukuAkuntansi
+            ]);
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                'data'      => $th->getMessage(),
+                'status'    => false
+            ]);
+        }
+    }
+
+    public function updateKelengkapanBukuAkuntansi(Request $re)
+    {
+        try {
+            $getUserCookie = $re->cookie('tkn');
+
+            $ModelToken = SysToken::where('token', $getUserCookie)->first();
+
+            if(empty($ModelToken))
+            {
+                return response('Error 403 - Forbidden', 403);
+            }
+
+            $ModelUser = SysUser::where('username', $ModelToken->kd_user)->first();
+        
+            if(empty($ModelUser))
+            {
+                return response('Error 404 - User not found', 403);
+            }
+
+            $kodeadmin  = $ModelUser->id;
+            // $kodebank   = $ModelUser->kd_bank;
+
+            $CariIdBank = SysBank::where('kd_bank', $re->kd_bank)->first();
+
+            if(empty($CariIdBank))
+            {
+                return response()->json([
+                    'status'    => false,
+                    'message'   => 'Bank tidak terdaftar di sistem'
+                ]);
+            }
+
+            $totalData                  = $re->ids;
+            $kdBank                     = $CariIdBank->id;
+            $CountBukuDitambahkan       = 0;
+
+            foreach($totalData as $td) {
+                $ModelBukuAkuntansiBank                     = new BankBukuAkuntansi;
+                $ModelBukuAkuntansiBank->kd_akun_akuntansi  = $td['indeks'];
+                $ModelBukuAkuntansiBank->kd_bank            = $kdBank;
+                $ModelBukuAkuntansiBank->nominal_akun       = 0;
+                $ModelBukuAkuntansiBank->kd_pembuat         = $kodeadmin;
+                $ModelBukuAkuntansiBank->kd_terakhir_update = $kodeadmin;
+                $ModelBukuAkuntansiBank->save();
+
+                $CountBukuDitambahkan++;
+            }
+
+            return response()->json([
+                'status'            => true,
+                'message'           => 'Buku akuntansi berhasil diperbarui',
+                'count_insert'      => $CountBukuDitambahkan
+            ]);
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                'data'      => $th->getMessage(),
+                'status'    => false
+            ]);
+        }
+    }
+
 }

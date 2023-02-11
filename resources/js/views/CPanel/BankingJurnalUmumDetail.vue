@@ -10,7 +10,8 @@
                 <thead class="bg-slate-500 text-white">
                     <tr>
                         <th class="p-4 bold font-md text-left font-semibold w-[50px]">No.#</th>
-                        <th class="p-4 bold font-md text-left font-semibold">Kode Buku Akuntansi Jurnal</th>
+                        <th class="p-4 bold font-md text-left font-semibold">Kd. Buku Akuntansi</th>
+                        <th class="p-4 bold font-md text-left font-semibold">Nama Buku</th>
                         <th class="p-4 bold font-md text-left font-semibold">Judul Transaksi</th>
                         <th class="p-4 bold font-md text-left font-semibold">Nominal Debit</th>
                         <th class="p-4 bold font-md text-left font-semibold">Nominal Kredit</th>
@@ -21,6 +22,7 @@
                     <tr v-for="(ju, index) in tabelJurnal" :key="index">
                         <td class="border border-white text-center p-3">{{ index + 1 }}</td>
                         <td class="border border-white p-3">{{ ju.kd_buku_akuntansi }}</td> 
+                        <td class="border border-white p-3">{{ ju.nama_buku_akuntansi }}</td> 
                         <td class="border border-white p-3">{{ ju.deskripsi }}</td> 
                         <td class="border border-white p-3">{{ convertKeRupiah(ju.nominal_debit) }}</td> 
                         <td class="border border-white p-3">{{ convertKeRupiah(ju.nominal_kredit) }}</td> 

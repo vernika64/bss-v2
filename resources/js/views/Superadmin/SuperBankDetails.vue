@@ -1,66 +1,62 @@
 <template>
 <div class="grid grid-rows-1">
-    <div class="p-3 bg-white border-t border-b">
-        <h1 class="text-2xl italic">{{ detailBank.nama_bank }}</h1>
+    <div class="p-3 bg-white border-t border-b flex">
+        <h1 class="text-2xl italic mr-2">{{ detailBank.nama_bank }}</h1>
+        <div>
+            <button class="bg-blue-800 text-white p-2" @click="cekDataBukuAkuntansi">
+                Maintain Buku Akuntansi
+            </button>
+        </div>
     </div>
     <div class="p-4 grid grid-cols-2 gap-3">
-        <div class="grid gap-2 border-slate-500 bg-white rounded-lg p-4">
-            <div class="mb-4">
+        <div class="flex flex-col gap-2 border-slate-500 bg-white rounded-lg p-4">
+            <div>
                 <p class="text-xl italic">Informasi Dasar Bank</p>
             </div>
             <div>
-                <label class="text-lg font-bold">Nama Bank</label>
-                <p class="text-md">{{ detailBank.nama_bank }}</p>
+                <table class="w-full">
+                    <tbody class="border border-slate-500">
+                        <tr>
+                            <td class="p-2 w-[200px] border border-slate-600 bg-slate-500 text-white">Nama Bank</td>
+                            <td class="p-2 border border-slate-600">{{ detailBank.nama_bank }}</td>
+                        </tr>
+                        <tr>
+                            <td class="p-2 border border-slate-600 bg-slate-500 text-white">Alamat Bank</td>
+                            <td class="p-2 border border-slate-600">{{ detailBank.alamat_bank }}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
             <div>
-                <label class="text-lg font-bold">Alamat Bank</label>
-                <p class="text-md">{{ detailBank.alamat_bank }}</p>
+                <p class="text-xl italic">Daftar karyawan</p>
             </div>
             <div>
-                <label class="text-lg font-bold">Jumlah Aset</label>
-                <p class="text-md">{{ convertKeRupiah(keuanganBank.aset) }}</p>
-            </div>
-            <div>
-                <label class="text-lg font-bold">Jumlah Kewajiban</label>
-                <p class="text-md">{{ convertKeRupiah(keuanganBank.kewajiban) }}</p>
-            </div>
-            <div>
-                <label class="text-lg font-bold">Jumlah Ekuitas</label>
-                <p class="text-md">{{ convertKeRupiah(keuanganBank.ekuitas) }}</p>
-            </div>
+                <table class="border-collapse w-full">
+                    <thead class="bg-slate-500 text-white border border-slate-500">
+                        <tr>
+                            <th class="p-2 2xl:text-md">#</th>
+                            <th class="p-2 2xl:text-md">Nama Karyawan</th>
+                            <th class="p-2 2xl:text-md">Jabatan</th>
+                        </tr>
+                    </thead>
+                    <tbody v-if="statusKaryawan == true" class="border border-slate-500">
+                        <tr v-for="(kr, index) in karyawanBank" :key="index">
+                            <td class="p-2 text-center">{{ index + 1 }}</td>
+                            <td class="p-2 text-center">{{ kr.username }}</td>
+                            <td class="p-2 text-center">{{ kr.nama_role }}</td>
+                        </tr>
+                    </tbody>
+                    <tbody v-else-if="statusKaryawan == false" class="border border-slate-500">
+                        <tr>
+                            <td class="p-2 text-center 2xl:text-lg" colspan="3">Bank tidak mempunyai karyawan</td>
+                        </tr>
+                    </tbody>
+                </table>
+                </div>
         </div>
         <div class="grid">
-            <div class="flex flex-col gap-4 p-4">
-                <div class="mb-4">
-                    <p class="text-xl italic">Daftar karyawan</p>
-                </div>
+            <div class="flex flex-col gap-2 p-4">
                 <div>
-                    <table class="border-collapse w-full">
-                        <thead class="bg-slate-500 text-white">
-                            <tr>
-                                <th class="p-2 2xl:text-md">#</th>
-                                <th class="p-2 2xl:text-md">Nama Karyawan</th>
-                                <th class="p-2 2xl:text-md">Jabatan</th>
-                            </tr>
-                        </thead>
-                        <tbody v-if="statusKaryawan == true">
-                            <tr v-for="(kr, index) in karyawanBank" :key="index">
-                                <td class="p-2 text-center 2xl:text-lg">{{ index + 1 }}</td>
-                                <td class="p-2 text-center 2xl:text-lg">{{ kr.username }}</td>
-                                <td class="p-2 text-center 2xl:text-lg">{{ kr.nama_role }}</td>
-                            </tr>
-                        </tbody>
-                        <tbody v-else-if="statusKaryawan == false" class="border border-slate-500">
-                            <tr>
-                                <td class="p-2 text-center 2xl:text-lg" colspan="3">Bank tidak mempunyai karyawan</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div class="flex flex-col gap-4 p-4">
-                <div class="mb-4">
                     <p class="text-xl italic">Status Neraca</p>
                 </div>
                 <div>
@@ -105,6 +101,45 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal Update Buku Akuntansi -->
+
+    <div class="w-full h-full overflow-auto bg-slate-900 left-0 top-0 fixed bg-opacity-70" v-if="maintainDataBukuAkuntansi.modalUpdateBukuAkuntansi == true">
+        <!-- Modal Content -->
+        <div class="flex justify-center">
+            <div class="bg-white w-[1000px] p-4 mt-[200px] rounded-lg">
+                <div class="grid grid-rows-1">
+                    <h1 class="text-2xl text-black mb-10">Update Data Buku Akuntansi</h1>
+                    <div class="grid grid-rows-1 gap-2 mb-10">
+                        <p class="font-bold text-lg">Daftar Buku yang tidak tersedia di bank</p>
+                        <table class="border-collapse w-full">
+                            <thead class="bg-slate-500 text-white">
+                                <tr>
+                                    <th class="p-2 2xl:text-md">#</th>
+                                    <th class="p-2 2xl:text-md">Kode Buku Akuntansi</th>
+                                    <th class="p-2 2xl:text-md">Nama Buku Akuntansi</th>
+                                </tr>
+                            </thead>
+                            <tbody class="border border-slate-500" v-for="(mda, index) in maintainDataBukuAkuntansi.dataBukuKosong" :key="index">
+                                <tr>
+                                    <td class="p-2 text-left text-md border border-slate-500">{{ index + 1 }}</td>
+                                    <td class="p-2 text-left text-md border border-slate-500">{{ mda.kd_buku }}</td>
+                                    <td class="p-2 text-left text-md border border-slate-500">{{ mda.nama_buku }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <button class="bg-slate-300 text-black p-2 rounded-md" @click="tutupModalUpdateBukuAkuntansi">Tutup</button>
+                        <button class="bg-blue-600 text-white p-2 rounded-md" @click="updateBukuAkuntansi">Simpan</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--  -->
+
 </div>
 </template>
 
@@ -123,7 +158,7 @@ export default {
         })
 
         axios.get('/api/super/memberListFilterBank/'+ bankingId).then(res2 => {
-            console.log(res2.data.status)
+            // console.log(res2.data.status)
             if(res2.data.status == true)
             {
                 this.karyawanBank       = res2.data.data
@@ -155,6 +190,56 @@ export default {
     methods: {
         convertKeRupiah(no) {
             return 'Rp. ' + new Intl.NumberFormat(['ban', 'id']).format(no) + ',-'
+        },
+        cekDataBukuAkuntansi() {
+            let kode_bank   = this.$route.params.bankID
+
+            axios.get('/api/super/cekDataJurnal/'+ kode_bank).then(hslcek => {
+                console.log(hslcek.data)
+
+                if(hslcek.data.status_isi_buku == true) {
+                    return alert('Data Buku Akuntansi sudah lengkap')
+                } else if(hslcek.data.status_isi_buku == false) {
+                    alert('Data Buku Akuntansi tidak lengkap')
+
+                    this.maintainDataBukuAkuntansi.dataBukuKosong   = hslcek.data.data_jurnal_kosong
+                    this.maintainDataBukuAkuntansi.totalBukuKosong  = hslcek.data.count_jurnal_kosong
+
+                    return this.maintainDataBukuAkuntansi.modalUpdateBukuAkuntansi = true
+
+                }
+            }).catch(cekerr => {
+                console.log(cekerr)
+            })
+        },
+        tutupModalUpdateBukuAkuntansi() {
+            this.maintainDataBukuAkuntansi.dataBukuKosong       = []
+            this.maintainDataBukuAkuntansi.totalBukuKosong      = 0
+            
+            this.maintainDataBukuAkuntansi.modalUpdateBukuAkuntansi = false
+
+            return console.log(this.maintainDataBukuAkuntansi)
+        },
+        updateBukuAkuntansi() {
+
+            let as = confirm('Apakah anda yakin untuk memperbarui buku akuntansi ?')
+
+            if(as == false) {
+
+            } else if(as == true) {
+                let uploaddata = {
+                    ids             : this.maintainDataBukuAkuntansi.dataBukuKosong,
+                    kd_bank         : this.$route.params.bankID
+                }
+    
+                axios.post('/api/super/updateDataJurnal',uploaddata).then(hslupd => {
+                    console.log(hslupd.data)
+                    return alert(hslupd.data.message)
+                }).catch(hslupderr => {
+                    console.log(hslupderr)
+                    return alert('Server Error!')
+                })
+            }
         }
     },
     data(){
@@ -173,7 +258,13 @@ export default {
             totalAktiva     : 0,
             totalPasiva     : 0,
             statusNeraca    : '',
-            statusKaryawan  : false
+            statusKaryawan  : false,
+
+            maintainDataBukuAkuntansi   : {
+                dataBukuKosong              : [],
+                totalBukuKosong             : 0,
+                modalUpdateBukuAkuntansi    : false
+            }
         }
     }
 }
