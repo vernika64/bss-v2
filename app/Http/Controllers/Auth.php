@@ -34,7 +34,7 @@ class Auth extends Controller
             return response()->json([
                 'role'      => $ModelUser->role,
                 'nama'      => $ModelUser->fname,
-                'status'    => 'auth_success'
+                'status'    => 200
             ])->withCookie($kuki);
 
         } catch (\Throwable $th) {

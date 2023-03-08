@@ -43,6 +43,7 @@ Route::post('/super/adminLogin', [Administrator::class, 'adminLogin']);
 // Sub Manajemen Mahasiswa
 Route::get('/super/memberList', [Administrator::class, 'getMemberDataAll']);
 Route::post('/super/addNewMember', [Administrator::class, 'addNewMember']);
+Route::post('/super/memberDetails/', [Administrator::class, 'getMemberDetails']);
 Route::get('/super/memberListFilterBank/{bankKeys}', [Administrator::class, 'getMemberDataByBankId']);
 
 // Sub Manajemen Grup

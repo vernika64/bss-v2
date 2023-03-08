@@ -4,7 +4,7 @@
         <h1 class="text-2xl italic mr-2">{{ detailBank.nama_bank }}</h1>
         <div>
             <button class="bg-blue-800 text-white p-2" @click="cekDataBukuAkuntansi">
-                Maintain Buku Akuntansi
+                Perbarui Buku Akuntansi
             </button>
         </div>
     </div>
@@ -234,7 +234,8 @@ export default {
     
                 axios.post('/api/super/updateDataJurnal',uploaddata).then(hslupd => {
                     console.log(hslupd.data)
-                    return alert(hslupd.data.message)
+                    alert(hslupd.data.message)
+                    location.reload()
                 }).catch(hslupderr => {
                     console.log(hslupderr)
                     return alert('Server Error!')

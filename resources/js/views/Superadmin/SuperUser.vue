@@ -29,9 +29,47 @@
         </div>
     </div>
 
-    <!-- Modal Section -->
+    <!-- Modal Section for Add New User -->
     <Transition name="slide-fade">
         <div class="w-full h-full overflow-auto bg-slate-900 left-0 top-0 fixed bg-opacity-70" v-if="openModalAddUser == true">
+            <!-- Modal Content -->
+            <div class="flex justify-center">
+                <div class="bg-white w-[1000px] p-4 mt-[100px] rounded-lg">
+                    <div class="grid grid-rows-1">
+                        <h1 class="text-2xl text-black mb-10">Tambah User Baru</h1>
+                        <div class="grid grid-rows-1 gap-2 mb-10">
+                                <label class="font-bold text-black">Username</label>
+                                <input type="text" class="border border-slate-500 bg-white p-1" v-model="formTambahUser.username" placeholder="Username hanya bisa menggunakan satu kata tanpa spasi, Contoh: Junaedi" />
+
+                                <label class="font-bold text-black">Bank Tujuan</label>
+                                <select class="border border-slate-500 bg-white p-1" v-model="formTambahUser.bankTujuan">
+                                    <option :value="0">-- Pilih Bank Tujuan --</option>
+                                    <option v-for="bnk in listBank" :key="bnk.kd_bank" :value="bnk.id">{{ bnk.kd_bank }} - {{ bnk.nama_bank }}</option>
+                                </select>
+
+                                <label class="font-bold text-black">Pekerjaan</label>
+                                <select class="border border-slate-500 bg-white p-1" v-model="formTambahUser.pekerjaan">
+                                    <option :value="0">-- Pilih Pekerjaan --</option>
+                                    <option v-for="pkj in listRole" :key="pkj.kd_role" :value="pkj.kd_role">{{ pkj.nama_role }}</option>
+                                </select>
+
+                                <p class="text-red-600">PERHATIAN! username dan password yang digunakan untuk login akun ini menggunakan nama username saja tanpa menggunakan huruf kapital.</p>
+
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <button class="bg-slate-300 text-black p-2 rounded-md" @click="openModalAddUser = false">Tutup</button>
+                            <button class="bg-blue-600 text-white p-2 rounded-md" @click="simpanUserBaru">Simpan</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </Transition>
+    <!--  -->
+
+    <!-- Modal Section for User Details -->
+    <Transition name="slide-fade">
+        <div class="w-full h-full overflow-auto bg-slate-900 left-0 top-0 fixed bg-opacity-70" v-if="openModalUserDetails == true">
             <!-- Modal Content -->
             <div class="flex justify-center">
                 <div class="bg-white w-[1000px] p-4 mt-[100px] rounded-lg">
@@ -98,11 +136,12 @@ export default {
     },
     data() {
         return {
-            listUser            : [],
-            listBank            : [],
-            listRole            : [],
-            openModalAddUser    : '',
-            jenisPekerjaan      : [
+            listUser                : [],
+            listBank                : [],
+            listRole                : [],
+            openModalAddUser        : '',
+            openModalUserDetails    : '',
+            jenisPekerjaan          : [
                 { kd_pekerjaan: 'office', nama_pekerjaan: 'Office Serbaguna'},
                 { kd_pekerjaan: 'cservice', nama_pekerjaan: 'Customer Service'},
             ],
@@ -110,6 +149,12 @@ export default {
                 username    : '',
                 bankTujuan  : 0,
                 pekerjaan   : 0
+            },
+            dataUserDetail      : {
+                username    : '',
+                fname       : '',
+                role        : '',
+                bank        : ''
             }
         }
     },
@@ -124,7 +169,6 @@ export default {
             }
 
             axios.post('/api/super/addNewMember', dataUserBaru).then(qry => {
-                // console.log(qry.data)
                 alert(qry.data.message)
                 return location.reload()
             }).catch(errors => {

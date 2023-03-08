@@ -87,14 +87,15 @@ export default {
     methods: {
         tambahBankBaru() {
 
-            const dataBank = {
+            let dataBank = {
                 namabank        : this.formBankBaru.namabank,
                 alamatbank      : this.formBankBaru.alamatbank
             }
+
             axios.post('/api/super/addNewBank', dataBank).then(res2 => {
                 alert(res2.data.message)
                 console.log(res2)
-                // location.reload()
+                location.reload()
             }).catch(err2 => {
                 alert(err2.data.message)
             })

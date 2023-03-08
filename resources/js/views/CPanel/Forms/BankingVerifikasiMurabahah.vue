@@ -36,7 +36,7 @@
                     <button class="bg-red-700 text-white w-full p-2 mt-2"  @click="konfirmasi">Simpan untuk menolak permintaan</button>
                 </div>
             </div>
-            <div class="bg-white border p-4 m-2 row-span-2" v-if="keputusan == 'terima'">
+            <!-- <div class="bg-white border p-4 m-2 row-span-2" v-if="keputusan == 'terima'">
                 <div>
                     <label>Nama Barang</label>
                     <input type="text" class="p-2 w-full border" v-model="formDummy.nama_barang" placeholder="Nama barang yang dipesan nasabah" />
@@ -58,7 +58,7 @@
                     <label>Margin untuk Bank</label>
                     <input class="p-2 w-full border" v-model="formDummy.surplus_untuk_bank" @keyup="kalkulasiSurplusBank" />
                 </div>
-            </div>
+            </div> -->
             <div class="bg-white border p-4 m-2 row-span-2" v-if="keputusan == 'terima'">
                 <label>Nama Barang</label>
                 <input type="text" class="p-2 w-full border" v-model="formDummy.nama_barang" placeholder="Nama barang yang dipesan nasabah" />

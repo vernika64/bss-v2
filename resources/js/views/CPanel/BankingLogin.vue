@@ -44,19 +44,26 @@ export default {
     methods: {
         masukKeDashboard(e) {
             // console.log(this.formLogin)
-
+            e.preventDefault()
             axios.post('/api/super/login', { username: this.formLogin.username, password: this.formLogin.password }).then(res => {
-                console.log(res.data)
-                localStorage.setItem('uname', res.data.nama)
-                if (res.data.role == 'admin') {
-                    router.go({ name: 'SuperDashboard' })
-                } else if (res.data.role == 'office') {
-                    router.go({ name: 'BankingDashboard' })
+
+                if(res.data.status == 200) {
+
+                    console.log(res.data)
+                    localStorage.setItem('uname', res.data.nama)
+
+                    if (res.data.role == 'admin') {
+                        router.go({ name: 'SuperDashboard' })
+                    } else if (res.data.role == 'office') {
+                        router.go({ name: 'BankingDashboard' })
+                    } else {
+                        alert('Server error, silahkan hubungi web administrator')
+                    }
                 } else {
                     alert('Server error, silahkan hubungi web administrator')
                 }
+
             })
-            e.preventDefault()
         }
     },
     data() {

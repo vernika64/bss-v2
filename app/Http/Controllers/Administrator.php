@@ -100,14 +100,53 @@ class Administrator extends Controller
             $ModelBank = SysBank::find($re->bankTujuan);
             
             return response()->json([
-                'status'      => true,
-                'message'     => $username . ' berhasil ditambahkan dan terdaftar di ' . $ModelBank->nama_bank
+                'status'      => 200,
+                'message'     => $re->username . ' berhasil ditambahkan dan terdaftar di ' . $ModelBank->nama_bank
             ]);
         } catch (\Throwable $th) {
             return response()->json([
                 'data'      => $th->getMessage(),
-                'status'    => false,
+                'status'    => 500,
                 'message'   => 'Server Error!'
+            ]);
+        }
+    }
+
+    public function getMemberDetails(Request $re)
+    {
+        try {
+            $username        = $re->username;
+
+            $query  = SysUser::where('username', $username)->firstOrFail();
+
+            $query_role = SysRole::where('kd_role', $query->role)->firstOrFail();
+
+            $data   = [
+                'username'  => $query->username,
+                'fname'     => $query->fname,
+                'role'      => $query_role->nama_role
+            ];
+
+            return response()->json([
+                'data'          => $data,
+                'status'        => 200
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message'   => $th->getMessage(),
+                'data'      => 500
+            ]);
+        }
+    }
+
+    public function changeMemberPassword(Request $re)
+    {
+        try {
+            //code...
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message'   => $th->getMessage(),
+                'data'      => 500
             ]);
         }
     }
