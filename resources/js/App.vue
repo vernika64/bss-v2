@@ -6,8 +6,8 @@
         <router-view />
     </template>
     <template v-else>
-        <div class="flex">
-            <div class="bg-sidebar text-white w-[300px] bg-fixed">
+        <div class="flex h-full">
+            <div class="bg-sidebar text-white md:w-[30%] lg:w-[18%] bg-fixed">
                 <ul class="grid gap-4 pr-5 pl-5" v-if="userRole == 'admin'">
                     <li class="italic text-xl  pb-4 pt-4 mt-2">Syariah Multi</li>
                     <li class="bg-slate-900 p-4 rounded-md ">
@@ -111,7 +111,7 @@
                     </div>
                 </div>
                 <div class="bg-white">
-                    <div class="h-screen">
+                    <div>
                         <router-view />
                     </div>
                 </div>

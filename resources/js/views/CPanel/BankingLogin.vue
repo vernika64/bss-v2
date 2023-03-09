@@ -1,6 +1,5 @@
 <template>
 
-
     <div class="flex h-screen bg-ppurple">
         <div class="grid grid-cols-2 w-[900px] h-[500px] m-auto bg-white rounded-md">
             <div class="bg-utah-road rounded-l-md">
@@ -9,15 +8,24 @@
                 <div>
                     <h1 class="text-2xl mb-4 italic">Syariah Multi</h1>
                     <p class="mb-4">Silahkan login untuk melanjutkan</p>
-                    <form class="grid gap-2">
-                        <input class="border p-2 font-light rounded-md shadow-sm" v-model="formLogin.username"
-                            type="text" placeholder="Username" />
-                        <input class="border p-2 font-light rounded-md shadow-sm" v-model="formLogin.password"
-                            type="password" placeholder="Password" />
 
-                        <input
-                            class="border bg-blue-500 text-white p-2 rounded-md hover:bg-blue-900 shadow-sm transition-all ease-in-out cursor-pointer"
-                            type="submit" value="Login" @click="masukKeDashboard" />
+                    <form class="grid gap-2">
+
+                        <input class="border p-2 font-light rounded-md shadow-sm" 
+                            v-model="formLogin.username"
+                            type="text" 
+                            placeholder="Username" />
+
+                        <input class="border p-2 font-light rounded-md shadow-sm" 
+                            v-model="formLogin.password"
+                            type="password" 
+                            placeholder="Password" />
+
+                        <input class="border bg-blue-500 text-white p-2 rounded-md hover:bg-blue-900 shadow-sm transition-all ease-in-out cursor-pointer"
+                            type="submit" 
+                            value="Login" 
+                            @click="masukKeDashboard" />
+
                     </form>
                 </div>
             </div>
