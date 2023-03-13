@@ -11,7 +11,7 @@ module.exports = {
       },
       colors: {
         'sidebar': '#1b213d',
-        'content': '#151934',
+        'content': '#77c3ec',
         'navbar': '#1c2340',
         'ppurple': '#1b213d'
       }

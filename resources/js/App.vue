@@ -8,14 +8,17 @@
     <template v-else>
         <div class="flex h-full">
             <div class="bg-sidebar text-white md:w-[30%] lg:w-[18%] bg-fixed">
+
+                <!-- Untuk user dengan role Admin -->
+
                 <ul class="grid gap-4 pr-5 pl-5" v-if="userRole == 'admin'">
                     <li class="italic text-xl  pb-4 pt-4 mt-2">Syariah Multi</li>
-                    <li class="bg-slate-900 p-4 rounded-md ">
+                    <li class="bg-slate-900 p-4 rounded-md focus:bg-content">
                         <router-link :to="{ name: 'SuperDashboard' }" class="flex">
                             <home-icon class="h-7 w-7 mr-3" />Dashboard
                         </router-link>
                     </li>
-                    <li class="bg-slate-900 p-4 rounded-md ">
+                    <li class="bg-slate-900 p-4 rounded-md focus:bg-blue-500">
                         <router-link :to="{ name: 'SuperBank' }" class="flex">
                             <office-building-icon class="h-7 w-7 mr-3" /> Bank
                         </router-link>
@@ -154,9 +157,17 @@ export default {
     },
     data() {
         return {
-            tanggal: '',
-            userCpanel: 'User',
-            userRole: ''
+            tanggal         : '',
+            userCpanel      : 'User',
+            userRole        : '',
+            menuAdmin: {
+                menuDashboard   : false,
+                menuBank        : false,
+                menuUser        : false,
+                menuPekerjaan   : false,
+                menuBkAkuntansi : false,
+                menuDevArea     : false
+            }
         }
     },
     methods: {

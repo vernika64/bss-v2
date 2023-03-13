@@ -20,16 +20,14 @@ class Administrator extends Controller
     public function getMemberDataAll(Request $re)
     {
         try {
-
-
             $ModelUser = SysUser::whereNotIn('sys_user.id', [1])
                 ->join('sys_bank', 'sys_user.kd_bank', '=', 'sys_bank.id')
                 ->join('sys_role', 'sys_user.role', '=', 'sys_role.kd_role')
-                ->get(['fname', 'nama_bank', 'nama_role']);
+                ->get(['username', 'fname', 'nama_bank', 'nama_role']);
 
             if (empty($ModelUser)) {
                 // Jika nilainya 0 atau NULL
-                return "datanya gada";
+                return "Data tidak ditemukan";
             }
 
             return response()->json([

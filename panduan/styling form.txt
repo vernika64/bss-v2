@@ -1,0 +1,40 @@
+Unit yang digunakan di dalam format ini menggunakan format dari tailwind
+
+# Modal Box
+
+> border_radius       : lg
+> padding             : 4
+> margin              : auto
+> width               : 1000px
+
+    ## Buttons for Modals
+
+    > background_color    : any
+    > text_color          : black untuk background cerah atau putih untuk background gelap
+    > shadow              : yes
+    > border_radius       : md
+    
+    Note : pastikan warna background dan warna teks di button dapat dilihat jelas
+
+# Forms
+
+    ## Text Box
+
+    > border              : yes
+    > shadow              : yes
+    > border_color        : slate-300
+    > background_color    : white
+    > border_radius       : md
+
+
+# Table
+
+> row_padding         : 3
+> border              : yes
+> border_color        : white
+
+    ## Buttons for Table
+
+    > border_radius       : md
+    > text_size           : sm
+    > padding             : 2

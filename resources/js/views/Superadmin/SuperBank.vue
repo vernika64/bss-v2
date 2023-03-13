@@ -33,7 +33,6 @@
             </table>
         </div>
     </div>
-    
 
 </div>
 
@@ -51,9 +50,9 @@
                             <h1 class="text-2xl text-black mb-10">Tambah Bank Baru</h1>
                             <div class="grid grid-rows-1 gap-2 mb-10">
                                 <label class="font-bold text-black">Nama Bank</label>
-                                <input type="text" class="border border-slate-500 bg-white p-1" v-model="formBankBaru.namabank" />
+                                <input type="text" class="border border-slate-300 bg-white p-1 rounded-md" v-model="formBankBaru.namabank" />
                                 <label class="font-bold text-black">Alamat Bank</label>
-                                <input type="text" class="border border-slate-500 bg-white p-1" v-model="formBankBaru.alamatbank" />
+                                <input type="text" class="border border-slate-300 bg-white p-1 rounded-md" v-model="formBankBaru.alamatbank" />
                             </div>
                             <div class="grid grid-cols-2 gap-4">
                                 <button class="bg-slate-300 text-black p-2 rounded-md" @click="openModalAddBank = false">Tutup</button>
