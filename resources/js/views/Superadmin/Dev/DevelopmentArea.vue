@@ -12,6 +12,10 @@
                 <download-icon class="h-[50px] w-[50px] mb-4 mt-2" />
                 <h1>Tabungan Wadiah</h1>
             </router-link>
+            <router-link class="p-2 bg-white shadow-md grid justify-items-center text-center" :to="{ name: 'Tabungan' }">
+                <book-open-icon class="h-[50px] w-[50px] mb-4 mt-2" />
+                <h1>Buku Tabungan Wadiah</h1>
+            </router-link>
             <router-link class="p-2 bg-white shadow-md grid justify-items-center text-center" :to="{ name: 'JualBeliMurabahah'}">
                 <cash-icon class="h-[50px] w-[50px] mb-4 mt-2" />
                 <h1>Jual Beli akad Murabahah</h1>

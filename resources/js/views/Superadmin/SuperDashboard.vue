@@ -5,10 +5,13 @@
         <p>Selamat datang di Cpanel Syariah Multi</p>
     </div>
 </div>
+<div class="ml-5">
+    
+</div>
 </template>
 
 <script>
 export default {
-
+    
 }
 </script>

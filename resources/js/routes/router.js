@@ -8,6 +8,11 @@ import Peko_404             from '../views/System/404.vue'
 // import SuperMahasiswa       from "../views/Superadmin/SuperMahasiswa.vue"
 // import SuperGrup            from "../views/Superadmin/SuperGrup.vue"
 
+// Aset untuk komponen
+
+import UserBankingSidebar   from '../views/Components/UserBankingSidebar.vue'
+import UserAdminSidebar     from '../views/Components/UserAdminSidebar.vue'
+
 import SuperLogin           from '../views/Superadmin/SuperLogin.vue'
 import SuperDashboard       from '../views/Superadmin/SuperDashboard.vue'
 import SuperBank            from "../views/Superadmin/SuperBank.vue"
@@ -58,149 +63,205 @@ const routes = [
 
     {   
         path            : '/banking/dashboard',
-        component       : BankingDashboard,
-        name            : 'BankingDashboard'
+        name            : 'BankingDashboard',
+        components      : { 
+            default : BankingDashboard,
+            sidebar : UserBankingSidebar
+        }
     },
 
     {
         path            : '/banking/cif',
-        component       : BankingCIF,
         name            : 'CIF',
-        props           :   {
-                                teksNavbar  : 'Customer Identification File'
-                            }
+        components      : { 
+            default : BankingCIF,
+            sidebar : UserBankingSidebar
+        }
     },
 
     // Rute untuk Superadmin
 
     {   
-        path            : '/supercpl/',
-        component       : SuperDashboard
+        path             : '/supercpl/',
+        components       : {
+            default : SuperDashboard,
+            sidebar : UserAdminSidebar
+        }
     },
 
     {
         path            : '/supercpl/superdashboard/',
-        component       : SuperDashboard,
-        name            : 'SuperDashboard'
+        name            : 'SuperDashboard',
+        components      : {
+            default : SuperDashboard,
+            sidebar : UserAdminSidebar
+        }
     },
 
     {
         path            : '/supercpl/superbank',
-        component       : SuperBank,
-        name            : 'SuperBank'
+        name            : 'SuperBank',
+        components      : {
+            default : SuperBank,
+            sidebar : UserAdminSidebar
+        }
     },
     { 
         path            : '/supercpl/superbank/detail/:bankID',
-        component       : SuperBankDetail,
-        name            : 'SuperBankDetail'
+        name            : 'SuperBankDetail',
+        components      : {
+            default : SuperBankDetail,
+            sidebar : UserAdminSidebar
+        }
     },
 
     { 
         path            : '/supercpl/superuser/',
-        component       : SuperUser,
-        name            : 'SuperUser'
+        name            : 'SuperUser',
+        components       : {
+            default : SuperUser,
+            sidebar : UserAdminSidebar
+        }
     },
 
 
     { 
         path            : '/supercpl/superpekerjaan/',
-        component       : SuperPekerjaan,
-        name            : 'SuperPekerjaan'
+        name            : 'SuperPekerjaan',
+        components      : {
+            default : SuperPekerjaan,
+            sidebar : UserAdminSidebar
+        }
     },
 
     {
         path            : '/supercpl/superakuntansi/',
-        component       : SuperAkunAkuntansi,
-        name            : 'SuperAkunAkuntansi'
+        name            : 'SuperAkunAkuntansi',
+        components      : {
+            default : SuperAkunAkuntansi,
+            sidebar : UserAdminSidebar
+        }
     },
 
     { 
         path            : devurl,
-        component       : DevArea,
-        name            : 'DevelopmentArea'
+        name            : 'DevelopmentArea',
+        components      : {
+            default : DevArea,
+            sidebar : UserAdminSidebar
+        }
     },
 
-    // Customer Identification File
+    // Rute untuk role Office serbaguna
 
     { 
         path            : releaseurl + '/cif',
-        component       : BankingCIF,
-        name            : 'CIF'
+        name            : 'CIF',
+        components      : {
+            default : BankingCIF,
+            sidebar : UserBankingSidebar
+        },
     },
 
     { 
         path            : releaseurl + '/cif/add',
-        component       : BankingCIFAdd,
-        name            : 'CIFAdd'
+        name            : 'CIFAdd',
+        components      : {
+            default : BankingCIFAdd,
+            sidebar : UserBankingSidebar
+        }
     },
+    
     {
         path            : releaseurl + '/cifdetail/',
-        component       : BankingCIFDetail,
-        name            : 'CIFDetail'
+        name            : 'CIFDetail',
+        components       : {
+            default : BankingCIFDetail,
+            sidebar : UserBankingSidebar
+        }
     },
-
-    // Tabungan Wadiah
 
     { 
         path            : devurl + '/tabungan',
-        component       : BankingTabungan,
-        name            : 'Tabungan'
+        name            : 'Tabungan',
+        components      : {
+            default : BankingTabungan,
+            sidebar : UserBankingSidebar
+        }
     },
 
     {
         path            : devurl + '/tabungan/tarik_setor_tunai',
-        component       : BankingTabunganTarikSetorTunai,
-        name            : 'TabunganTarikSetorTunai'
+        name            : 'TabunganTarikSetorTunai',
+        components      : {
+            default : BankingTabunganTarikSetorTunai,
+            sidebar : UserBankingSidebar
+        }
     },
 
     {
         path            : devurl + '/tabungan/transfer_uang',
-        component       : BankingTabunganTransferUang,
-        name            : 'TabunganTransferUang'
+        name            : 'TabunganTransferUang',
+        component       : {
+            default : BankingTabunganTransferUang,
+            sidebar : UserBankingSidebar
+        }
     },
-
-    // Jual Beli Murabahah
 
     {
         path            : devurl + '/jualbeli',
-        component       : BankingJualBeliMurabahah,
-        name            : 'JualBeliMurabahah'
+        name            : 'JualBeliMurabahah',
+        components      : {
+            default : BankingJualBeliMurabahah,
+            sidebar : UserBankingSidebar
+        }
     },
 
     {
         path            : devurl + '/jualbelidetail/',
-        component       : BankingJualBeliMurabahahDetail,
         name            : 'JualBeliMurabahahDetail',
+        components      : {
+            default : BankingJualBeliMurabahahDetail,
+            sidebar : UserBankingSidebar
+        }
     },
-
-    // Untuk Storage
 
     {
         path            : devurl + '/permintaanbarang/',
-        component       : BankingPermintaanBarangMurabahah,
         name            : 'PermintaanBarangMurabahah',
+        components      : {
+            default : BankingPermintaanBarangMurabahah,
+            sidebar : UserBankingSidebar
+        }
     },
-
-    // Untuk Angsuran Murabahah
 
     {
         path            : devurl + '/angsuranmurabahah/',
-        component       : BankingAngsuranMurabahah,
-        name            : 'AngsuranMurabahah'
+        name            : 'AngsuranMurabahah',
+        components      : {
+            default : BankingAngsuranMurabahah,
+            sidebar : UserBankingSidebar
+        }
     },
 
     // Untuk Jurnal Umum
 
     {
         path            : devurl + '/daftarjurnalumum',
-        component       : BankingDaftarJurnalUmum,
-        name            : 'DaftarJurnalUmum'
+        name            : 'DaftarJurnalUmum',
+        component       : {
+            default : BankingDaftarJurnalUmum,
+            sidebar : UserBankingSidebar
+        }
     },
 
     {
         path            : devurl + '/daftarjurnalumum/',
-        component       : BankingDaftarJurnalUmumDetail,
-        name            : 'DaftarJurnalUmumDetail'
+        name            : 'DaftarJurnalUmumDetail',
+        component       : {
+            default : BankingDaftarJurnalUmumDetail,
+            sidebar : UserBankingSidebar
+        }
     },
  
     // { path: '/supercpl/supermahasiswa/',    component: SuperMahasiswa,      name: 'SuperMahasiswa'},
@@ -221,11 +282,10 @@ router.beforeEach((to, from, next) => {
         next();
     } else {
         axios.get('/api/super/tknCheck').then(tkn => {
-            if(tkn.data.status == 'token_notexist')
+            if(tkn.data.status == 404)
             {
                 return router.push({name: 'BankingLogin'})
             }
-            // console.log(tkn.data)
         })
 
         next()

@@ -13,7 +13,7 @@
                         <th class="p-4 bg-slate-500 text-slate-100 bold text-left">Username</th>
                         <th class="p-4 bg-slate-500 text-slate-100 bold text-left">Terdaftar di Bank</th>
                         <th class="p-4 bg-slate-500 text-slate-100 bold text-left">Role</th>
-                        <th class="p-4 bg-slate-500 text-slate-100 bold text-center">Aksi</th>
+                        <!-- <th class="p-4 bg-slate-500 text-slate-100 bold text-center">Aksi</th> -->
                     </tr>
                 </thead>
                 <tbody class="bg-white">
@@ -22,11 +22,11 @@
                         <td class="border border-white p-3">{{ user.fname }}</td>
                         <td class="border border-white p-3">{{ user.nama_bank }}</td>
                         <td class="border border-white p-3">{{ user.nama_role }}</td>
-                        <td class="border border-white p-3 text-center">
+                        <!-- <td class="border border-white p-3 text-center">
                             <button class="bg-blue-500 p-2 inline-block text-white text-sm rounded-md mr-1 ml-1" @click="openModalUserDetails = true">
                                 Detail
                             </button>
-                        </td>
+                        </td> -->
                     </tr>
                 </tbody>
             </table>
@@ -35,24 +35,25 @@
 
     <!-- Modal Section for Add New User -->
     <Transition name="slide-fade">
+
+
         <div class="flex flex-col w-full h-full bg-slate-900 left-0 top-0 fixed bg-opacity-70 justify-center align-middle" v-if="openModalAddUser == true">
-            <!-- Modal Content -->
             
                 <div class="relative bg-white rounded-lg p-4 m-auto w-[1000px]">
                     <div class="grid grid-rows-1">
-                        <h1 class="text-2xl text-black mb-10">Tambah User Baru</h1>
-                        <div class="grid grid-rows-1 gap-2 mb-10">
-                                <label class="font-bold text-black">Username</label>
-                                <input type="text" class="border border-slate-300 bg-white p-1 rounded-md" v-model="formTambahUser.username" placeholder="Username hanya bisa menggunakan satu kata tanpa spasi, Contoh: Junaedi" />
+                        <h1 class="text-2xl text-black mb-5">Tambah User Baru</h1>
+                        <div class="grid grid-rows-1 mb-5">
+                                <label class="text-black mb-2">Username</label>
+                                <input type="text" class="border bg-slate-200 pt-1 pb-1 pl-2 rounded-md h-[50px] mb-3" v-model="formTambahUser.username" placeholder="Username hanya bisa menggunakan satu kata tanpa spasi, Contoh: Junaedi" />
 
-                                <label class="font-bold text-black">Bank Tujuan</label>
-                                <select class="border border-slate-300 bg-white p-1 rounded-md" v-model="formTambahUser.bankTujuan">
+                                <label class="text-black mb-2">Bank Tujuan</label>
+                                <select class="border bg-slate-200 pt-1 pb-1 pl-2 rounded-md h-[50px] mb-3" v-model="formTambahUser.bankTujuan">
                                     <option :value="0">-- Pilih Bank Tujuan --</option>
                                     <option v-for="bnk in listBank" :key="bnk.kd_bank" :value="bnk.id">{{ bnk.kd_bank }} - {{ bnk.nama_bank }}</option>
                                 </select>
 
-                                <label class="font-bold text-black">Pekerjaan</label>
-                                <select class="border border-slate-300 bg-white p-1 rounded-md" v-model="formTambahUser.pekerjaan">
+                                <label class="text-black mb-2">Pekerjaan</label>
+                                <select class="border bg-slate-200 pt-1 pb-1 pl-2 rounded-md h-[50px] mb-3" v-model="formTambahUser.pekerjaan">
                                     <option :value="0">-- Pilih Pekerjaan --</option>
                                     <option v-for="pkj in listRole" :key="pkj.kd_role" :value="pkj.kd_role">{{ pkj.nama_role }}</option>
                                 </select>
@@ -69,7 +70,6 @@
             
         </div>
     </Transition>
-    <!--  -->
     
     <!-- Modal Section for User Details -->
     <Transition name="slide-fade">

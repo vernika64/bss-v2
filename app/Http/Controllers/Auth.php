@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SysBank;
 use App\Models\SysToken;
 use App\Models\SysUser;
 use Illuminate\Http\Request;
@@ -15,10 +16,31 @@ class Auth extends Controller
 
             $ModelUser = SysUser::where('username', $re->username)->first();
 
-            if(!$ModelUser || !Hash::check($re->password, $ModelUser->password))
+            if(empty($ModelUser))
             {
                 return response()->json([
-                    'status'    => 'Username atau Password salah'
+                    'message'   => 'Akun tidak terdaftar',
+                    'status'    => 404
+                ]);
+            } else if(!Hash::check($re->password, $ModelUser->password))
+            {
+                return response()->json([
+                    'message'   => 'Password salah',
+                    'status'    => 400
+                ]);
+            } else if(!$ModelUser) {
+                return response()->json([
+                    'message'   => 'Terjadi kesalahan di server, silahkan coba lagi',
+                    'status'    => 500
+                ]);
+            }
+
+            $ModelBank = SysBank::find($ModelUser->kd_bank);
+            if(empty($ModelBank))
+            {
+                return response()->json([
+                    'message'       => 'Terdapat kesalahan pada data user, mohon laporkan ke web admin untuk perbaikan',
+                    'status'        => 500
                 ]);
             }
 
@@ -33,14 +55,15 @@ class Auth extends Controller
 
             return response()->json([
                 'role'      => $ModelUser->role,
+                'user'      => $ModelUser->username,
                 'nama'      => $ModelUser->fname,
                 'status'    => 200
             ])->withCookie($kuki);
 
         } catch (\Throwable $th) {
             return response()->json([
-                'data'      => $th->getMessage(),
-                'status'    => 'Username atau Password salah'
+                'message'   => 'Terjadi kesalahan di server, silahkan hubungi staff IT untuk memperbaiki kesalahan di server.',
+                'status'    => 500
             ]);
         }
     }
@@ -54,46 +77,21 @@ class Auth extends Controller
 
             if(!$ModelToken) {
                 return response()->json([
-                    'status'      => 'token_notexist'
+                    'status'      => 404
                 ]);
             }
 
-            $ModelUser  = SysUser::where('username', $ModelToken->kd_user)->first();
+            $ModelUser  = SysUser::where('username',  $ModelToken->kd_user)->first();
 
             if(!$ModelUser) {
                 return response()->json([
-                    'status'      => 'user_notlisted'
+                    'status'      => 404
                 ]);
             }
 
             return response()->json([
-                'token'     => $kuki,
-                'user'      => $ModelToken->kd_user,
                 'role'      => $ModelUser->role
             ]);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'data'      => $th->getMessage(),
-                'status'    => 'server_error'
-            ]);
-        }
-    }
-
-    public function checkSudahLogin(Request $re)
-    {
-        try {
-            if($re->cookie('tkn') == null)
-            {
-                return response()->json(['status' => 'token_notfound']);                // Token tidak ditemukan di komputer client
-            } else {
-                $ModelToken = SysToken::where('token', $re->cookie('tkn'))->first();
-
-                if(!$ModelToken) {
-                    return response()->json(['status' => 'token_notlisted']);           // Token tidak terdaftar di server
-                }
-
-                return response()->json(['status' => 'token_available']);               // Token OK
-            }
         } catch (\Throwable $th) {
             return response()->json([
                 'data'      => $th->getMessage(),
@@ -111,7 +109,8 @@ class Auth extends Controller
 
             if(!$ModelToken) {
                 return response()->json([
-                    'status'        => 'token_error'
+                    'status'        => '400',
+                    'message'       => 'Token tidak ditemukan, proses logout sekarang'
                 ]);
             }
 
@@ -122,6 +121,46 @@ class Auth extends Controller
                 return response()->json([ 'status' => 'logout_error']);
             }
             
+        } catch (\Throwable $th) {
+            return response()->json([
+                'data'      => $th->getMessage(),
+                'status'    => 'server_error'
+            ]);
+        }
+    }
+
+    // GRAVEYARD
+
+    public function checkSudahLogin(Request $re)
+    {
+        try {
+            if(empty($re->cookie('tkn')))
+            {
+                return response()->json([
+                    'status'    => 404,
+                    'message'   => 'Login token not found'
+                ]);
+            } else {
+                $ModelToken = SysToken::where('token', $re->cookie('tkn'))->first();
+
+                if(!$ModelToken) {
+                    return response()->json([
+                        'status'    => 403,
+                        'message'   => 'Login token not registered in system'
+                    ]);
+                }
+
+                $uname      = $ModelToken->kd_user; 
+
+                $ModelUser  = SysUser::where('username', $uname)->first(); 
+
+                return response()->json([
+                    'status'    => 200,
+                    'message'   => 'Login token available',
+                    'role'      => $ModelUser->role,
+                    'isi'       => $ModelToken,
+                ]);
+            }
         } catch (\Throwable $th) {
             return response()->json([
                 'data'      => $th->getMessage(),
