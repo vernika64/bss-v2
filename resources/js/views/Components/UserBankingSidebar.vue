@@ -88,6 +88,7 @@ export default {
             axios.get('/api/super/keluar').then(out => {
                 console.log(out.data)
                 localStorage.removeItem('uname')
+                localStorage.removeItem('user')
                 return this.$router.push({ name: 'BankingLogin' })
             }).catch(out_err => {
                 console.log(out_err.data)
@@ -119,7 +120,7 @@ export default {
                 },
                 {
                     sidebarName     : 'Jual Beli Murabahah',
-                    sidebarUrl      : 'Tabungan',
+                    sidebarUrl      : 'JualBeliMurabahah',
                     sidebarStatus   : false
                 },
                 {

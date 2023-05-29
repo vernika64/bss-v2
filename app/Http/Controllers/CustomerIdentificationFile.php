@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\MetodeBerguna;
+
 use App\Models\BankCIF;
 use App\Models\SysToken;
 use App\Models\SysUser;
@@ -223,6 +225,39 @@ class CustomerIdentificationFile extends Controller
                 'message'    => 'Server Error!',
                 'status'       => false
             ]);
+        }
+    }
+
+    public function getNomorIdentitas(Request $re)
+    {
+        try {
+
+            $tipe       = $re->tipe;
+            
+            $nomerid    = $re->nomerid;
+
+            $ModelCIF = BankCIF::where(['tipe_id' => $tipe, 'kd_identitas' => $nomerid])->first();
+
+            if(!empty($ModelCIF)) {
+                return response()->json([
+                    'status'    => 400,
+                    'message'   => 'Identitas sudah terdaftar',
+                    'data'      => [
+                        'nama'          => $ModelCIF->nama_sesuai_identitas,
+                        'tipe_id'       => $ModelCIF->tipe_id,
+                        'kd_identitas'  => $ModelCIF->kd_identitas
+                    ]
+                ]);
+            }
+
+            return response()->json([
+                'status'    => 200,
+                'message'   => 'Identitas belum terdaftar'
+            ]);
+            
+        } catch (\Throwable $th) {
+            $err = new MetodeBerguna();
+            return response()->json($err->outErrCatch($th->getMessage()));
         }
     }
 }

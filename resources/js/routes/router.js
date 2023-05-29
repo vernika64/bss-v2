@@ -249,7 +249,7 @@ const routes = [
     {
         path            : devurl + '/daftarjurnalumum',
         name            : 'DaftarJurnalUmum',
-        component       : {
+        components      : {
             default : BankingDaftarJurnalUmum,
             sidebar : UserBankingSidebar
         }
@@ -258,7 +258,7 @@ const routes = [
     {
         path            : devurl + '/daftarjurnalumum/',
         name            : 'DaftarJurnalUmumDetail',
-        component       : {
+        components      : {
             default : BankingDaftarJurnalUmumDetail,
             sidebar : UserBankingSidebar
         }

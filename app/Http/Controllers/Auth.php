@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\MetodeBerguna;
+
 use App\Models\SysBank;
 use App\Models\SysToken;
 use App\Models\SysUser;
@@ -61,10 +63,8 @@ class Auth extends Controller
             ])->withCookie($kuki);
 
         } catch (\Throwable $th) {
-            return response()->json([
-                'message'   => 'Terjadi kesalahan di server, silahkan hubungi staff IT untuk memperbaiki kesalahan di server.',
-                'status'    => 500
-            ]);
+            $out = new MetodeBerguna();
+            return response()->json($out->outErrCatch($th->getMessage()));
         }
     }
 
@@ -77,7 +77,8 @@ class Auth extends Controller
 
             if(!$ModelToken) {
                 return response()->json([
-                    'status'      => 404
+                    'status'        => 404,
+                    'message'       => 'User tidak terdaftar'
                 ]);
             }
 
@@ -85,7 +86,8 @@ class Auth extends Controller
 
             if(!$ModelUser) {
                 return response()->json([
-                    'status'      => 404
+                    'status'        => 404,
+                    'message'       => 'Token tidak terdaftar'
                 ]);
             }
 
@@ -95,7 +97,8 @@ class Auth extends Controller
         } catch (\Throwable $th) {
             return response()->json([
                 'data'      => $th->getMessage(),
-                'status'    => 'server_error'
+                'status'    => 500,
+                'message'   => 'Terjadi kesalahan di server, silahkan hubungi admin website'
             ]);
         }
     }
@@ -162,10 +165,9 @@ class Auth extends Controller
                 ]);
             }
         } catch (\Throwable $th) {
-            return response()->json([
-                'data'      => $th->getMessage(),
-                'status'    => 'server_error'
-            ]);
+
+            $data = new MetodeBerguna;
+            return response()->json($data->outputErrorCatch($th->getMessage()));
         }
     }
 }
