@@ -4,7 +4,7 @@
         <div class=" lg:w-1/2 lg:h-[70%] xl:w-1/4 xl:h-[70%] m-auto bg-white rounded-md">
             <!-- Login Section -->
             <div class="pl-8 pr-8 text-center mt-[50px]">
-                <h1 class="text-4xl italic mb-4">Adil</h1>
+                <h1 class="text-4xl italic mb-4">Login</h1>
                 <p>Aplikasi Mini Bank Syariah</p>
                 <p class="mt-4 mb-4">Silahkan login untuk melanjutkan</p>
 
