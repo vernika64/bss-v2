@@ -283,6 +283,15 @@ class CustomerIdentificationFile extends Controller
             $auth   = new Auth();
 
             $output = $auth->loginCheck($token);
+
+            if($output->status == false) {
+                return "gatot";
+            } else if($output->status == true) {
+                dd($output);
+            } else {
+                return "server error";
+            }
+            
         } catch (\Throwable $th) {
             return false;
         }

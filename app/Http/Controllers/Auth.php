@@ -7,6 +7,7 @@ use App\Http\Controllers\MetodeBerguna;
 use App\Models\SysBank;
 use App\Models\SysToken;
 use App\Models\SysUser;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use stdClass;
@@ -172,14 +173,11 @@ class Auth extends Controller
         }
     }
 
-    // Output Boolean
     public function loginCheck($token)
     {
         try {
 
             $ModelToken = SysToken::where(['token' => $token])->first();
-
-            $ModelUser  = SysUser::where('username', $ModelToken->kd_user)->first();
 
             if(empty($ModelToken)) {
                 $out = new stdClass();
@@ -187,10 +185,21 @@ class Auth extends Controller
 
                 return $out;
             } else {
-                $out = new stdClass();
-                $out->status    = true;
-                $out->uname     = $ModelToken->kd_user;
-                $out->kd_bank   = $ModelUser->kd_bank;
+                $ModelUser          = SysUser::where('username', $ModelToken->kd_user)->first();
+                
+                $dibuat             = $ModelToken->created_at;
+                $expired            = strtotime($dibuat);
+                $exp_datetime       = date('Y-m-d H:i:s', $expired);
+                $exp_date           = date('Y-m-d');
+                $curr_datetime      = date('Y-m-d H:i:s');
+                
+                $out                = new stdClass();
+                $out->status        = true;
+                $out->uname         = $ModelToken->kd_user;
+                $out->kd_bank       = $ModelUser->kd_bank;
+                $out->timezone      = date_default_timezone_get();
+                $out->current       = $curr_datetime;
+                $out->exp           = $exp_datetime;
 
                 return $out;
             }

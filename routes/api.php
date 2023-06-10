@@ -123,7 +123,7 @@ Route::get('/bank/ambilDataJurnalUmum', [JurnalAkuntansi::class, 'getDataJurnalA
 Route::get('/bank/ambilDataJurnalUmum/{id}', [JurnalAkuntansi::class, 'getDataJurnalAkuntansiDetail']);
 
 // Dummy
-Route::get('/bank/cekDataNasabah', [CustomerIdentificationFile::class, 'cekNasabah']);
+Route::get('/bank/cekDataNasabah', [CustomerIdentificationFile::class, 'cekDataNasabah']);
 
 // Untuk testing
 Route::get('/teskoneksi', function() {
