@@ -188,32 +188,34 @@ class CustomerIdentificationFile extends Controller
                     'message'       => 'CIF tidak bisa disimpan, Kode Identitas Sudah Terdaftar di sistem',
                     'status'        => false
                 ]);
+            } 
+            else 
+            {
+                $ModelCIF = new BankCIF;
+
+                $ModelCIF->kd_identitas                 = $re->kd_identitas;
+                $ModelCIF->tipe_id                      = $re->kd_tipe;
+                $ModelCIF->nama_sesuai_identitas        = $re->nama;
+                $ModelCIF->tempat_lahir                 = $re->tempat_lahir;
+                $ModelCIF->tgl_lahir                    = $re->tgl_lahir;
+                $ModelCIF->jenis_kelamin                = $re->jenis_kelamin;
+                $ModelCIF->status_kawin                 = $re->status_kawin;
+                $ModelCIF->kewarganegaraan              = $re->negara;
+                $ModelCIF->alamat_sekarang              = $re->alamat;
+                $ModelCIF->rt_rw                        = $re->rt_rw;
+                $ModelCIF->desa_kelurahan               = $re->desa_kelurahan;
+                $ModelCIF->kecamatan                    = $re->kecamatan;
+                $ModelCIF->kabupaten_kota               = $re->kabupaten_kota;
+                $ModelCIF->provinsi                     = $re->provinsi;
+                $ModelCIF->kode_pos                     = $re->kode_pos;
+                $ModelCIF->no_telp                      = $re->no_telp;
+                $ModelCIF->email                        = $re->email;
+                $ModelCIF->nama_ibu_kandung             = $re->nama_ibu;
+                $ModelCIF->status_pekerjaan             = $re->status_pekerjaan;
+                $ModelCIF->kd_user                      = $ModelUser->id;
+                $ModelCIF->kd_bank                      = $ModelUser->kd_bank;
+                $ModelCIF->save();
             }
-
-            $ModelCIF = new BankCIF;
-
-            $ModelCIF->kd_identitas                 = $re->kd_identitas;
-            $ModelCIF->tipe_id                      = $re->kd_tipe;
-            $ModelCIF->nama_sesuai_identitas        = $re->nama;
-            $ModelCIF->tempat_lahir                 = $re->tempat_lahir;
-            $ModelCIF->tgl_lahir                    = $re->tgl_lahir;
-            $ModelCIF->jenis_kelamin                = $re->jenis_kelamin;
-            $ModelCIF->status_kawin                 = $re->status_kawin;
-            $ModelCIF->kewarganegaraan              = $re->negara;
-            $ModelCIF->alamat_sekarang              = $re->alamat;
-            $ModelCIF->rt_rw                        = $re->rt_rw;
-            $ModelCIF->desa_kelurahan               = $re->desa_kelurahan;
-            $ModelCIF->kecamatan                    = $re->kecamatan;
-            $ModelCIF->kabupaten_kota               = $re->kabupaten_kota;
-            $ModelCIF->provinsi                     = $re->provinsi;
-            $ModelCIF->kode_pos                     = $re->kode_pos;
-            $ModelCIF->no_telp                      = $re->no_telp;
-            $ModelCIF->email                        = $re->email;
-            $ModelCIF->nama_ibu_kandung             = $re->nama_ibu;
-            $ModelCIF->status_pekerjaan             = $re->status_pekerjaan;
-            $ModelCIF->kd_user                      = $ModelUser->id;
-            $ModelCIF->kd_bank                      = $ModelUser->kd_bank;
-            $ModelCIF->save();
 
             return response()->json([
                 'status'    => true,
@@ -232,15 +234,26 @@ class CustomerIdentificationFile extends Controller
     {
         try {
 
+            $auth = 'a';
+
+            if($auth == false)
+            {
+                return response()->json([
+                    'status'    => 403,
+                    'message'   => 'Anda tidak memiliki hak akses ke url ini, silahkan login terlebih dahulu'
+                ]);
+            }
+
             $tipe       = $re->tipe;
             
             $nomerid    = $re->nomerid;
 
             $ModelCIF = BankCIF::where(['tipe_id' => $tipe, 'kd_identitas' => $nomerid])->first();
 
-            if(!empty($ModelCIF)) {
+            if(!empty($ModelCIF))
+            {
                 return response()->json([
-                    'status'    => 400,
+                    'status'    => 200,
                     'message'   => 'Identitas sudah terdaftar',
                     'data'      => [
                         'nama'          => $ModelCIF->nama_sesuai_identitas,
@@ -251,13 +264,27 @@ class CustomerIdentificationFile extends Controller
             }
 
             return response()->json([
-                'status'    => 200,
+                'status'    => 404,
                 'message'   => 'Identitas belum terdaftar'
             ]);
             
         } catch (\Throwable $th) {
             $err = new MetodeBerguna();
             return response()->json($err->outErrCatch($th->getMessage()));
+        }
+    }
+
+    public function cekDataNasabah(Request $re)
+    {
+        try {
+
+            $token  = $re->cookie('tkn');
+
+            $auth   = new Auth();
+
+            $output = $auth->loginCheck($token);
+        } catch (\Throwable $th) {
+            return false;
         }
     }
 }

@@ -122,6 +122,9 @@ Route::get('/bank/historiDataAngsuran/{id}', [JualBeliMurabahah::class, 'ambilHi
 Route::get('/bank/ambilDataJurnalUmum', [JurnalAkuntansi::class, 'getDataJurnalAkuntansi']);
 Route::get('/bank/ambilDataJurnalUmum/{id}', [JurnalAkuntansi::class, 'getDataJurnalAkuntansiDetail']);
 
+// Dummy
+Route::get('/bank/cekDataNasabah', [CustomerIdentificationFile::class, 'cekNasabah']);
+
 // Untuk testing
 Route::get('/teskoneksi', function() {
     return response()->json([

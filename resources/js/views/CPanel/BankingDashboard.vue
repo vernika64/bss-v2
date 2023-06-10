@@ -7,11 +7,15 @@
 </div>
 <div class="m-4 p-4 grid grid-cols-4 gap-2">
     <div class="border border-slate-200 shadow-sm text-center p-4">
-        <h2>Total Nasabah Aktif</h2>
+        <h2>Total Nasabah terdaftar</h2>
         <p class="text-3xl p-4">{{ totalNasabah }}</p>
     </div>
     <div class="border border-slate-200 shadow-sm text-center p-4">
-        <h2>Total Tabugan Wadiah</h2>
+        <h2>Total Saldo Tabungan Wadiah</h2>
+        <p class="text-2xl p-4">{{ konversiKeRp(totalTabungan) }}</p>
+    </div>
+    <div class="border border-slate-200 shadow-sm text-center p-4">
+        <h2>Jumlah transaksi Jual Beli Murabahah</h2>
         <p class="text-2xl p-4">{{ konversiKeRp(totalTabungan) }}</p>
     </div>
 </div>

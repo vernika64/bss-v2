@@ -9,6 +9,7 @@ use App\Models\SysToken;
 use App\Models\SysUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use stdClass;
 
 class Auth extends Controller
 {
@@ -168,6 +169,34 @@ class Auth extends Controller
 
             $data = new MetodeBerguna;
             return response()->json($data->outputErrorCatch($th->getMessage()));
+        }
+    }
+
+    // Output Boolean
+    public function loginCheck($token)
+    {
+        try {
+
+            $ModelToken = SysToken::where(['token' => $token])->first();
+
+            $ModelUser  = SysUser::where('username', $ModelToken->kd_user)->first();
+
+            if(empty($ModelToken)) {
+                $out = new stdClass();
+                $out->status = false;
+
+                return $out;
+            } else {
+                $out = new stdClass();
+                $out->status    = true;
+                $out->uname     = $ModelToken->kd_user;
+                $out->kd_bank   = $ModelUser->kd_bank;
+
+                return $out;
+            }
+
+        } catch (\Throwable $th) {
+            return $th->getMessage();
         }
     }
 }

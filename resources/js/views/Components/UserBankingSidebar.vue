@@ -124,6 +124,16 @@ export default {
                     sidebarStatus   : false
                 },
                 {
+                    sidebarName     : 'Barang u/ Murabahah',
+                    sidebarUrl      : 'PermintaanBarangMurabahah',
+                    sidebarStatus   : false
+                },
+                {
+                    sidebarName     : 'Angsuran Murabahah',
+                    sidebarUrl      : 'AngsuranMurabahah',
+                    sidebarStatus   : false
+                },
+                {
                     sidebarName     : 'Akuntansi Perbankan',
                     sidebarUrl      : 'DaftarJurnalUmum',
                     sidebarStatus   : false
