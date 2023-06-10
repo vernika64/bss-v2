@@ -65,7 +65,8 @@ class Auth extends Controller
             ])->withCookie($kuki);
 
         } catch (\Throwable $th) {
-            $out = new MetodeBerguna();
+            $out        = new MetodeBerguna();
+
             return response()->json($out->outErrCatch($th->getMessage()));
         }
     }
@@ -97,11 +98,9 @@ class Auth extends Controller
                 'role'      => $ModelUser->role
             ]);
         } catch (\Throwable $th) {
-            return response()->json([
-                'data'      => $th->getMessage(),
-                'status'    => 500,
-                'message'   => 'Terjadi kesalahan di server, silahkan hubungi admin website'
-            ]);
+            $ModelBerguna = new MetodeBerguna;
+
+            return response()->json($ModelBerguna->outErrCatch($th->getMessage()));
         }
     }
 
@@ -127,10 +126,9 @@ class Auth extends Controller
             }
             
         } catch (\Throwable $th) {
-            return response()->json([
-                'data'      => $th->getMessage(),
-                'status'    => 'server_error'
-            ]);
+            $ModelBerguna = new MetodeBerguna;
+
+            return response()->json($ModelBerguna->outErrCatch($th->getMessage()));
         }
     }
 
@@ -167,45 +165,55 @@ class Auth extends Controller
                 ]);
             }
         } catch (\Throwable $th) {
+            $ModelBerguna = new MetodeBerguna;
 
-            $data = new MetodeBerguna;
-            return response()->json($data->outputErrorCatch($th->getMessage()));
+            return response()->json($ModelBerguna->outErrCatch($th->getMessage()));
         }
     }
 
-    public function loginCheck($token)
+    // Token lebih dari 3 jam (10800 detik) setelah dibuat = expired
+    public function loginTokenCheck($token)
     {
         try {
-
             $ModelToken = SysToken::where(['token' => $token])->first();
 
-            if(empty($ModelToken)) {
-                $out = new stdClass();
-                $out->status = false;
-
-                return $out;
+            if(!empty($ModelToken)) {
+                $ModelUser                  = SysUser::where('username', $ModelToken->kd_user)->first();
+                
+                if(!empty($ModelUser)) {
+                    $token_dibuat               = $ModelToken->created_at;
+                    $tanggal_token              = date('Y-m-d', $token_dibuat);
+                    $tanggal_akses              = date('Y-m-d');
+                    $waktu_token                = strtotime(date('H:i:s', $token_dibuat));
+                    $waktu_akses                = strtotime(date('H:i:s'));
+    
+                    $tgl_akses                  = new DateTime($tanggal_akses);
+                    $tgl_token                  = new DateTime($tanggal_token);
+    
+                    $beda_tanggal               = $tgl_akses->diff($tgl_token);
+                    $beda_waktu                 = ($waktu_akses - $waktu_token) - 10800;
+    
+                    $interval_hari              = $beda_tanggal->d;
+                    $interval_bulan             = $beda_tanggal->m;
+                    $interval_tahun             = $beda_tanggal->y;
+    
+                    if($interval_hari == 0 && $interval_bulan == 0 && $interval_tahun == 0 && $beda_waktu > 0) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
             } else {
-                $ModelUser          = SysUser::where('username', $ModelToken->kd_user)->first();
-                
-                $dibuat             = $ModelToken->created_at;
-                $expired            = strtotime($dibuat);
-                $exp_datetime       = date('Y-m-d H:i:s', $expired);
-                $exp_date           = date('Y-m-d');
-                $curr_datetime      = date('Y-m-d H:i:s');
-                
-                $out                = new stdClass();
-                $out->status        = true;
-                $out->uname         = $ModelToken->kd_user;
-                $out->kd_bank       = $ModelUser->kd_bank;
-                $out->timezone      = date_default_timezone_get();
-                $out->current       = $curr_datetime;
-                $out->exp           = $exp_datetime;
-
-                return $out;
+                return false;
             }
 
         } catch (\Throwable $th) {
-            return $th->getMessage();
+            $ModelBerguna = new MetodeBerguna;
+            $ModelBerguna->outErrCatch($th->getMessage());
+            
+            return false;
         }
     }
 }

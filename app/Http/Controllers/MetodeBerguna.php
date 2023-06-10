@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\SysLog;
 
 class MetodeBerguna extends Controller
 {
-    public function outErrCatch($data)
+    public function outErrCatch($desc)
     {
-        $output = [
-            'data'      => $data,
+        $ModelLog   = new SysLog();
+
+        $ModelLog->buatErrorLog($desc);
+
+        $output     = [
             'status'    => 500,
             'message'   => 'Terjadi kesalahan di server, silahkan menghubungi staff IT website'
         ];
