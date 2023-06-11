@@ -69,7 +69,10 @@
                         </div>
                         <div>
                             <label class="font-bold">Nominal Transaksi</label>
-                            <input class="bg-white w-full p-2 border" v-model="formTransaksi.nominal_transaksi" />
+                            <div class="flex">
+                                <p class="text-md p-2 border bg-slate-200">Rp.</p>
+                                <input class="bg-white w-full p-2 border" v-model="formTransaksi.nominal_transaksi" />
+                            </div>
                         </div>
                         <div>
                             <button style="visibility: hidden;">A</button>

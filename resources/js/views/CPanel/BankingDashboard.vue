@@ -1,20 +1,20 @@
 <template>
-<div class="m-4 p-4 bg-black text-white">
-    <h1 class="text-2xl">Selamat Datang di Bank Syariah Simulator</h1>
+<div class="m-4 p-4 bg-slate-700 text-white">
+    <h1 class="text-2xl">Selamat Datang di Simulasi Bank Syariah</h1>
 </div>
 <div class="ml-4 pl-4">
     <h1 class="text-2xl">Statistik Resource Bank</h1>
 </div>
-<div class="m-4 p-4 grid grid-cols-4 gap-2">
-    <div class="border border-slate-200 shadow-sm text-center p-4">
+<div class="m-4 p-4 grid lg:grid-cols-4 gap-2">
+    <div class="border border-slate-200 bg-blue-600 text-white shadow-lg text-center p-4 rounded-lg">
         <h2>Total Nasabah terdaftar</h2>
         <p class="text-3xl p-4">{{ totalNasabah }}</p>
     </div>
-    <div class="border border-slate-200 shadow-sm text-center p-4">
+    <div class="border border-slate-200 bg-blue-700 text-white shadow-lg text-center p-4 rounded-lg">
         <h2>Total Saldo Tabungan Wadiah</h2>
         <p class="text-2xl p-4">{{ konversiKeRp(totalTabungan) }}</p>
     </div>
-    <div class="border border-slate-200 shadow-sm text-center p-4">
+    <div class="border border-slate-200 bg-blue-800 text-white shadow-lg text-center p-4 rounded-lg">
         <h2>Jumlah transaksi Jual Beli Murabahah</h2>
         <p class="text-2xl p-4">{{ konversiKeRp(totalTabungan) }}</p>
     </div>

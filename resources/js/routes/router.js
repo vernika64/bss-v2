@@ -276,7 +276,28 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     if(to.fullPath == '/') {
-        next()
+        axios.get('/api/super/cekLogin').then(cek => {
+            // console.log(cek.data.status)
+            switch (cek.data.status) {
+                case 200:
+                    router.push({ name: 'BankingDashboard' })
+                    break;
+                case 403:
+                    alert(cek.data.message)
+                    next()
+                    break;
+                case 404:
+                    next()
+                    break;
+                case 500:
+                    alert('Terdapat kesalah di server, mohon menghubungi staff IT website untuk ditijau kerusakan pada website')
+                    next()
+                    break;
+                default:
+                    next()
+                    break;
+            }
+        })
     } else if(to.name == 'PekoNotFound') {
         next();
     } else {
@@ -285,6 +306,8 @@ router.beforeEach((to, from, next) => {
             {
                 next()
             } else {
+                alert("Sesi login anda sudah habis, silahkan login lagi")
+
                 return router.push({name: 'BankingLogin'})
             }
         })

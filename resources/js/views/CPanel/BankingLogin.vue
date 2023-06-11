@@ -44,28 +44,7 @@ import LoginImage from '../Assets/Images/nepu.jpg'
 
 export default {
     mounted() {
-        axios.get('/api/super/cekLogin').then(cek => {
-            // console.log(cek.data.status)
-            switch (cek.data.status) {
-                case 200:
-                    console.log(cek.data)
-                    var role    = cek.data.role
-                    
-                    return router.push({ name: 'BankingDashboard' })
-                    break;
-                case 403:
-                    alert(cek.data.message)
-                    break;
-                case 404:
-                    // 
-                    break;
-                case 500:
-                    alert('Terdapat kesalah di server, mohon menghubungi staff IT website untuk ditijau kerusakan pada website')
-                    break;
-                default:
-                    break;
-            }
-        })
+        // 
     },
     methods: {
         masukKeDashboard(e) {
