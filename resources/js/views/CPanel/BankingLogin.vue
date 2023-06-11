@@ -51,6 +51,7 @@ export default {
                     console.log(cek.data)
                     var role    = cek.data.role
                     
+                    return router.push({ name: 'BankingDashboard' })
                     break;
                 case 403:
                     alert(cek.data.message)

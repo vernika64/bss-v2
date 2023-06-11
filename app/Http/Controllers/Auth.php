@@ -40,29 +40,30 @@ class Auth extends Controller
             }
 
             $ModelBank = SysBank::find($ModelUser->kd_bank);
-            if(empty($ModelBank))
+
+            if(!empty($ModelBank))
             {
+                $buatkuki = Hash::make(rand());
+
+                $kuki = cookie('tkn', $buatkuki, 3 * 60);       // Cookie expired dalam 3 jam (3 dikali 60 menit) setelah login
+
+                $ModelToken = new SysToken;
+                $ModelToken->kd_user    = $ModelUser->username;
+                $ModelToken->token      = $buatkuki;
+                $ModelToken->save();
+
+                return response()->json([
+                    'role'      => $ModelUser->role,
+                    'user'      => $ModelUser->username,
+                    'nama'      => $ModelUser->fname,
+                    'status'    => 200
+                ])->withCookie($kuki);
+            } else {
                 return response()->json([
                     'message'       => 'Terdapat kesalahan pada data user, mohon laporkan ke web admin untuk perbaikan',
                     'status'        => 500
                 ]);
             }
-
-            $buatkuki = Hash::make(rand());
-
-            $kuki = cookie('tkn', $buatkuki, 3 * 60);       // Cookie expired dalam 3 jam (3 dikali 60 menit) setelah login
-
-            $ModelToken = new SysToken;
-            $ModelToken->kd_user    = $ModelUser->username;
-            $ModelToken->token      = $buatkuki;
-            $ModelToken->save();
-
-            return response()->json([
-                'role'      => $ModelUser->role,
-                'user'      => $ModelUser->username,
-                'nama'      => $ModelUser->fname,
-                'status'    => 200
-            ])->withCookie($kuki);
 
         } catch (\Throwable $th) {
             $out        = new MetodeBerguna();
@@ -71,32 +72,25 @@ class Auth extends Controller
         }
     }
 
-    public function tokenCheck(Request $re)
+    public function appLevelLoginAuth(Request $re)
     {
         try {
-            $kuki = $re->cookie('tkn');
+            $ModelUser      = new SysUser();
+            $User           = $ModelUser->getInformasiUser($re->cookie('tkn'));
 
-            $ModelToken = SysToken::where('token', $kuki)->first();
-
-            if(!$ModelToken) {
+            if($User->status == true) {
+                return response()->json([
+                    'status'    => 200,
+                    'message'   => 'Data berhasil diambil',
+                    'role'      => $User->role
+                ]);                
+            } else {
                 return response()->json([
                     'status'        => 404,
-                    'message'       => 'User tidak terdaftar'
+                    'message'       => 'Data tidak ditemukan'
                 ]);
             }
 
-            $ModelUser  = SysUser::where('username',  $ModelToken->kd_user)->first();
-
-            if(!$ModelUser) {
-                return response()->json([
-                    'status'        => 404,
-                    'message'       => 'Token tidak terdaftar'
-                ]);
-            }
-
-            return response()->json([
-                'role'      => $ModelUser->role
-            ]);
         } catch (\Throwable $th) {
             $ModelBerguna = new MetodeBerguna;
 

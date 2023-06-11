@@ -10,8 +10,10 @@ use App\Http\Controllers\Tabungan;
 use App\Http\Controllers\Testing;
 use App\Http\Controllers\UserManagement;
 use App\Http\Middleware\CekTokenLogin;
+use App\Models\BankCIF;
 use App\Models\SysLog;
 use App\Models\SysToken;
+use App\Models\SysUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -36,7 +38,7 @@ Route::get('/tesCookie', [Testing::class, 'tesCookie']);
 
 // Untuk Login
 Route::post('/super/login', [Auth::class, 'login']);
-Route::get('/super/tknCheck', [Auth::class, 'tokenCheck']);
+Route::get('/super/tknCheck', [Auth::class, 'appLevelLoginAuth']);
 Route::get('/super/cekLogin', [Auth::class, 'checkSudahLogin']);
 Route::get('/super/keluar', [Auth::class, 'logout']);
 
@@ -83,6 +85,28 @@ Route::get('/listUser', [UserManagement::class, 'getDataUserAll']);
 
 Route::get('/listUserDesc', [UserManagement::class, 'getDataUserWithDesc']);
 
+// Untuk Info Banking
+
+Route::get('/banyakCIF', function(Request $re) {
+    $ModelCIF       = new BankCIF();
+    $Hasil          = $ModelCIF->getCountCIF($re->cookie('tkn'));
+
+
+    if($Hasil->status == true) {
+        return response()->json([
+            'status'    => 200,
+            'message'   => 'Data banyak cif berhasil diambil',
+            'count'     => $Hasil
+        ]);
+    } else {
+        return response()->json([
+            'status'    => 500,
+            'message'   => 'Data banyak cif gagal diambil',
+            'count'     => 0
+        ]);
+    }
+});
+
 // Sub CIF
 
 Route::get('/bank/listCIF', [CustomerIdentificationFile::class, 'getDataCIFForTabel']);
@@ -128,16 +152,13 @@ Route::get('/bank/ambilDataJurnalUmum/{id}', [JurnalAkuntansi::class, 'getDataJu
 
 // Dummy
 Route::get('/bank/cekDataNasabah', [CustomerIdentificationFile::class, 'cekDataNasabah']);
-Route::get('/coba', function(Request $re){
-    $ModelLog = new SysLog();
-    $ModelLog->buatErrorLog('ini apaan');
-
-    return 'nice';
-});
 
 // Untuk testing
-Route::get('/teskoneksi', function() {
-    return response()->json([
-        'message'       => 'koneksi OK'
-    ]);
-})->middleware(CekTokenLogin::class);
+
+Route::middleware(['login.auth'])->group(function() {
+    Route::get('/teskoneksi', function() {
+        return response()->json([
+            'message'       => 'koneksi OK'
+        ]);
+    });
+});

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use stdClass;
 
 class BankCIF extends Model
 {
@@ -35,5 +36,25 @@ class BankCIF extends Model
         'kd_user',
         'kd_bank'
     ];
+
+    function getCountCIF($token){
+        $ModelUser = new SysUser();
+        $DataUser = $ModelUser->getInformasiUser($token);
+
+        if($DataUser->status = true) {
+            $ModelCIF = BankCIF::where(['kd_bank' => $DataUser->kd_bank])->get();
+
+            $terhitung  = count($ModelCIF);
+
+            $output             = new stdClass;
+            $output->status     = true;
+            $output->count      = $terhitung;
+
+            return $output;
+        } else {
+            $output             = new stdClass;
+            $output->status     = false;
+        }
+    }
 
 }

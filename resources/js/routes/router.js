@@ -41,7 +41,8 @@ import BankingDaftarJurnalUmumDetail        from '../views/CPanel/BankingJurnalU
 import DevArea              from '../views/Superadmin/Dev/DevelopmentArea.vue'
 
 let devurl      = '/dev'
-let releaseurl  = '/bank'
+let releaseurl  = '/banking'
+let superpanel  = '/supercpl'
 
 // import Test from '../views/Test/Test.vue'
 
@@ -54,35 +55,10 @@ const routes = [
         name            : 'PekoNotFound'
     },
 
-    // Rute untuk Cpanel Banking
-    {   
-        path            : '/',
-        component       : BankingLogin,
-        name            : 'BankingLogin'
-    },
-
-    {   
-        path            : '/banking/dashboard',
-        name            : 'BankingDashboard',
-        components      : { 
-            default : BankingDashboard,
-            sidebar : UserBankingSidebar
-        }
-    },
-
-    {
-        path            : '/banking/cif',
-        name            : 'CIF',
-        components      : { 
-            default : BankingCIF,
-            sidebar : UserBankingSidebar
-        }
-    },
-
     // Rute untuk Superadmin
 
     {   
-        path             : '/supercpl/',
+        path             : superpanel + '/dashboard',
         components       : {
             default : SuperDashboard,
             sidebar : UserAdminSidebar
@@ -90,7 +66,7 @@ const routes = [
     },
 
     {
-        path            : '/supercpl/superdashboard/',
+        path            : superpanel + '/superdashboard/',
         name            : 'SuperDashboard',
         components      : {
             default : SuperDashboard,
@@ -99,7 +75,7 @@ const routes = [
     },
 
     {
-        path            : '/supercpl/superbank',
+        path            : superpanel + '/superbank',
         name            : 'SuperBank',
         components      : {
             default : SuperBank,
@@ -107,7 +83,7 @@ const routes = [
         }
     },
     { 
-        path            : '/supercpl/superbank/detail/:bankID',
+        path            : superpanel + '/superbank/detail/:bankID',
         name            : 'SuperBankDetail',
         components      : {
             default : SuperBankDetail,
@@ -116,7 +92,7 @@ const routes = [
     },
 
     { 
-        path            : '/supercpl/superuser/',
+        path            : superpanel + '/superuser/',
         name            : 'SuperUser',
         components       : {
             default : SuperUser,
@@ -124,9 +100,8 @@ const routes = [
         }
     },
 
-
     { 
-        path            : '/supercpl/superpekerjaan/',
+        path            : superpanel + '/superpekerjaan/',
         name            : 'SuperPekerjaan',
         components      : {
             default : SuperPekerjaan,
@@ -135,7 +110,7 @@ const routes = [
     },
 
     {
-        path            : '/supercpl/superakuntansi/',
+        path            : superpanel + '/superakuntansi/',
         name            : 'SuperAkunAkuntansi',
         components      : {
             default : SuperAkunAkuntansi,
@@ -153,6 +128,30 @@ const routes = [
     },
 
     // Rute untuk role Office serbaguna
+
+    {   
+        path            : '/',
+        component       : BankingLogin,
+        name            : 'BankingLogin'
+    },
+
+    {   
+        path            : releaseurl + '/dashboard',
+        name            : 'BankingDashboard',
+        components      : { 
+            default : BankingDashboard,
+            sidebar : UserBankingSidebar
+        }
+    },
+
+    {
+        path            : releaseurl + '/cif',
+        name            : 'CIF',
+        components      : { 
+            default : BankingCIF,
+            sidebar : UserBankingSidebar
+        }
+    },
 
     { 
         path            : releaseurl + '/cif',
@@ -282,13 +281,13 @@ router.beforeEach((to, from, next) => {
         next();
     } else {
         axios.get('/api/super/tknCheck').then(tkn => {
-            if(tkn.data.status == 404)
+            if(tkn.data.status == 200)
             {
+                next()
+            } else {
                 return router.push({name: 'BankingLogin'})
             }
         })
-
-        next()
     }
 })
 

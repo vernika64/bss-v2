@@ -22,10 +22,18 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
+    mounted() {
+        // Ambil data banyak cif
+        axios.get('/api/banyakCIF').then(out => {
+            console.log(out.data)
+        })
+    },
     data() {
         return {
-            totalNasabah        : 400,
+            totalNasabah        : 0,
             totalTabungan       : 20000000
         }
     },
