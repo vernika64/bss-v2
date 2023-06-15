@@ -1,7 +1,10 @@
 <template>
     <ul class="grid gap-4 pr-5 pl-5">
-        <li class="italic text-xl pb-4 pt-4 mt-2 text-center">
+        <li class="italic text-xl pt-4 mt-2 text-center">
             {{ sidebarName }}
+        </li>
+        <li class="italic text-md pb-4 text-center">
+            {{ subSidebarName }}
         </li>
         <li class="bg-slate-900 p-4 rounded-md focus:bg-content">
             <router-link :to="{ name: 'SuperDashboard' }" class="flex">
@@ -63,7 +66,8 @@ export default {
     },
     data() {
         return {
-            sidebarName : 'Adil Mini Bank System'
+            sidebarName         : 'Administrator Control Panel',
+            subSidebarName      : 'Bank Syariah Simulator'
         }
     },
     methods: {

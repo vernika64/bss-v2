@@ -23,7 +23,7 @@
                         <td class="border border-white p-3">{{ itm.kd_sub_master_buku }}</td> 
                         <td class="border border-white p-3">{{ itm.nama_buku }}</td> 
                         <td class="border border-white p-3 text-center">
-                            <button class="bg-blue-500 p-1 text-white rounded-md text-sm" @click="openModalEditBuku(itm.id)">
+                            <button class="p-2 bg-blue-500 text-white rounded-md text-sm" @click="openModalEditBuku(itm.id)">
                                 Edit Nama
                             </button>
                         </td>
@@ -41,75 +41,76 @@
     
 
     <!-- Modal Tambah Buku Akuntansi -->
-    <div class="w-full h-full overflow-auto bg-slate-900 left-0 top-0 fixed bg-opacity-70" v-if="modalTambahBuku == true">
-        <div class="flex h-screen">
-            <div class="bg-white m-auto w-[1000px] p-4 rounded-lg">
-                <div class="grid grid-rows-1">
-                    <h1 class="text-2xl text-black mb-10">Tambah Buku Akuntansi Baru</h1>
-                    <div class="grid gap-2 mb-10">
-                        <div class="flex flex-col">
-                            <label class="font-bold text-black">Kelompok Akun</label>
-                            <select class="border border-slate-500 bg-white p-1" v-model="formInputBukuBaru.kd_master_buku">
-                                <option :value="''">-- Pilih Kelompok Akun --</option>
-                                <option :value="1">Aktiva Lancar</option>
-                                <option :value="2">Aktiva Tetap</option>
-                                <option :value="3">Hutang</option>
-                                <option :value="4">Ekuitas</option>
-                            </select>
-                        </div>
-                        <div class="flex flex-col">
-                            <label class="font-bold text-black">Nomor Akun</label>
-                            <div class="flex">
-                                <input type="text" class="border border-slate-500 bg-white p-1 w-full" v-model="formInputBukuBaru.kd_sub_master_buku" maxlength="5" />
-                                <button class="bg-blue-500 text-white p-1 w-[80px] ml-2" @click="cekBukuAkuntansi">Cek</button>
-                            </div>
-                            <label class="bg-green-500 mt-2 p-1" v-if="formInputBukuBaru.statusInputBuku == true">Nomor akun dapat dipakai</label>
-                            <label class="bg-red-500 mt-2 p-1 text-white" v-else-if="formInputBukuBaru.statusInputBuku == false">Nomor akun sudah dipakai</label>
-                            <label v-else-if="formInputBukuBaru.statusInputBuku == null"></label>
-                        </div>
-                        <div class="flex flex-col">
-                            <label class="font-bold text-black">Nama Akun</label>
-                            <input type="text" class="border border-slate-500 bg-white p-1" v-model="formInputBukuBaru.nama_buku" />
-                        </div>
+    <div class="flex flex-col w-full h-full bg-slate-900 left-0 top-0 fixed bg-opacity-70 justify-center align-middle" v-if="modalTambahBuku == true">
+        <div class="relative bg-white rounded-lg shadow p-4 m-auto w-1/4">
+            <div class="grid grid-rows-1">
+                <h1 class="text-2xl text-black mb-10">Tambah Buku Akuntansi Baru</h1>
+                <div class="grid gap-2 mb-10">
+                    <div class="flex flex-col">
+                        <label class="text-black mb-2">Kelompok Akun</label>
+                        <select class="border bg-slate-200 pt-1 pb-1 pl-2 rounded-md h-[50px] mb-3" v-model="formInputBukuBaru.kd_master_buku">
+                            <option :value="''">-- Pilih Kelompok Akun --</option>
+                            <option :value="1">1 - Aktiva Lancar</option>
+                            <option :value="2">2 - Aktiva Tetap</option>
+                            <option :value="3">3 - Hutang</option>
+                            <option :value="4">4 - Ekuitas</option>
+                        </select>
                     </div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <button class="bg-slate-300 text-black p-2 rounded-md" @click="modalTambahBuku = false">Tutup</button>
-                        <button class="bg-blue-600 text-white p-2 rounded-md" @click="simpanBukuAkuntansi">Simpan</button>
+                    <div class="flex flex-col">
+                        <label class="text-black mb-2">Nomor Akun</label>
+                        <div class="flex">
+                            <input type="text" class="border bg-slate-200 pt-1 pb-1 pl-2 rounded-md h-[50px] mb-3 w-full" v-model="formInputBukuBaru.kd_sub_master_buku" maxlength="5" placeholder="Contoh : 31000" />
+                            <button class="bg-blue-500 hover:bg-blue-700 transition ease-in-out duration-300 text-white p-1 ml-2 w-1/4 h-[50px] rounded-lg" @click="cekBukuAkuntansi">Cek</button>
+                        </div>
+                        <label class="bg-green-500 mt-2 p-2" v-if="formInputBukuBaru.statusInputBuku == true">Nomor akun dapat dipakai</label>
+                        <label class="bg-red-700 mt-2 p-2 text-white" v-else-if="formInputBukuBaru.statusInputBuku == false">Nomor akun sudah dipakai</label>
+                        <label v-else-if="formInputBukuBaru.statusInputBuku == null"></label>
                     </div>
+                    <div class="flex flex-col">
+                        <label class="text-black mb-2">Nama Akun</label>
+                        <input type="text" class="border bg-slate-200 pt-1 pb-1 pl-2 rounded-md h-[50px] mb-3" v-model="formInputBukuBaru.nama_buku" placeholder="Contoh : Hutang Jangka Panjang" />
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <button class="bg-slate-300 hover:bg-slate-500 transition ease-in-out duration-300 text-black hover:text-white p-2 rounded-md" @click="clearFormBuatBukuAkuntansi">Tutup</button>
+                    <button class="bg-blue-600 hover:bg-blue-900 transition ease-in-out duration-300 text-white p-2 rounded-md" @click="simpanBukuAkuntansi">Simpan</button>
                 </div>
             </div>
         </div>
     </div>
     <!--  -->
 
-    <!-- Modal Tambah Buku Akuntansi -->
-    <div class="w-full h-full overflow-auto bg-slate-900 left-0 top-0 fixed bg-opacity-70" v-if="modalEditBuku == true">
-        <div class="flex h-screen">
-            <div class="bg-white m-auto w-[1000px] p-4 rounded-lg">
+    <!-- Modal Edit Nama Buku Akuntansi -->
+
+    <Transition name="slide-fade">
+
+        <div class="flex flex-col w-full h-full bg-slate-900 left-0 top-0 fixed bg-opacity-70 justify-center align-middle" v-if="modalEditBuku == true">
+            <div class="relative bg-white rounded-lg shadow p-4 m-auto w-1/4">
                 <div class="grid grid-rows-1">
-                    <h1 class="text-2xl text-black mb-10">Tambah Buku Akuntansi Baru</h1>
-                    <div class="grid gap-2 mb-10">
+                    <h1 class="text-2xl text-black mb-5">Rubah Nama Buku</h1>
+                    <div class="grid grid-rows-1 mb-5">
                         <div class="flex flex-col">
-                            <label class="font-bold text-black">Nomor Akun</label>
-                            <input type="text" class="border border-slate-500 bg-slate-200 p-1 w-full" v-model="formEditBuku.kd_sub_master_buku" readonly />
+                            <label class="text-black mb-2">Nomor Akun</label>
+                            <input type="text" class="border bg-slate-300 pt-1 pb-1 pl-2 rounded-md h-[50px] mb-3 cursor-not-allowed" v-model="formEditBuku.kd_sub_master_buku" readonly />
                         </div>
                         <div class="flex flex-col">
-                            <label class="font-bold text-black">Nama Akun Lama</label>
-                            <input type="text" class="border border-slate-500 bg-slate-200 p-1" v-model="formEditBuku.nama_buku_lama" readonly />
+                            <label class="text-black mb-2">Nama Akun Lama</label>
+                            <input type="text" class="border bg-slate-300 pt-1 pb-1 pl-2 rounded-md h-[50px] mb-3 cursor-not-allowed" v-model="formEditBuku.nama_buku_lama" readonly />
                         </div>
                         <div class="flex flex-col">
-                            <label class="font-bold text-black">Nama Akun Baru</label>
-                            <input type="text" class="border border-slate-500 bg-white p-1" v-model="formEditBuku.nama_buku_baru" />
+                            <label class="text-black mb-2">Nama Akun Baru</label>
+                            <input type="text" class="border bg-slate-200 pt-1 pb-1 pl-2 rounded-md h-[50px] mb-3" v-model="formEditBuku.nama_buku_baru" placeholder="Isi nama akun baru" />
                         </div>
                     </div>
                     <div class="grid grid-cols-2 gap-4">
-                        <button class="bg-slate-300 text-black p-2 rounded-md" @click="modalEditBuku = false">Tutup</button>
-                        <button class="bg-blue-600 text-white p-2 rounded-md" @click="simpanEditBukuAkuntansi">Simpan</button>
+                        <button class="bg-slate-300 hover:bg-slate-500 transition ease-in-out duration-300 text-black hover:text-white p-2 rounded-md" @click="modalEditBuku = false">Tutup</button>
+                        <button class="bg-blue-600 hover:bg-blue-900 transition ease-in-out duration-300 text-white p-2 rounded-md" @click="simpanEditBukuAkuntansi">Simpan</button>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+
+    </Transition>
     <!--  -->
 
 
@@ -260,6 +261,14 @@ export default {
             }).catch(hsledterr => {
                 console.log(hsledterr)
             })
+        },
+        clearFormBuatBukuAkuntansi() {
+            this.formInputBukuBaru.kd_master_buku          = ''
+            this.formInputBukuBaru.kd_sub_master_buku      = ''
+            this.formInputBukuBaru.nama_buku               = ''
+            this.formInputBukuBaru.statusInputBuku         = null
+
+            this.modalTambahBuku                           = false
         }
     }
 }

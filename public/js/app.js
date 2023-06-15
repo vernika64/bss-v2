@@ -20129,10 +20129,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  mounted: function mounted() {
+    // Ambil data banyak cif
+    axios__WEBPACK_IMPORTED_MODULE_0___default().get('/api/banyakCIF').then(function (out) {
+      console.log(out.data);
+    });
+  },
   data: function data() {
     return {
-      totalNasabah: 400,
+      totalNasabah: 0,
       totalTabungan: 20000000
     };
   },
@@ -20335,26 +20344,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mounted: function mounted() {
-    axios__WEBPACK_IMPORTED_MODULE_0___default().get('/api/super/cekLogin').then(function (cek) {
-      // console.log(cek.data.status)
-      switch (cek.data.status) {
-        case 200:
-          console.log(cek.data);
-          var role = cek.data.role;
-          break;
-        case 403:
-          alert(cek.data.message);
-          break;
-        case 404:
-          // 
-          break;
-        case 500:
-          alert('Terdapat kesalah di server, mohon menghubungi staff IT website untuk ditijau kerusakan pada website');
-          break;
-        default:
-          break;
-      }
-    });
+    // 
   },
   methods: {
     masukKeDashboard: function masukKeDashboard(e) {
@@ -20937,7 +20927,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      sidebarName: 'Adil Mini Bank System'
+      sidebarName: 'Administrator Control Panel',
+      subSidebarName: 'Bank Syariah Simulator'
     };
   },
   methods: {
@@ -20977,6 +20968,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _heroicons_vue_solid__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @heroicons/vue/solid */ "./node_modules/@heroicons/vue/solid/esm/UsersIcon.js");
 /* harmony import */ var _heroicons_vue_solid__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @heroicons/vue/solid */ "./node_modules/@heroicons/vue/solid/esm/CodeIcon.js");
 /* harmony import */ var _heroicons_vue_solid__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @heroicons/vue/solid */ "./node_modules/@heroicons/vue/solid/esm/BookOpenIcon.js");
+/* harmony import */ var _heroicons_vue_solid__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @heroicons/vue/solid */ "./node_modules/@heroicons/vue/solid/esm/CreditCardIcon.js");
+/* harmony import */ var _heroicons_vue_solid__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @heroicons/vue/solid */ "./node_modules/@heroicons/vue/solid/esm/CurrencyDollarIcon.js");
 /* harmony import */ var _heroicons_vue_outline__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @heroicons/vue/outline */ "./node_modules/@heroicons/vue/outline/esm/LogoutIcon.js");
 /* harmony import */ var _heroicons_vue_outline__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @heroicons/vue/outline */ "./node_modules/@heroicons/vue/outline/esm/ViewGridIcon.js");
 
@@ -20992,7 +20985,9 @@ __webpack_require__.r(__webpack_exports__);
     UsersIcon: _heroicons_vue_solid__WEBPACK_IMPORTED_MODULE_6__["default"],
     CodeIcon: _heroicons_vue_solid__WEBPACK_IMPORTED_MODULE_7__["default"],
     BookOpenIcon: _heroicons_vue_solid__WEBPACK_IMPORTED_MODULE_8__["default"],
-    ViewGridIcon: _heroicons_vue_outline__WEBPACK_IMPORTED_MODULE_9__["default"]
+    ViewGridIcon: _heroicons_vue_outline__WEBPACK_IMPORTED_MODULE_9__["default"],
+    CreditCardIcon: _heroicons_vue_solid__WEBPACK_IMPORTED_MODULE_10__["default"],
+    CurrencyDollarIcon: _heroicons_vue_solid__WEBPACK_IMPORTED_MODULE_11__["default"]
   },
   mounted: function mounted() {
     console.log(this.sidebarItems);
@@ -21396,6 +21391,13 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (hsledterr) {
         console.log(hsledterr);
       });
+    },
+    clearFormBuatBukuAkuntansi: function clearFormBuatBukuAkuntansi() {
+      this.formInputBukuBaru.kd_master_buku = '';
+      this.formInputBukuBaru.kd_sub_master_buku = '';
+      this.formInputBukuBaru.nama_buku = '';
+      this.formInputBukuBaru.statusInputBuku = null;
+      this.modalTambahBuku = false;
     }
   }
 });
@@ -22120,34 +22122,34 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-  "class": "m-4 p-4 bg-black text-white"
+  "class": "m-4 p-4 bg-slate-700 text-white"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h1", {
   "class": "text-2xl"
-}, "Selamat Datang di Bank Syariah Simulator")], -1 /* HOISTED */);
+}, "Selamat Datang di Simulasi Bank Syariah")], -1 /* HOISTED */);
 var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "ml-4 pl-4"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h1", {
   "class": "text-2xl"
 }, "Statistik Resource Bank")], -1 /* HOISTED */);
 var _hoisted_3 = {
-  "class": "m-4 p-4 grid grid-cols-4 gap-2"
+  "class": "m-4 p-4 grid lg:grid-cols-4 gap-2"
 };
 var _hoisted_4 = {
-  "class": "border border-slate-200 shadow-sm text-center p-4"
+  "class": "border border-slate-200 bg-blue-600 text-white shadow-lg text-center p-4 rounded-lg"
 };
 var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h2", null, "Total Nasabah terdaftar", -1 /* HOISTED */);
 var _hoisted_6 = {
   "class": "text-3xl p-4"
 };
 var _hoisted_7 = {
-  "class": "border border-slate-200 shadow-sm text-center p-4"
+  "class": "border border-slate-200 bg-blue-700 text-white shadow-lg text-center p-4 rounded-lg"
 };
 var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h2", null, "Total Saldo Tabungan Wadiah", -1 /* HOISTED */);
 var _hoisted_9 = {
   "class": "text-2xl p-4"
 };
 var _hoisted_10 = {
-  "class": "border border-slate-200 shadow-sm text-center p-4"
+  "class": "border border-slate-200 bg-blue-800 text-white shadow-lg text-center p-4 rounded-lg"
 };
 var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h2", null, "Jumlah transaksi Jual Beli Murabahah", -1 /* HOISTED */);
 var _hoisted_12 = {
@@ -22939,7 +22941,13 @@ var _hoisted_23 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 var _hoisted_24 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
   "class": "font-bold"
 }, "Nominal Transaksi", -1 /* HOISTED */);
-var _hoisted_25 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+var _hoisted_25 = {
+  "class": "flex"
+};
+var _hoisted_26 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
+  "class": "text-md p-2 border bg-slate-200"
+}, "Rp.", -1 /* HOISTED */);
+var _hoisted_27 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
   style: {
     "visibility": "hidden"
   }
@@ -22992,12 +23000,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return $data.formTransaksi.no_nota_fisik = $event;
     }),
     readonly: ""
-  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.formTransaksi.no_nota_fisik]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_24, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.formTransaksi.no_nota_fisik]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_24, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_25, [_hoisted_26, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     "class": "bg-white w-full p-2 border",
     "onUpdate:modelValue": _cache[8] || (_cache[8] = function ($event) {
       return $data.formTransaksi.nominal_transaksi = $event;
     })
-  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.formTransaksi.nominal_transaksi]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_25, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.formTransaksi.nominal_transaksi]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_27, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "w-full bg-blue-500 text-white p-2",
     onClick: _cache[9] || (_cache[9] = function () {
       return $options.simpanTransaksi && $options.simpanTransaksi.apply($options, arguments);
@@ -23466,16 +23474,16 @@ var _hoisted_1 = {
   "class": "grid gap-4 pr-5 pl-5"
 };
 var _hoisted_2 = {
-  "class": "italic text-xl pb-4 pt-4 mt-2 text-center"
+  "class": "italic text-xl pt-4 mt-2 text-center"
 };
 var _hoisted_3 = {
-  "class": "bg-slate-900 p-4 rounded-md focus:bg-content"
+  "class": "italic text-md pb-4 text-center"
 };
 var _hoisted_4 = {
-  "class": "bg-slate-900 p-4 rounded-md focus:bg-blue-500"
+  "class": "bg-slate-900 p-4 rounded-md focus:bg-content"
 };
 var _hoisted_5 = {
-  "class": "bg-slate-900 p-4 rounded-md"
+  "class": "bg-slate-900 p-4 rounded-md focus:bg-blue-500"
 };
 var _hoisted_6 = {
   "class": "bg-slate-900 p-4 rounded-md"
@@ -23489,6 +23497,9 @@ var _hoisted_8 = {
 var _hoisted_9 = {
   "class": "bg-slate-900 p-4 rounded-md"
 };
+var _hoisted_10 = {
+  "class": "bg-slate-900 p-4 rounded-md"
+};
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_home_icon = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("home-icon");
   var _component_router_link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("router-link");
@@ -23498,7 +23509,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_book_open_icon = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("book-open-icon");
   var _component_code_icon = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("code-icon");
   var _component_logout_icon = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("logout-icon");
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("ul", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.sidebarName), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("ul", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.sidebarName), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.subSidebarName), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
     to: {
       name: 'SuperDashboard'
     },
@@ -23510,7 +23521,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Dashboard ")];
     }),
     _: 1 /* STABLE */
-  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
+  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
     to: {
       name: 'SuperBank'
     },
@@ -23522,7 +23533,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Bank ")];
     }),
     _: 1 /* STABLE */
-  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
+  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
     to: {
       name: 'SuperUser'
     },
@@ -23534,7 +23545,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Users ")];
     }),
     _: 1 /* STABLE */
-  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
+  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
     to: {
       name: 'SuperPekerjaan'
     },
@@ -23546,7 +23557,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Pekerjaan ")];
     }),
     _: 1 /* STABLE */
-  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
+  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
     to: {
       name: 'SuperAkunAkuntansi'
     },
@@ -23558,7 +23569,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Buku Akuntansi ")];
     }),
     _: 1 /* STABLE */
-  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li class=\"bg-slate-900 p-4 rounded-md \">\r\n            <router-link :to=\"{ name: ''}\" class=\"flex\">\r\n                <document-report-icon class=\"h-7 w-7 mr-3\" /> Laporan <p class=\"ml-2 bg-white text-black rounded-sm italic\">(experimental)</p>\r\n            </router-link>\r\n        </li> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
+  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li class=\"bg-slate-900 p-4 rounded-md \">\r\n            <router-link :to=\"{ name: ''}\" class=\"flex\">\r\n                <document-report-icon class=\"h-7 w-7 mr-3\" /> Laporan <p class=\"ml-2 bg-white text-black rounded-sm italic\">(experimental)</p>\r\n            </router-link>\r\n        </li> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
     to: {
       name: 'DevelopmentArea'
     },
@@ -23570,7 +23581,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Development Area ")];
     }),
     _: 1 /* STABLE */
-  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     onClick: _cache[0] || (_cache[0] = function () {
       return $options.logout && $options.logout.apply($options, arguments);
     }),
@@ -23595,44 +23606,144 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
-var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", {
+var _hoisted_1 = {
   "class": "grid gap-4 pr-5 pl-5"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", {
-  "class": "mb-4 mt-4 ml-6 italic text-lg bg-"
-}, "Syariah Multi"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li class=\"bg-slate-900 p-4 rounded-md \">\r\n            <router-link :to=\"{ name: 'BankingDashboard' }\" class=\"flex\">\r\n                <home-icon class=\"h-7 w-7 mr-3\" />Dashboard\r\n            </router-link>\r\n        </li>\r\n        <li class=\"bg-slate-900 p-4 rounded-md \">\r\n            <router-link :to=\"{ name: 'CIF' }\" class=\"flex\">\r\n                <users-icon class=\"h-7 w-7 mr-3\" />Customer Identification File\r\n            </router-link>\r\n        </li>\r\n        <li class=\"bg-slate-900 p-4 rounded-md \">\r\n            <router-link :to=\"{ name: 'Tabungan' }\" class=\"flex\">\r\n                <home-icon class=\"h-7 w-7 mr-3\" />Tabungan Wadiah\r\n            </router-link>\r\n        </li>\r\n        <li class=\"bg-slate-900 p-4 rounded-md \">\r\n            <router-link :to=\"{ name: 'TabunganTarikSetorTunai' }\" class=\"flex\">\r\n                <home-icon class=\"h-7 w-7 mr-3\" />Tarik / Setor Tunai\r\n            </router-link>\r\n        </li>\r\n        <li class=\"bg-slate-900 p-4 rounded-md \">\r\n            <router-link :to=\"{ name: 'JualBeliMurabahah' }\" class=\"flex\">\r\n                <view-grid-icon class=\"h-7 w-7 mr-3\" />Jual Beli Murabahah\r\n            </router-link>\r\n        </li>\r\n        <li class=\"bg-slate-900 p-4 rounded-md \">\r\n            <router-link :to=\"{ name: 'PermintaanBarangMurabahah' }\" class=\"flex\">\r\n                <view-grid-icon class=\"h-7 w-7 mr-3\" />Aset Jual Beli Murabahah\r\n            </router-link>\r\n        </li>\r\n        <li class=\"bg-slate-900 p-4 rounded-md \">\r\n            <router-link :to=\"{ name: 'AngsuranMurabahah' }\" class=\"flex\">\r\n                <view-grid-icon class=\"h-7 w-7 mr-3\" />Angsur Jual Beli Murabahah\r\n            </router-link>\r\n        </li>\r\n        <li class=\"bg-slate-900 p-4 rounded-md \">\r\n            <router-link :to=\"{ name: 'DaftarJurnalUmum' }\" class=\"flex\">\r\n                <book-open-icon class=\"h-7 w-7 mr-3\" />Jurnal Umum\r\n            </router-link>\r\n        </li>\r\n        <li class=\"bg-slate-900 p-4 rounded-md \">\r\n            <button @click=\"logout\" class=\"flex\"><logout-icon class=\"h-7 w-7 mr-3\" />Logout</button>\r\n        </li> ")], -1 /* HOISTED */);
-var _hoisted_2 = {
-  "class": "grid pr-5 pl-5"
 };
+var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", {
+  "class": "mb-4 mt-4 ml-6 italic text-lg bg-"
+}, "Syariah Multi", -1 /* HOISTED */);
 var _hoisted_3 = {
-  "class": "grid pr-5 pl-5"
+  "class": "bg-slate-900 p-4 rounded-md"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  var _this = this;
   var _component_home_icon = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("home-icon");
   var _component_router_link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("router-link");
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [_hoisted_1, ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.sidebarItems, function (itm) {
-    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("ul", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", {
-      "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["p-4 rounded-md mt-4", [itm.sidebarUrl == _this.$route.name ? $data.activeSidebar : $data.deactiveSidebar]])
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
-      to: {
-        name: itm.sidebarUrl
-      },
-      "class": "flex"
-    }, {
-      "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-        return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_home_icon, {
-          "class": "h-7 w-7 mr-3"
-        }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(itm.sidebarName), 1 /* TEXT */)];
-      }),
-
-      _: 2 /* DYNAMIC */
-    }, 1032 /* PROPS, DYNAMIC_SLOTS */, ["to"])], 2 /* CLASS */)]);
-  }), 256 /* UNKEYED_FRAGMENT */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", {
-    "class": "p-4 rounded-md mt-4 bg-slate-900",
+  var _component_users_icon = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("users-icon");
+  var _component_credit_card_icon = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("credit-card-icon");
+  var _component_currency_dollar_icon = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("currency-dollar-icon");
+  var _component_view_grid_icon = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("view-grid-icon");
+  var _component_book_open_icon = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("book-open-icon");
+  var _component_logout_icon = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("logout-icon");
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_1, [_hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["bg-slate-900 p-4 rounded-md", ['BankingDashboard' == this.$route.name ? $data.activeSidebar : $data.deactiveSidebar]])
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
+    to: {
+      name: 'BankingDashboard'
+    },
+    "class": "flex"
+  }, {
+    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_home_icon, {
+        "class": "h-7 w-7 mr-3"
+      }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Dashboard ")];
+    }),
+    _: 1 /* STABLE */
+  })], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["bg-slate-900 p-4 rounded-md", ['CIF' == this.$route.name ? $data.activeSidebar : $data.deactiveSidebar]])
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
+    to: {
+      name: 'CIF'
+    },
+    "class": "flex"
+  }, {
+    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_users_icon, {
+        "class": "h-7 w-7 mr-3"
+      }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Customer Identification File ")];
+    }),
+    _: 1 /* STABLE */
+  })], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["bg-slate-900 p-4 rounded-md", ['Tabungan' == this.$route.name ? $data.activeSidebar : $data.deactiveSidebar]])
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
+    to: {
+      name: 'Tabungan'
+    },
+    "class": "flex"
+  }, {
+    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_credit_card_icon, {
+        "class": "h-7 w-7 mr-3"
+      }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Tabungan Wadiah ")];
+    }),
+    _: 1 /* STABLE */
+  })], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["bg-slate-900 p-4 rounded-md", ['TabunganTarikSetorTunai' == this.$route.name ? $data.activeSidebar : $data.deactiveSidebar]])
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
+    to: {
+      name: 'TabunganTarikSetorTunai'
+    },
+    "class": "flex"
+  }, {
+    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_currency_dollar_icon, {
+        "class": "h-7 w-7 mr-3"
+      }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Tarik / Setor Tunai ")];
+    }),
+    _: 1 /* STABLE */
+  })], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["bg-slate-900 p-4 rounded-md", ['JualBeliMurabahah' == this.$route.name ? $data.activeSidebar : $data.deactiveSidebar]])
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
+    to: {
+      name: 'JualBeliMurabahah'
+    },
+    "class": "flex"
+  }, {
+    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_view_grid_icon, {
+        "class": "h-7 w-7 mr-3"
+      }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Jual Beli Murabahah ")];
+    }),
+    _: 1 /* STABLE */
+  })], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["bg-slate-900 p-4 rounded-md", ['PermintaanBarangMurabahah' == this.$route.name ? $data.activeSidebar : $data.deactiveSidebar]])
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
+    to: {
+      name: 'PermintaanBarangMurabahah'
+    },
+    "class": "flex"
+  }, {
+    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_view_grid_icon, {
+        "class": "h-7 w-7 mr-3"
+      }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Aset Jual Beli Murabahah ")];
+    }),
+    _: 1 /* STABLE */
+  })], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["bg-slate-900 p-4 rounded-md", ['AngsuranMurabahah' == this.$route.name ? $data.activeSidebar : $data.deactiveSidebar]])
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
+    to: {
+      name: 'AngsuranMurabahah'
+    },
+    "class": "flex"
+  }, {
+    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_view_grid_icon, {
+        "class": "h-7 w-7 mr-3"
+      }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Angsur Jual Beli Murabahah ")];
+    }),
+    _: 1 /* STABLE */
+  })], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["bg-slate-900 p-4 rounded-md", ['DaftarJurnalUmum' == this.$route.name ? $data.activeSidebar : $data.deactiveSidebar]])
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
+    to: {
+      name: 'DaftarJurnalUmum'
+    },
+    "class": "flex"
+  }, {
+    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_book_open_icon, {
+        "class": "h-7 w-7 mr-3"
+      }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Jurnal Umum ")];
+    }),
+    _: 1 /* STABLE */
+  })], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     onClick: _cache[0] || (_cache[0] = function ($event) {
       return $options.logout();
-    })
-  }, " Logout ")])], 64 /* STABLE_FRAGMENT */);
+    }),
+    "class": "flex"
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_logout_icon, {
+    "class": "h-7 w-7 mr-3"
+  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Logout")])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <ul class=\"grid pr-5 pl-5\" v-for=\"itm in sidebarItems\">\r\n        <li class=\"p-4 rounded-md mt-4\" :class=\"[itm.sidebarUrl == this.$route.name ? activeSidebar : deactiveSidebar]\">\r\n            <router-link :to=\"{ name: itm.sidebarUrl }\" class=\"flex\">\r\n                <home-icon class=\"h-7 w-7 mr-3\" />\r\n                {{ itm.sidebarName }}\r\n            </router-link>\r\n        </li>\r\n    </ul> ")], 2112 /* STABLE_FRAGMENT, DEV_ROOT_FRAGMENT */);
 }
 
 /***/ }),
@@ -23836,7 +23947,7 @@ var _hoisted_12 = {
   "class": "flex flex-col w-full h-full bg-slate-900 left-0 top-0 fixed bg-opacity-70 justify-center align-middle"
 };
 var _hoisted_13 = {
-  "class": "relative bg-white rounded-lg shadow p-4 m-auto w-1/4"
+  "class": "relative bg-white rounded-lg shadow p-4 m-auto md:w-1/3 2xl:w-1/4"
 };
 var _hoisted_14 = {
   "class": "grid grid-rows-1"
@@ -23887,17 +23998,19 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [$data.openModalAddBank == true ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_14, [_hoisted_15, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [_hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
         type: "text",
-        "class": "border bg-slate-200 pt-1 pb-1 pl-2 rounded-md h-[50px] mb-3",
+        "class": "border border-slate-300 bg-white pt-1 pb-1 pl-2 rounded-md h-[50px] mb-3",
         "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
           return $data.formBankBaru.namabank = $event;
-        })
+        }),
+        placeholder: "Nama bank baru"
       }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.formBankBaru.namabank]]), _hoisted_18, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
         type: "text",
-        "class": "border bg-slate-200 pt-2 pb-2 pl-2 rounded-md mb-3",
+        "class": "border border-slate-300 bg-white pt-2 pb-2 pl-2 rounded-md mb-3",
         "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
           return $data.formBankBaru.alamatbank = $event;
         }),
-        rows: "4"
+        rows: "4",
+        placeholder: "Alamat bank baru"
       }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.formBankBaru.alamatbank]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
         "class": "bg-slate-300 text-black p-2 rounded-md shadow-md",
         onClick: _cache[3] || (_cache[3] = function ($event) {
@@ -24208,98 +24321,92 @@ var _hoisted_11 = {
 var _hoisted_12 = ["onClick"];
 var _hoisted_13 = {
   key: 0,
-  "class": "w-full h-full overflow-auto bg-slate-900 left-0 top-0 fixed bg-opacity-70"
+  "class": "flex flex-col w-full h-full bg-slate-900 left-0 top-0 fixed bg-opacity-70 justify-center align-middle"
 };
 var _hoisted_14 = {
-  "class": "flex h-screen"
+  "class": "relative bg-white rounded-lg shadow p-4 m-auto w-1/4"
 };
 var _hoisted_15 = {
-  "class": "bg-white m-auto w-[1000px] p-4 rounded-lg"
-};
-var _hoisted_16 = {
   "class": "grid grid-rows-1"
 };
-var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h1", {
+var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h1", {
   "class": "text-2xl text-black mb-10"
 }, "Tambah Buku Akuntansi Baru", -1 /* HOISTED */);
-var _hoisted_18 = {
+var _hoisted_17 = {
   "class": "grid gap-2 mb-10"
 };
-var _hoisted_19 = {
+var _hoisted_18 = {
   "class": "flex flex-col"
 };
-var _hoisted_20 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
-  "class": "font-bold text-black"
+var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+  "class": "text-black mb-2"
 }, "Kelompok Akun", -1 /* HOISTED */);
-var _hoisted_21 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<option value=\"\">-- Pilih Kelompok Akun --</option><option value=\"1\">Aktiva Lancar</option><option value=\"2\">Aktiva Tetap</option><option value=\"3\">Hutang</option><option value=\"4\">Ekuitas</option>", 5);
-var _hoisted_26 = [_hoisted_21];
-var _hoisted_27 = {
+var _hoisted_20 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<option value=\"\">-- Pilih Kelompok Akun --</option><option value=\"1\">1 - Aktiva Lancar</option><option value=\"2\">2 - Aktiva Tetap</option><option value=\"3\">3 - Hutang</option><option value=\"4\">4 - Ekuitas</option>", 5);
+var _hoisted_25 = [_hoisted_20];
+var _hoisted_26 = {
   "class": "flex flex-col"
 };
-var _hoisted_28 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
-  "class": "font-bold text-black"
+var _hoisted_27 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+  "class": "text-black mb-2"
 }, "Nomor Akun", -1 /* HOISTED */);
-var _hoisted_29 = {
+var _hoisted_28 = {
   "class": "flex"
 };
-var _hoisted_30 = {
+var _hoisted_29 = {
   key: 0,
   "class": "bg-green-500 mt-2 p-1"
 };
-var _hoisted_31 = {
+var _hoisted_30 = {
   key: 1,
   "class": "bg-red-500 mt-2 p-1 text-white"
 };
-var _hoisted_32 = {
+var _hoisted_31 = {
   key: 2
 };
-var _hoisted_33 = {
+var _hoisted_32 = {
   "class": "flex flex-col"
 };
-var _hoisted_34 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
-  "class": "font-bold text-black"
+var _hoisted_33 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+  "class": "text-black mb-2"
 }, "Nama Akun", -1 /* HOISTED */);
-var _hoisted_35 = {
+var _hoisted_34 = {
   "class": "grid grid-cols-2 gap-4"
 };
+var _hoisted_35 = {
+  key: 0,
+  "class": "flex flex-col w-full h-full bg-slate-900 left-0 top-0 fixed bg-opacity-70 justify-center align-middle"
+};
 var _hoisted_36 = {
-  key: 1,
-  "class": "w-full h-full overflow-auto bg-slate-900 left-0 top-0 fixed bg-opacity-70"
+  "class": "relative bg-white rounded-lg shadow p-4 m-auto w-1/4"
 };
 var _hoisted_37 = {
-  "class": "flex h-screen"
-};
-var _hoisted_38 = {
-  "class": "bg-white m-auto w-[1000px] p-4 rounded-lg"
-};
-var _hoisted_39 = {
   "class": "grid grid-rows-1"
 };
-var _hoisted_40 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h1", {
-  "class": "text-2xl text-black mb-10"
+var _hoisted_38 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h1", {
+  "class": "text-2xl text-black mb-5"
 }, "Tambah Buku Akuntansi Baru", -1 /* HOISTED */);
-var _hoisted_41 = {
-  "class": "grid gap-2 mb-10"
+var _hoisted_39 = {
+  "class": "grid grid-rows-1 mb-5"
 };
+var _hoisted_40 = {
+  "class": "flex flex-col"
+};
+var _hoisted_41 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+  "class": "text-black mb-2"
+}, "Nomor Akun", -1 /* HOISTED */);
 var _hoisted_42 = {
   "class": "flex flex-col"
 };
 var _hoisted_43 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
-  "class": "font-bold text-black"
-}, "Nomor Akun", -1 /* HOISTED */);
+  "class": "text-black mb-2"
+}, "Nama Akun Lama", -1 /* HOISTED */);
 var _hoisted_44 = {
   "class": "flex flex-col"
 };
 var _hoisted_45 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
-  "class": "font-bold text-black"
-}, "Nama Akun Lama", -1 /* HOISTED */);
-var _hoisted_46 = {
-  "class": "flex flex-col"
-};
-var _hoisted_47 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
-  "class": "font-bold text-black"
+  "class": "text-black mb-2"
 }, "Nama Akun Baru", -1 /* HOISTED */);
-var _hoisted_48 = {
+var _hoisted_46 = {
   "class": "grid grid-cols-2 gap-4"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
@@ -24313,75 +24420,85 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       "class": "even:bg-slate-200 even:text-black",
       key: index
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(index + 1), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.deskripsiMasterAkuntansi(itm.kd_master_buku)), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(itm.kd_sub_master_buku), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(itm.nama_buku), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-      "class": "bg-blue-500 p-1 text-white rounded-md text-sm",
+      "class": "p-2 bg-blue-500 text-white rounded-md text-sm",
       onClick: function onClick($event) {
         return $options.openModalEditBuku(itm.id);
       }
     }, " Edit Nama ", 8 /* PROPS */, _hoisted_12)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <td class=\"border border-white p-3 text-center\">\r\n                            <router-link class=\"p-2 bg-blue-600 text-white rounded-md text-sm\" :to=\"{ name: 'SuperBankDetail', params: { bankID: bk.kd_bank }}\">\r\n                                Details\r\n                            </router-link>\r\n                            5\r\n                        </td>  ")]);
-  }), 128 /* KEYED_FRAGMENT */))])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Modal Tambah Buku Akuntansi "), $data.modalTambahBuku == true ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [_hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_19, [_hoisted_20, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
-    "class": "border border-slate-500 bg-white p-1",
+  }), 128 /* KEYED_FRAGMENT */))])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Modal Tambah Buku Akuntansi "), $data.modalTambahBuku == true ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [_hoisted_16, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, [_hoisted_19, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
+    "class": "border bg-slate-200 pt-1 pb-1 pl-2 rounded-md h-[50px] mb-3",
     "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
       return $data.formInputBukuBaru.kd_master_buku = $event;
     })
-  }, _hoisted_26, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.formInputBukuBaru.kd_master_buku]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_27, [_hoisted_28, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_29, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  }, _hoisted_25, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.formInputBukuBaru.kd_master_buku]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_26, [_hoisted_27, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_28, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
-    "class": "border border-slate-500 bg-white p-1 w-full",
+    "class": "border bg-slate-200 pt-1 pb-1 pl-2 rounded-md h-[50px] mb-3 w-full",
     "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
       return $data.formInputBukuBaru.kd_sub_master_buku = $event;
     }),
-    maxlength: "5"
+    maxlength: "5",
+    placeholder: "Contoh : 31000"
   }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.formInputBukuBaru.kd_sub_master_buku]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    "class": "bg-blue-500 text-white p-1 w-[80px] ml-2",
+    "class": "bg-blue-500 text-white p-1 ml-2 w-1/4 h-[50px] rounded-lg",
     onClick: _cache[3] || (_cache[3] = function () {
       return $options.cekBukuAkuntansi && $options.cekBukuAkuntansi.apply($options, arguments);
     })
-  }, "Cek")]), $data.formInputBukuBaru.statusInputBuku == true ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("label", _hoisted_30, "Nomor akun dapat dipakai")) : $data.formInputBukuBaru.statusInputBuku == false ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("label", _hoisted_31, "Nomor akun sudah dipakai")) : $data.formInputBukuBaru.statusInputBuku == null ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("label", _hoisted_32)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_33, [_hoisted_34, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  }, "Cek")]), $data.formInputBukuBaru.statusInputBuku == true ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("label", _hoisted_29, "Nomor akun dapat dipakai")) : $data.formInputBukuBaru.statusInputBuku == false ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("label", _hoisted_30, "Nomor akun sudah dipakai")) : $data.formInputBukuBaru.statusInputBuku == null ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("label", _hoisted_31)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_32, [_hoisted_33, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
-    "class": "border border-slate-500 bg-white p-1",
+    "class": "border bg-slate-200 pt-1 pb-1 pl-2 rounded-md h-[50px] mb-3",
     "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
       return $data.formInputBukuBaru.nama_buku = $event;
-    })
-  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.formInputBukuBaru.nama_buku]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_35, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    }),
+    placeholder: "Contoh : Hutang Jangka Panjang"
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.formInputBukuBaru.nama_buku]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_34, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "bg-slate-300 text-black p-2 rounded-md",
-    onClick: _cache[5] || (_cache[5] = function ($event) {
-      return $data.modalTambahBuku = false;
+    onClick: _cache[5] || (_cache[5] = function () {
+      return $options.clearFormBuatBukuAkuntansi && $options.clearFormBuatBukuAkuntansi.apply($options, arguments);
     })
   }, "Tutup"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "bg-blue-600 text-white p-2 rounded-md",
     onClick: _cache[6] || (_cache[6] = function () {
       return $options.simpanBukuAkuntansi && $options.simpanBukuAkuntansi.apply($options, arguments);
     })
-  }, "Simpan")])])])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("  "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Modal Tambah Buku Akuntansi "), $data.modalEditBuku == true ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_36, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_37, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_38, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_39, [_hoisted_40, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_41, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_42, [_hoisted_43, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-    type: "text",
-    "class": "border border-slate-500 bg-slate-200 p-1 w-full",
-    "onUpdate:modelValue": _cache[7] || (_cache[7] = function ($event) {
-      return $data.formEditBuku.kd_sub_master_buku = $event;
+  }, "Simpan")])])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("  "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Modal Edit Nama Buku Akuntansi "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(vue__WEBPACK_IMPORTED_MODULE_0__.Transition, {
+    name: "slide-fade"
+  }, {
+    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [$data.modalEditBuku == true ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_35, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_36, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_37, [_hoisted_38, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_39, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_40, [_hoisted_41, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+        type: "text",
+        "class": "border bg-slate-300 pt-1 pb-1 pl-2 rounded-md h-[50px] mb-3 cursor-not-allowed",
+        "onUpdate:modelValue": _cache[7] || (_cache[7] = function ($event) {
+          return $data.formEditBuku.kd_sub_master_buku = $event;
+        }),
+        readonly: ""
+      }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.formEditBuku.kd_sub_master_buku]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_42, [_hoisted_43, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+        type: "text",
+        "class": "border bg-slate-300 pt-1 pb-1 pl-2 rounded-md h-[50px] mb-3 cursor-not-allowed",
+        "onUpdate:modelValue": _cache[8] || (_cache[8] = function ($event) {
+          return $data.formEditBuku.nama_buku_lama = $event;
+        }),
+        readonly: ""
+      }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.formEditBuku.nama_buku_lama]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_44, [_hoisted_45, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+        type: "text",
+        "class": "border bg-slate-200 pt-1 pb-1 pl-2 rounded-md h-[50px] mb-3",
+        "onUpdate:modelValue": _cache[9] || (_cache[9] = function ($event) {
+          return $data.formEditBuku.nama_buku_baru = $event;
+        }),
+        placeholder: "Isi nama akun baru"
+      }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.formEditBuku.nama_buku_baru]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_46, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+        "class": "bg-slate-300 text-black p-2 rounded-md",
+        onClick: _cache[10] || (_cache[10] = function ($event) {
+          return $data.modalEditBuku = false;
+        })
+      }, "Tutup"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+        "class": "bg-slate-900 text-white p-2 rounded-md",
+        onClick: _cache[11] || (_cache[11] = function () {
+          return $options.simpanEditBukuAkuntansi && $options.simpanEditBukuAkuntansi.apply($options, arguments);
+        })
+      }, "Simspan")])])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)];
     }),
-    readonly: ""
-  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.formEditBuku.kd_sub_master_buku]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_44, [_hoisted_45, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-    type: "text",
-    "class": "border border-slate-500 bg-slate-200 p-1",
-    "onUpdate:modelValue": _cache[8] || (_cache[8] = function ($event) {
-      return $data.formEditBuku.nama_buku_lama = $event;
-    }),
-    readonly: ""
-  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.formEditBuku.nama_buku_lama]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_46, [_hoisted_47, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-    type: "text",
-    "class": "border border-slate-500 bg-white p-1",
-    "onUpdate:modelValue": _cache[9] || (_cache[9] = function ($event) {
-      return $data.formEditBuku.nama_buku_baru = $event;
-    })
-  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.formEditBuku.nama_buku_baru]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_48, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    "class": "bg-slate-300 text-black p-2 rounded-md",
-    onClick: _cache[10] || (_cache[10] = function ($event) {
-      return $data.modalEditBuku = false;
-    })
-  }, "Tutup"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    "class": "bg-blue-600 text-white p-2 rounded-md",
-    onClick: _cache[11] || (_cache[11] = function () {
-      return $options.simpanEditBukuAkuntansi && $options.simpanEditBukuAkuntansi.apply($options, arguments);
-    })
-  }, "Simpan")])])])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("  ")]);
+    _: 1 /* STABLE */
+  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("  ")]);
 }
 
 /***/ }),
@@ -24589,7 +24706,7 @@ var _hoisted_11 = {
   "class": "flex flex-col w-full h-full bg-slate-900 left-0 top-0 fixed bg-opacity-70 justify-center align-middle"
 };
 var _hoisted_12 = {
-  "class": "relative bg-white rounded-lg p-4 m-auto w-[1000px]"
+  "class": "relative bg-white rounded-lg p-4 m-auto w-1/4"
 };
 var _hoisted_13 = {
   "class": "grid grid-rows-1"
@@ -24683,13 +24800,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [$data.openModalAddUser == true ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [_hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [_hoisted_16, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
         type: "text",
-        "class": "border bg-slate-200 pt-1 pb-1 pl-2 rounded-md h-[50px] mb-3",
+        "class": "border border-slate-400 bg-white pt-1 pb-1 pl-2 rounded-md h-[50px] mb-3",
         "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
           return $data.formTambahUser.username = $event;
         }),
-        placeholder: "Username hanya bisa menggunakan satu kata tanpa spasi, Contoh: Junaedi"
+        placeholder: "Username hanya bisa menggunakan satu kata tanpa spasi"
       }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.formTambahUser.username]]), _hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
-        "class": "border bg-slate-200 pt-1 pb-1 pl-2 rounded-md h-[50px] mb-3",
+        "class": "border border-slate-400 bg-white pt-1 pb-1 pl-2 pr-2 rounded-md h-[50px] mb-3",
         "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
           return $data.formTambahUser.bankTujuan = $event;
         })
@@ -24699,7 +24816,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           value: bnk.id
         }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(bnk.kd_bank) + " - " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(bnk.nama_bank), 9 /* TEXT, PROPS */, _hoisted_19);
       }), 128 /* KEYED_FRAGMENT */))], 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.formTambahUser.bankTujuan]]), _hoisted_20, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
-        "class": "border bg-slate-200 pt-1 pb-1 pl-2 rounded-md h-[50px] mb-3",
+        "class": "border border-slate-400 bg-white pt-1 pb-1 pl-2 rounded-md h-[50px] mb-3",
         "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
           return $data.formTambahUser.pekerjaan = $event;
         })
@@ -24885,7 +25002,8 @@ __webpack_require__.r(__webpack_exports__);
 // Untuk Pengembangan dan Testing
 
 var devurl = '/dev';
-var releaseurl = '/bank';
+var releaseurl = '/banking';
+var superpanel = '/supercpl';
 
 // import Test from '../views/Test/Test.vue'
 
@@ -24896,71 +25014,51 @@ var routes = [
   component: _views_System_404_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
   name: 'PekoNotFound'
 },
-// Rute untuk Cpanel Banking
-{
-  path: '/',
-  component: _views_CPanel_BankingLogin_vue__WEBPACK_IMPORTED_MODULE_11__["default"],
-  name: 'BankingLogin'
-}, {
-  path: '/banking/dashboard',
-  name: 'BankingDashboard',
-  components: {
-    "default": _views_CPanel_BankingDashboard_vue__WEBPACK_IMPORTED_MODULE_12__["default"],
-    sidebar: _views_Components_UserBankingSidebar_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
-  }
-}, {
-  path: '/banking/cif',
-  name: 'CIF',
-  components: {
-    "default": _views_CPanel_BankingCIF_vue__WEBPACK_IMPORTED_MODULE_13__["default"],
-    sidebar: _views_Components_UserBankingSidebar_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
-  }
-},
 // Rute untuk Superadmin
 
 {
-  path: '/supercpl/',
+  path: superpanel + '/dashboard',
   components: {
     "default": _views_Superadmin_SuperDashboard_vue__WEBPACK_IMPORTED_MODULE_5__["default"],
     sidebar: _views_Components_UserAdminSidebar_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
   }
 }, {
-  path: '/supercpl/superdashboard/',
+  path: superpanel + '/superdashboard/',
   name: 'SuperDashboard',
   components: {
     "default": _views_Superadmin_SuperDashboard_vue__WEBPACK_IMPORTED_MODULE_5__["default"],
     sidebar: _views_Components_UserAdminSidebar_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
   }
 }, {
-  path: '/supercpl/superbank',
+  path: superpanel + '/superbank',
   name: 'SuperBank',
   components: {
     "default": _views_Superadmin_SuperBank_vue__WEBPACK_IMPORTED_MODULE_6__["default"],
     sidebar: _views_Components_UserAdminSidebar_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
   }
 }, {
-  path: '/supercpl/superbank/detail/:bankID',
+  path: superpanel + '/superbank/detail/:bankID',
   name: 'SuperBankDetail',
   components: {
     "default": _views_Superadmin_SuperBankDetails_vue__WEBPACK_IMPORTED_MODULE_7__["default"],
     sidebar: _views_Components_UserAdminSidebar_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
   }
 }, {
-  path: '/supercpl/superuser/',
+  path: superpanel + '/superuser/',
   name: 'SuperUser',
   components: {
     "default": _views_Superadmin_SuperUser_vue__WEBPACK_IMPORTED_MODULE_8__["default"],
     sidebar: _views_Components_UserAdminSidebar_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
   }
 }, {
-  path: '/supercpl/superpekerjaan/',
+  path: superpanel + '/superpekerjaan/',
   name: 'SuperPekerjaan',
   components: {
     "default": _views_Superadmin_SuperPekerjaan_vue__WEBPACK_IMPORTED_MODULE_9__["default"],
     sidebar: _views_Components_UserAdminSidebar_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
   }
 }, {
-  path: '/supercpl/superakuntansi/',
+  path: superpanel + '/superakuntansi/',
   name: 'SuperAkunAkuntansi',
   components: {
     "default": _views_Superadmin_SuperBukuAkuntansi_vue__WEBPACK_IMPORTED_MODULE_10__["default"],
@@ -24977,6 +25075,24 @@ var routes = [
 // Rute untuk role Office serbaguna
 
 {
+  path: '/',
+  component: _views_CPanel_BankingLogin_vue__WEBPACK_IMPORTED_MODULE_11__["default"],
+  name: 'BankingLogin'
+}, {
+  path: releaseurl + '/dashboard',
+  name: 'BankingDashboard',
+  components: {
+    "default": _views_CPanel_BankingDashboard_vue__WEBPACK_IMPORTED_MODULE_12__["default"],
+    sidebar: _views_Components_UserBankingSidebar_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
+  }
+}, {
+  path: releaseurl + '/cif',
+  name: 'CIF',
+  components: {
+    "default": _views_CPanel_BankingCIF_vue__WEBPACK_IMPORTED_MODULE_13__["default"],
+    sidebar: _views_Components_UserBankingSidebar_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
+  }
+}, {
   path: releaseurl + '/cif',
   name: 'CIF',
   components: {
@@ -25076,18 +25192,43 @@ var router = (0,vue_router__WEBPACK_IMPORTED_MODULE_26__.createRouter)({
 });
 router.beforeEach(function (to, from, next) {
   if (to.fullPath == '/') {
-    next();
+    axios__WEBPACK_IMPORTED_MODULE_0___default().get('/api/super/cekLogin').then(function (cek) {
+      // console.log(cek.data.status)
+      switch (cek.data.status) {
+        case 200:
+          router.push({
+            name: 'BankingDashboard'
+          });
+          break;
+        case 403:
+          alert(cek.data.message);
+          next();
+          break;
+        case 404:
+          next();
+          break;
+        case 500:
+          alert('Terdapat kesalah di server, mohon menghubungi staff IT website untuk ditijau kerusakan pada website');
+          next();
+          break;
+        default:
+          next();
+          break;
+      }
+    });
   } else if (to.name == 'PekoNotFound') {
     next();
   } else {
     axios__WEBPACK_IMPORTED_MODULE_0___default().get('/api/super/tknCheck').then(function (tkn) {
-      if (tkn.data.status == 404) {
+      if (tkn.data.status == 200) {
+        next();
+      } else {
+        alert("Sesi login anda sudah habis, silahkan login lagi");
         return router.push({
           name: 'BankingLogin'
         });
       }
     });
-    next();
   }
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (router);
@@ -27942,6 +28083,70 @@ function render(_ctx, _cache) {
     (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("path", {
       "fill-rule": "evenodd",
       d: "M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z",
+      "clip-rule": "evenodd"
+    })
+  ]))
+}
+
+/***/ }),
+
+/***/ "./node_modules/@heroicons/vue/solid/esm/CreditCardIcon.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/@heroicons/vue/solid/esm/CreditCardIcon.js ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ render)
+/* harmony export */ });
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
+
+
+function render(_ctx, _cache) {
+  return ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("svg", {
+    xmlns: "http://www.w3.org/2000/svg",
+    viewBox: "0 0 20 20",
+    fill: "currentColor",
+    "aria-hidden": "true"
+  }, [
+    (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("path", { d: "M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" }),
+    (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("path", {
+      "fill-rule": "evenodd",
+      d: "M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z",
+      "clip-rule": "evenodd"
+    })
+  ]))
+}
+
+/***/ }),
+
+/***/ "./node_modules/@heroicons/vue/solid/esm/CurrencyDollarIcon.js":
+/*!*********************************************************************!*\
+  !*** ./node_modules/@heroicons/vue/solid/esm/CurrencyDollarIcon.js ***!
+  \*********************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ render)
+/* harmony export */ });
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
+
+
+function render(_ctx, _cache) {
+  return ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("svg", {
+    xmlns: "http://www.w3.org/2000/svg",
+    viewBox: "0 0 20 20",
+    fill: "currentColor",
+    "aria-hidden": "true"
+  }, [
+    (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("path", { d: "M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z" }),
+    (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("path", {
+      "fill-rule": "evenodd",
+      d: "M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z",
       "clip-rule": "evenodd"
     })
   ]))

@@ -3,7 +3,8 @@
 <div>
     <div class="p-3 bg-white border-t flex flex-row">
         <h1 class="text-2xl italic">{{ judulNavbar }}</h1>
-        <router-link class="p-2 text-white bg-blue-600 w-auto text-sm ml-4" :to="{name: 'CIFAdd'}">Tambah CIF baru</router-link>
+        <router-link class="p-2 bg-blue-600 text-white w-auto text-sm ml-4" :to="{name: 'CIFAdd'}">Tambah CIF baru</router-link>
+        <button class="p-2 bg-blue-700 text-white w-auto text-sm ml-4">Tambah CIF Modal</button>
     </div>
     <div class="p-2">
         <div>
@@ -47,7 +48,41 @@ export default {
         return {
             judulNavbar     : 'Customer Identification File',
             isiTabelCIF     : [],
-            openModalAddCIF : false
+            openModalAddCIF : false,
+            formTambahCIF   : {
+                jenisIdentitas      : '',
+                kodeIdentitas       : '',
+                namaIdentitas       : '',
+                tempatLahir         : '',
+                tanggalLahir        : '',
+                jenisKelamin        : '',
+                statusKawin         : '',
+                warganegara         : '',
+                alamatSekarang      : '',
+                rtRw                : '',
+                desaKelurahan       : '',
+                kecamatan           : '',
+                kabKota             : '',
+                provinsi            : '',
+                kodePos             : '',
+                noTelp              : '',
+                eMail               : '',
+                namaEmak            : '',
+                statusKerja         : '',
+                modalStatus         : false
+            },
+            addinFormTambahCIF      : {
+                jenisKelamin        : [
+                    {
+                        gender          : 'laki',
+                        alias           : 'male'
+                    },
+                    {
+                        gender          : 'perempuan',
+                        alias           : 'female'
+                    }
+                ]
+            }
         }
     },
     methods: {

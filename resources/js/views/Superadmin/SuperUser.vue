@@ -39,21 +39,21 @@
 
         <div class="flex flex-col w-full h-full bg-slate-900 left-0 top-0 fixed bg-opacity-70 justify-center align-middle" v-if="openModalAddUser == true">
             
-                <div class="relative bg-white rounded-lg p-4 m-auto w-[1000px]">
+                <div class="relative bg-white rounded-lg p-4 m-auto w-1/4">
                     <div class="grid grid-rows-1">
                         <h1 class="text-2xl text-black mb-5">Tambah User Baru</h1>
                         <div class="grid grid-rows-1 mb-5">
                                 <label class="text-black mb-2">Username</label>
-                                <input type="text" class="border bg-slate-200 pt-1 pb-1 pl-2 rounded-md h-[50px] mb-3" v-model="formTambahUser.username" placeholder="Username hanya bisa menggunakan satu kata tanpa spasi, Contoh: Junaedi" />
+                                <input type="text" class="border border-slate-400 bg-white pt-1 pb-1 pl-2 rounded-md h-[50px] mb-3" v-model="formTambahUser.username" placeholder="Username hanya bisa menggunakan satu kata tanpa spasi" />
 
                                 <label class="text-black mb-2">Bank Tujuan</label>
-                                <select class="border bg-slate-200 pt-1 pb-1 pl-2 rounded-md h-[50px] mb-3" v-model="formTambahUser.bankTujuan">
+                                <select class="border border-slate-400 bg-white pt-1 pb-1 pl-2 pr-2 rounded-md h-[50px] mb-3" v-model="formTambahUser.bankTujuan">
                                     <option :value="0">-- Pilih Bank Tujuan --</option>
                                     <option v-for="bnk in listBank" :key="bnk.kd_bank" :value="bnk.id">{{ bnk.kd_bank }} - {{ bnk.nama_bank }}</option>
                                 </select>
 
                                 <label class="text-black mb-2">Pekerjaan</label>
-                                <select class="border bg-slate-200 pt-1 pb-1 pl-2 rounded-md h-[50px] mb-3" v-model="formTambahUser.pekerjaan">
+                                <select class="border border-slate-400 bg-white pt-1 pb-1 pl-2 rounded-md h-[50px] mb-3" v-model="formTambahUser.pekerjaan">
                                     <option :value="0">-- Pilih Pekerjaan --</option>
                                     <option v-for="pkj in listRole" :key="pkj.kd_role" :value="pkj.kd_role">{{ pkj.nama_role }}</option>
                                 </select>
