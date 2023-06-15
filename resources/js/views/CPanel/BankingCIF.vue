@@ -30,6 +30,31 @@
             </table>
         </div>
     </div>
+
+    <!-- Modal Selection -->
+
+    <Transition name="slide-fade">
+
+        <div class="flex flex-col w-full h-full bg-slate-900 left-0 top-0 fixed bg-opacity-70 justify-center align-middle" v-if="formTambahCIF.modalStatus == true">
+            <div class="relative bg-white rounded-lg shadow p-4 m-auto md:w-1/3 2xl:w-1/4">
+                <div class="grid grid-rows-1">
+                    <h1 class="text-xl text-black mb-5">Tambah bank baru</h1>
+                    <div class="grid grid-rows-1 mb-5">
+                        <div>
+                            <label class="text-black mb-2">Lorem ipsum</label>
+                            <input class="border border-slate-300 bg-white pt-1 pb-1 pl-2 rounded-md h-[50px] mb-3" v-model="formTambahCIF.jenisIdentitas" placeholder="Jenis Identitas" />
+                        </div>
+                        <div>
+                            <label class="text-black mb-2">Lorem ipsum</label>
+                            <input type="text" class="border border-slate-300 bg-white pt-1 pb-1 pl-2 rounded-md h-[50px] mb-3" v-model="formTambahCIF.jenisIdentitas" placeholder="Jenis Identitas" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </Transition>
+
 </div>
 </template>
 
