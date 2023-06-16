@@ -72,10 +72,15 @@ export default {
                             break;
                     }
                     
-                } else {
-                    alert(res.data.message)
+                }
+                else {
+                    alert('Terjadi kesalahan di aplikasi, dimohon untuk memuat ulang halaman website')
                 }
 
+            }).catch(err => {
+                if(err.response.status == 500) {
+                    alert('Error : Gagal menyambungkan koneksi ke server')
+                }
             })
         }
     },
