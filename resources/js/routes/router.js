@@ -132,7 +132,10 @@ const routes = [
     {   
         path            : '/',
         component       : BankingLogin,
-        name            : 'BankingLogin'
+        name            : 'BankingLogin',
+        params          : {
+            id      : true
+        }
     },
 
     {   

@@ -44,13 +44,13 @@ import LoginImage from '../Assets/Images/nepu.jpg'
 
 export default {
     mounted() {
-        // 
+        console.log(this.$route)
     },
     methods: {
         masukKeDashboard(e) {
             e.preventDefault()
             axios.post('/api/super/login', { username: this.formLogin.username, password: this.formLogin.password }).then(res => {
-                console.log(res.data)
+                // console.log(res.data)
                 if(res.data.status == 200) {
 
                     localStorage.setItem('uname', res.data.nama)

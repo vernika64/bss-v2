@@ -52,8 +52,6 @@ export default {
     },
     mounted() {
 
-        console.log(this.$route)
-
         var tgl = new Date()
 
         this.tanggal = tgl.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
@@ -62,6 +60,17 @@ export default {
 
         axios.get('/api/super/tknCheck').then(loggedin => {
             this.userRole = loggedin.data.role
+        })
+
+        axios.get('/api/super/cekLogin').then(dt => {
+            console.log(dt.data)
+
+            if(dt.data.status == 200) {
+                statusLogin = true
+            }
+
+        }).catch(er => {
+            console.log(er)
         })
     },
     data() {
@@ -76,7 +85,8 @@ export default {
                 menuPekerjaan   : false,
                 menuBkAkuntansi : false,
                 menuDevArea     : false
-            }
+            },
+            statusLogin     : false
         }
     },
     methods: {
