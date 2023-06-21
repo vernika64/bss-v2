@@ -36,17 +36,21 @@
         
                 <p class="pb-2">{{ propertyFormCIF.status_kawin.label }}</p>
                 <select class="border border-slate-300 bg-white mb-2 pt-1 pb-1 pl-2 rounded-md w-full h-[50px]" v-model="formCIF.status_kawin">
-                    <option :value="''">-- Pilih Status Kawin --</option>
+                    <!-- <option :value="''">-- Pilih Status Kawin --</option>
                     <option :value="'belum'">Belum Menikah</option>
                     <option :value="'sudah'">Menikah</option>
                     <option :value="'janda'">Janda</option>
-                    <option :value="'duda'">Duda</option>
+                    <option :value="'duda'">Duda</option> -->
+                    <option v-for="isi in isiSelect.statusKawin" :value="isi.value">{{ isi.label }}</option>
                 </select>
 
                 <p class="pb-2">{{ propertyFormCIF.negara.label }}</p>
                 <input type="text" class="border border-slate-300 mb-2 bg-white pt-1 pb-1 pl-2 rounded-md w-full h-[50px]" v-model="formCIF.negara" placeholder="Kewarganegaraan sekarang. Contoh : WNI" />
                 
-                <button class="bg-blue-500 text-white p-3 mt-4" @click="modalKonfirmasiStatus = true">Simpan</button>
+                <div class="grid grid-cols-2 gap-2">
+                    <button class="bg-blue-500 text-white p-3 mt-4 w-full rounded-lg shadow-md" @click="modalKonfirmasiStatus = true">Simpan</button>
+                    <button class="bg-slate-200 text-black p-3 mt-4 w-full rounded-lg shadow-md" @click="resetData()">Reset</button>
+                </div>
 
             </div>
 
@@ -160,61 +164,145 @@
                                 <x-circle-icon class="h-7 w-7 fill-white" v-else-if="'' == formCIF.tgl_lahir"></x-circle-icon>
                             </div>
                         </div>
-                        <div class="bg-white shadow-lg rounded-lg border border-slate-300 p-2">
-                            <p class="text-md">{{ propertyFormCIF.jenis_kelamin.label }}</p>
-                            <p class="text-lg">Lakik</p>
+                        <div class="flex bg-white shadow-lg rounded-lg border border-slate-300 p-2" :class="['' == formCIF.jenis_kelamin ? 'bg-red-600 text-white' : 'bg-white text-black']">
+                            <div class="flex-auto">
+                                <p class="text-md">{{ propertyFormCIF.jenis_kelamin.label }}</p>
+                                <p class="text-lg">{{ '' != formCIF.jenis_kelamin ? translateJenisKelamin(formCIF.jenis_kelamin) : 'Data kosong' }}</p>
+                            </div>
+                            <div class="flex-none m-auto">
+                                <check-circle-icon class="h-7 w-7 fill-blue-700" v-if="'' != formCIF.jenis_kelamin"></check-circle-icon>
+                                <x-circle-icon class="h-7 w-7 fill-white" v-else-if="'' == formCIF.jenis_kelamin"></x-circle-icon>
+                            </div>
                         </div>
-                        <div class="bg-white shadow-lg rounded-lg border border-slate-300 p-2">
-                            <p class="text-md">{{ propertyFormCIF.jenis_kelamin.label }}</p>
-                            <p class="text-lg">Jones</p>
+                        <div class="flex bg-white shadow-lg rounded-lg border border-slate-300 p-2" :class="['' == formCIF.status_kawin ? 'bg-red-600 text-white' : 'bg-white text-black']">
+                            <div class="flex-auto">
+                                <p class="text-md">{{ propertyFormCIF.status_kawin.label }}</p>
+                                <p class="text-lg">{{ '' != formCIF.status_kawin ? translateStatusKawin(formCIF.status_kawin) : 'Data kosong' }}</p>
+                            </div>
+                            <div class="flex-none m-auto">
+                                <check-circle-icon class="h-7 w-7 fill-blue-700" v-if="'' != formCIF.status_kawin"></check-circle-icon>
+                                <x-circle-icon class="h-7 w-7 fill-white" v-else-if="'' == formCIF.status_kawin"></x-circle-icon>
+                            </div>
                         </div>
-                        <div class="bg-white shadow-lg rounded-lg border border-slate-300 p-2">
-                            <p class="text-md">{{ propertyFormCIF.negara.label }}</p>
-                            <p class="text-lg">WNI</p>
+                        <div class="flex bg-white shadow-lg rounded-lg border border-slate-300 p-2" :class="['' == formCIF.negara ? 'bg-red-600 text-white' : 'bg-white text-black']">
+                            <div class="flex-auto">
+                                <p class="text-md">{{ propertyFormCIF.negara.label }}</p>
+                                <p class="text-lg">{{ '' != formCIF.negara ? formCIF.negara : 'Data kosong' }}</p>
+                            </div>
+                            <div class="flex-none m-auto">
+                                <check-circle-icon class="h-7 w-7 fill-blue-700" v-if="'' != formCIF.negara"></check-circle-icon>
+                                <x-circle-icon class="h-7 w-7 fill-white" v-else-if="'' == formCIF.negara"></x-circle-icon>
+                            </div>
                         </div>
-                        <div class="bg-white shadow-lg rounded-lg border border-slate-300 p-2">
-                            <p class="text-md">{{ propertyFormCIF.alamat.label }}</p>
-                            <p class="text-lg">Jl. Teluk Bayur</p>
+                        <div class="flex bg-white shadow-lg rounded-lg border border-slate-300 p-2" :class="['' == formCIF.alamat ? 'bg-red-600 text-white' : 'bg-white text-black']">
+                            <div class="flex-auto">
+                                <p class="text-md">{{ propertyFormCIF.alamat.label }}</p>
+                                <p class="text-lg">{{ '' != formCIF.alamat ? formCIF.alamat : 'Data kosong' }}</p>
+                            </div>
+                            <div class="flex-none m-auto">
+                                <check-circle-icon class="h-7 w-7 fill-blue-700" v-if="'' != formCIF.alamat"></check-circle-icon>
+                                <x-circle-icon class="h-7 w-7 fill-white" v-else-if="'' == formCIF.alamat"></x-circle-icon>
+                            </div>
                         </div>
-                        <div class="bg-white shadow-lg rounded-lg border border-slate-300 p-2">
-                            <p class="text-md">{{ propertyFormCIF.rt_rw.label }}</p>
-                            <p class="text-lg">001/001</p>
+                        <div class="flex bg-white shadow-lg rounded-lg border border-slate-300 p-2" :class="['' == formCIF.rt_rw ? 'bg-red-600 text-white' : 'bg-white text-black']">
+                            <div class="flex-auto">
+                                <p class="text-md">{{ propertyFormCIF.rt_rw.label }}</p>
+                                <p class="text-lg">{{ '' != formCIF.rt_rw ? formCIF.rt_rw : 'Data kosong' }}</p>
+                            </div>
+                            <div class="flex-none m-auto">
+                                <check-circle-icon class="h-7 w-7 fill-blue-700" v-if="'' != formCIF.rt_rw"></check-circle-icon>
+                                <x-circle-icon class="h-7 w-7 fill-white" v-else-if="'' == formCIF.rt_rw"></x-circle-icon>
+                            </div>
                         </div>
-                        <div class="bg-white shadow-lg rounded-lg border border-slate-300 p-2">
-                            <p class="text-md">{{ propertyFormCIF.desa_kelurahan.label }}</p>
-                            <p class="text-lg">Kelurahan Joni</p>
+                        <div class="flex bg-white shadow-lg rounded-lg border border-slate-300 p-2" :class="['' == formCIF.desa_kelurahan ? 'bg-red-600 text-white' : 'bg-white text-black']">
+                            <div class="flex-auto">
+                                <p class="text-md">{{ propertyFormCIF.desa_kelurahan.label }}</p>
+                                <p class="text-lg">{{ '' != formCIF.desa_kelurahan ? formCIF.desa_kelurahan : 'Data kosong' }}</p>
+                            </div>
+                            <div class="flex-none m-auto">
+                                <check-circle-icon class="h-7 w-7 fill-blue-700" v-if="'' != formCIF.desa_kelurahan"></check-circle-icon>
+                                <x-circle-icon class="h-7 w-7 fill-white" v-else-if="'' == formCIF.desa_kelurahan"></x-circle-icon>
+                            </div>
                         </div>
-                        <div class="bg-white shadow-lg rounded-lg border border-slate-300 p-2">
-                            <p class="text-md">{{ propertyFormCIF.kecamatan.label }}</p>
-                            <p class="text-lg">Kecamatan Asrikraton</p>
+                        <div class="flex bg-white shadow-lg rounded-lg border border-slate-300 p-2" :class="['' == formCIF.kecamatan ? 'bg-red-600 text-white' : 'bg-white text-black']">
+                            <div class="flex-auto">
+                                <p class="text-md">{{ propertyFormCIF.kecamatan.label }}</p>
+                                <p class="text-lg">{{ '' != formCIF.kecamatan ? formCIF.kecamatan : 'Data kosong' }}</p>
+                            </div>
+                            <div class="flex-none m-auto">
+                                <check-circle-icon class="h-7 w-7 fill-blue-700" v-if="'' != formCIF.kecamatan"></check-circle-icon>
+                                <x-circle-icon class="h-7 w-7 fill-white" v-else-if="'' == formCIF.kecamatan"></x-circle-icon>
+                            </div>
                         </div>
-                        <div class="bg-white shadow-lg rounded-lg border border-slate-300 p-2">
-                            <p class="text-md">{{ propertyFormCIF.kabupaten_kota.label }}</p>
-                            <p class="text-lg">Kabupaten Malang</p>
+                        <div class="flex bg-white shadow-lg rounded-lg border border-slate-300 p-2" :class="['' == formCIF.kabupaten_kota ? 'bg-red-600 text-white' : 'bg-white text-black']">
+                            <div class="flex-auto">
+                                <p class="text-md">{{ propertyFormCIF.kabupaten_kota.label }}</p>
+                                <p class="text-lg">{{ '' != formCIF.kabupaten_kota ? formCIF.kabupaten_kota : 'Data kosong' }}</p>
+                            </div>
+                            <div class="flex-none m-auto">
+                                <check-circle-icon class="h-7 w-7 fill-blue-700" v-if="'' != formCIF.kabupaten_kota"></check-circle-icon>
+                                <x-circle-icon class="h-7 w-7 fill-white" v-else-if="'' == formCIF.kabupaten_kota"></x-circle-icon>
+                            </div>
                         </div>
-                        <div class="bg-white shadow-lg rounded-lg border border-slate-300 p-2">
-                            <p class="text-md">{{ propertyFormCIF.provinsi.label }}</p>
-                            <p class="text-lg">Jawa Timur</p>
+                        <div class="flex bg-white shadow-lg rounded-lg border border-slate-300 p-2" :class="['' == formCIF.provinsi ? 'bg-red-600 text-white' : 'bg-white text-black']">
+                            <div class="flex-auto">
+                                <p class="text-md">{{ propertyFormCIF.provinsi.label }}</p>
+                                <p class="text-lg">{{ '' != formCIF.provinsi ? formCIF.provinsi : 'Data kosong' }}</p>
+                            </div>
+                            <div class="flex-none m-auto">
+                                <check-circle-icon class="h-7 w-7 fill-blue-700" v-if="'' != formCIF.provinsi"></check-circle-icon>
+                                <x-circle-icon class="h-7 w-7 fill-white" v-else-if="'' == formCIF.provinsi"></x-circle-icon>
+                            </div>
                         </div>
-                        <div class="bg-white shadow-lg rounded-lg border border-slate-300 p-2">
-                            <p class="text-md">{{ propertyFormCIF.kode_pos.label }}</p>
-                            <p class="text-lg">65121</p>
+                        <div class="flex bg-white shadow-lg rounded-lg border border-slate-300 p-2" :class="['' == formCIF.kode_pos ? 'bg-red-600 text-white' : 'bg-white text-black']">
+                            <div class="flex-auto">
+                                <p class="text-md">{{ propertyFormCIF.kode_pos.label }}</p>
+                                <p class="text-lg">{{ '' != formCIF.kode_pos ? formCIF.kode_pos : 'Data kosong' }}</p>
+                            </div>
+                            <div class="flex-none m-auto">
+                                <check-circle-icon class="h-7 w-7 fill-blue-700" v-if="'' != formCIF.kode_pos"></check-circle-icon>
+                                <x-circle-icon class="h-7 w-7 fill-white" v-else-if="'' == formCIF.kode_pos"></x-circle-icon>
+                            </div>
                         </div>
-                        <div class="bg-white shadow-lg rounded-lg border border-slate-300 p-2">
-                            <p class="text-md">{{ propertyFormCIF.no_telp.label }}</p>
-                            <p class="text-lg">0341212114</p>
+                        <div class="flex bg-white shadow-lg rounded-lg border border-slate-300 p-2" :class="['' == formCIF.no_telp ? 'bg-red-600 text-white' : 'bg-white text-black']">
+                            <div class="flex-auto">
+                                <p class="text-md">{{ propertyFormCIF.no_telp.label }}</p>
+                                <p class="text-lg">{{ '' != formCIF.no_telp ? formCIF.no_telp : 'Data kosong' }}</p>
+                            </div>
+                            <div class="flex-none m-auto">
+                                <check-circle-icon class="h-7 w-7 fill-blue-700" v-if="'' != formCIF.no_telp"></check-circle-icon>
+                                <x-circle-icon class="h-7 w-7 fill-white" v-else-if="'' == formCIF.no_telp"></x-circle-icon>
+                            </div>
                         </div>
-                        <div class="bg-white shadow-lg rounded-lg border border-slate-300 p-2">
-                            <p class="text-md">{{ propertyFormCIF.email.label }}</p>
-                            <p class="text-lg">suparno@gmail.com</p>
+                        <div class="flex bg-white shadow-lg rounded-lg border border-slate-300 p-2" :class="['' == formCIF.email ? 'bg-red-600 text-white' : 'bg-white text-black']">
+                            <div class="flex-auto">
+                                <p class="text-md">{{ propertyFormCIF.email.label }}</p>
+                                <p class="text-lg">{{ '' != formCIF.email ? formCIF.email : 'Data kosong' }}</p>
+                            </div>
+                            <div class="flex-none m-auto">
+                                <check-circle-icon class="h-7 w-7 fill-blue-700" v-if="'' != formCIF.email"></check-circle-icon>
+                                <x-circle-icon class="h-7 w-7 fill-white" v-else-if="'' == formCIF.email"></x-circle-icon>
+                            </div>
                         </div>
-                        <div class="bg-white shadow-lg rounded-lg border border-slate-300 p-2">
-                            <p class="text-md">{{ propertyFormCIF.nama_ibu.label }}</p>
-                            <p class="text-lg">Suparni</p>
+                        <div class="flex bg-white shadow-lg rounded-lg border border-slate-300 p-2" :class="['' == formCIF.nama_ibu ? 'bg-red-600 text-white' : 'bg-white text-black']">
+                            <div class="flex-auto">
+                                <p class="text-md">{{ propertyFormCIF.nama_ibu.label }}</p>
+                                <p class="text-lg">{{ '' != formCIF.nama_ibu ? formCIF.nama_ibu : 'Data kosong' }}</p>
+                            </div>
+                            <div class="flex-none m-auto">
+                                <check-circle-icon class="h-7 w-7 fill-blue-700" v-if="'' != formCIF.nama_ibu"></check-circle-icon>
+                                <x-circle-icon class="h-7 w-7 fill-white" v-else-if="'' == formCIF.nama_ibu"></x-circle-icon>
+                            </div>
                         </div>
-                        <div class="bg-white shadow-lg rounded-lg border border-slate-300 p-2">
-                            <p class="text-md">{{ propertyFormCIF.status_pekerjaan.label }}</p>
-                            <p class="text-lg">Pejabat</p>
+                        <div class="flex bg-white shadow-lg rounded-lg border border-slate-300 p-2" :class="['' == formCIF.status_pekerjaan ? 'bg-red-600 text-white' : 'bg-white text-black']">
+                            <div class="flex-auto">
+                                <p class="text-md">{{ propertyFormCIF.status_pekerjaan.label }}</p>
+                                <p class="text-lg">{{ '' != formCIF.status_pekerjaan ? formCIF.status_pekerjaan : 'Data kosong' }}</p>
+                            </div>
+                            <div class="flex-none m-auto">
+                                <check-circle-icon class="h-7 w-7 fill-blue-700" v-if="'' != formCIF.status_pekerjaan"></check-circle-icon>
+                                <x-circle-icon class="h-7 w-7 fill-white" v-else-if="'' == formCIF.status_pekerjaan"></x-circle-icon>
+                            </div>
                         </div>
                     
                 </div>
@@ -344,10 +432,31 @@ export default {
                     status          : ''
                 }
             },
-            verifikasiFormCIF       : {
-                kd_tipe             : false
-            },
             modalKonfirmasiStatus   : false,
+            isiSelect               : {
+                statusKawin         : [
+                    {
+                        label       : '-- Pilih Status Kawin --',
+                        value       : '',
+                    },
+                    {
+                        label       : 'Belum Menikah',
+                        value       : 'belum',
+                    },
+                    {
+                        label       : 'Menikah',
+                        value       : 'sudah',
+                    },
+                    {
+                        label       : 'Janda',
+                        value       : 'janda',
+                    },
+                    {
+                        label       : 'Duda',
+                        value       : 'duda',
+                    },
+                ]
+            }
         }
     },
     methods: {
@@ -362,27 +471,80 @@ export default {
             // })
 
             // Testing
-            const pesan = "Apakah anda sudah yakin data CIF sudah benar ?"
+            var pesan = confirm("Apakah anda sudah yakin data CIF sudah benar ?")
 
-            if(confirm(pesan) == true) {
+            if(pesan == true) {
+                console.log('simpan')
                 console.log(this.formCIF)
-            } else if(confirm(pesan) == false) {
+                
+                alert('Data berhasil disimpan')
+            } else if(pesan == false) {
                 console.log('batal')
             } else {
                 console.log('error')
             }
         },
         translateTipeID(data) {
-            
             switch (data) {
+                case '':
+                    return 'Data kosong'
                 case 'ktp':
-                    return 'Kartu Tanda Penjahat'
+                    return 'Kartu Tanda Penduduk'
                 case 'ktm':
-                    return 'Kartu Tanda Mahasiwa'
+                    return 'Kartu Tanda Mahasiswa'
                 default:
-                    return 'Data Kosong'
+                    return 'Data kosong'
             }
         },
+        translateStatusKawin(data) {
+            switch (data) {
+                case '':
+                    return 'Data kosong'
+                case 'belum':
+                    return 'Belum Menikah'
+                case 'sudah':
+                    return 'Menikah'
+                case 'janda':
+                    return 'Janda'
+                case 'duda':
+                    return 'Duda'
+                default:
+                    return 'Data kosong'
+            }
+        },
+        translateJenisKelamin(data) {
+            switch (data) {
+                case '':
+                    return 'Data kosong'
+                case 'laki':
+                    return 'Laki - Laki'
+                case 'perempuan':
+                    return 'Perempuan'
+                default:
+                    return 'Data kosong'
+            }
+        },
+        resetData() {
+            this.formCIF.kd_identitas        = ''
+            this.formCIF.kd_tipe             = ''
+            this.formCIF.nama                = ''
+            this.formCIF.tempat_lahir        = ''
+            this.formCIF.tgl_lahir           = ''
+            this.formCIF.jenis_kelamin       = ''
+            this.formCIF.status_kawin        = ''
+            this.formCIF.negara              = ''
+            this.formCIF.alamat              = ''
+            this.formCIF.rt_rw               = ''
+            this.formCIF.desa_kelurahan      = ''
+            this.formCIF.kecamatan           = ''
+            this.formCIF.kabupaten_kota      = ''
+            this.formCIF.provinsi            = ''
+            this.formCIF.kode_pos            = ''
+            this.formCIF.no_telp             = ''
+            this.formCIF.email               = ''
+            this.formCIF.nama_ibu            = ''
+            this.formCIF.status_pekerjaan    = ''        
+        }
     }
 }
 </script>
