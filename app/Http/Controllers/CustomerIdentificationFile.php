@@ -158,69 +158,111 @@ class CustomerIdentificationFile extends Controller
         }
     }
 
+    public function cekKetersediaanNomerId(Request $re) {
+        try {
+            $tipe_id            = $re->tipe_id;
+            $nomer_id           = $re->nomer_id;
+
+            $ModelCIF           = new BankCIF;
+            $Hasil              = $ModelCIF->cariStatusID($tipe_id, $nomer_id, $re->cookie('tkn'));
+
+            if($Hasil->status == true) {
+                if($Hasil->count == 0) {
+                    return response()->json([
+                        'status'    => 202,
+                        'message'   => 'Identitas tidak terdaftar'
+                    ]);
+                } else if($Hasil->count >= 1) {
+                    return response()->json([
+                        'status'    => 400,
+                        'message'   => 'Identitas sudah terdaftar'
+                    ]);
+                }
+            }
+
+        } catch (\Throwable $th) {
+            $ModelBerguna       = new MetodeBerguna;
+
+            return response()->json($ModelBerguna->outErrCatch($th->getMessage()));
+        }
+    }
+
     public function insertDataCIF(Request $re)
     {
         try {
-            $getUserCookie = $re->cookie('tkn');
 
-            $ModelToken = SysToken::where('token', $getUserCookie)->first();
+            // $getUserCookie = $re->cookie('tkn');
 
-            if(empty($ModelToken))
-            {
-                return response('Error 403 - Forbidden', 403);
-            }
+            // $ModelToken = SysToken::where('token', $getUserCookie)->first();
 
-            $ModelUser = SysUser::where('username', $ModelToken->kd_user)->first();
+            // if(empty($ModelToken))
+            // {
+            //     return response('Error 403 - Forbidden', 403);
+            // }
+
+            // $ModelUser = SysUser::where('username', $ModelToken->kd_user)->first();
             
-            if(empty($ModelUser))
-            {
-                return response('Error 403 - Forbidden', 403);
+            // if(empty($ModelUser))
+            // {
+            //     return response('Error 403 - Forbidden', 403);
+            // }
+
+            $ModelUser      = new SysUser();
+            $CariUser       = $ModelUser->getInformasiUser($re->cookie('tkn'));
+
+            if($CariUser->status == true) {
+
+                $cekidentitas   = BankCIF::where([
+                    'tipe_id'       => $re->kd_tipe,
+                    'kd_identitas'  => $re->kd_identitas
+                ])->count();
+
+                if($cekidentitas == 0)
+                {
+                    $ModelCIF = new BankCIF;
+    
+                    $ModelCIF->kd_identitas                 = $re->kd_identitas;
+                    $ModelCIF->tipe_id                      = $re->kd_tipe;
+                    $ModelCIF->nama_sesuai_identitas        = $re->nama;
+                    $ModelCIF->tempat_lahir                 = $re->tempat_lahir;
+                    $ModelCIF->tgl_lahir                    = $re->tgl_lahir;
+                    $ModelCIF->jenis_kelamin                = $re->jenis_kelamin;
+                    $ModelCIF->status_kawin                 = $re->status_kawin;
+                    $ModelCIF->kewarganegaraan              = $re->negara;
+                    $ModelCIF->alamat_sekarang              = $re->alamat;
+                    $ModelCIF->rt_rw                        = $re->rt_rw;
+                    $ModelCIF->desa_kelurahan               = $re->desa_kelurahan;
+                    $ModelCIF->kecamatan                    = $re->kecamatan;
+                    $ModelCIF->kabupaten_kota               = $re->kabupaten_kota;
+                    $ModelCIF->provinsi                     = $re->provinsi;
+                    $ModelCIF->kode_pos                     = $re->kode_pos;
+                    $ModelCIF->no_telp                      = $re->no_telp;
+                    $ModelCIF->email                        = $re->email;
+                    $ModelCIF->nama_ibu_kandung             = $re->nama_ibu;
+                    $ModelCIF->status_pekerjaan             = $re->status_pekerjaan;
+                    $ModelCIF->kd_user                      = $ModelUser->id;
+                    $ModelCIF->kd_bank                      = $ModelUser->kd_bank;
+                    $ModelCIF->save();
+
+                    return response()->json([
+                        'status'    => 200,
+                        'message'   => 'CIF atas nama ' . $re->nama . ' berhasil disimpan'
+                    ]);
+                    
+                } 
+                elseif ($cekidentitas >= 1)
+                {
+                    return response()->json([
+                        'message'       => 'CIF tidak bisa disimpan, Kode Identitas Sudah Terdaftar di sistem',
+                        'status'        => 400
+                    ]);
+                } else {
+                    return response()->json([
+                        'status'        => 500,
+                        'message'       => 'Terjadi kesalahan di server'
+                    ]);
+                }
             }
-
-            $cekidentitas   = BankCIF::where([
-                'tipe_id'       => $re->kd_tipe,
-                'kd_identitas'  => $re->kd_identitas
-            ])->count();
-
-            if($cekidentitas != 0)
-            {
-                return response()->json([
-                    'message'       => 'CIF tidak bisa disimpan, Kode Identitas Sudah Terdaftar di sistem',
-                    'status'        => false
-                ]);
-            } 
-            else 
-            {
-                $ModelCIF = new BankCIF;
-
-                $ModelCIF->kd_identitas                 = $re->kd_identitas;
-                $ModelCIF->tipe_id                      = $re->kd_tipe;
-                $ModelCIF->nama_sesuai_identitas        = $re->nama;
-                $ModelCIF->tempat_lahir                 = $re->tempat_lahir;
-                $ModelCIF->tgl_lahir                    = $re->tgl_lahir;
-                $ModelCIF->jenis_kelamin                = $re->jenis_kelamin;
-                $ModelCIF->status_kawin                 = $re->status_kawin;
-                $ModelCIF->kewarganegaraan              = $re->negara;
-                $ModelCIF->alamat_sekarang              = $re->alamat;
-                $ModelCIF->rt_rw                        = $re->rt_rw;
-                $ModelCIF->desa_kelurahan               = $re->desa_kelurahan;
-                $ModelCIF->kecamatan                    = $re->kecamatan;
-                $ModelCIF->kabupaten_kota               = $re->kabupaten_kota;
-                $ModelCIF->provinsi                     = $re->provinsi;
-                $ModelCIF->kode_pos                     = $re->kode_pos;
-                $ModelCIF->no_telp                      = $re->no_telp;
-                $ModelCIF->email                        = $re->email;
-                $ModelCIF->nama_ibu_kandung             = $re->nama_ibu;
-                $ModelCIF->status_pekerjaan             = $re->status_pekerjaan;
-                $ModelCIF->kd_user                      = $ModelUser->id;
-                $ModelCIF->kd_bank                      = $ModelUser->kd_bank;
-                $ModelCIF->save();
-            }
-
-            return response()->json([
-                'status'    => true,
-                'message'   => 'CIF atasnama ' . $re->nama . ' berhasil disimpan'
-            ]);
         } catch (\Throwable $th) {
             return response()->json([
                 'data'       => $th->getMessage(),

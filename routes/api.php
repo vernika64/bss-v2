@@ -115,6 +115,7 @@ Route::get('/bank/listCIFAll', [CustomerIdentificationFile::class, 'getDataCIF']
 Route::post('/bank/tambahCIF', [CustomerIdentificationFile::class, 'insertDataCIF']);
 Route::get('/bank/cariCIF/{id}', [CustomerIdentificationFile::class, 'getDataCIFById']);
 Route::post('/bank/cariIdentitas', [CustomerIdentificationFile::class, 'getNomorIdentitas']);
+Route::post('/bank/cekStatusCIF', [CustomerIdentificationFile::class, 'cekKetersediaanNomerId']);
 
 // Sub Tabungan
 

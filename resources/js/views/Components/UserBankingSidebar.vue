@@ -7,7 +7,7 @@
                 <home-icon class="h-7 w-7 mr-3" />Dashboard
             </router-link>
         </li>
-        <li class="bg-slate-900 p-4 rounded-md " :class="['CIF' == this.$route.name ? activeSidebar : deactiveSidebar]">
+        <li class="bg-slate-900 p-4 rounded-md " :class="['CIF' == this.$route.name || 'CIFAdd' == this.$route.name ? activeSidebar : deactiveSidebar]">
             <router-link :to="{ name: 'CIF' }" class="flex">
                 <users-icon class="h-7 w-7 mr-3" />Customer Identification File
             </router-link>

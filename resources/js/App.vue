@@ -62,16 +62,16 @@ export default {
             this.userRole = loggedin.data.role
         })
 
-        axios.get('/api/super/cekLogin').then(dt => {
-            console.log(dt.data)
+        // axios.get('/api/super/cekLogin').then(dt => {
+        //     console.log(dt.data)
 
-            if(dt.data.status == 200) {
-                statusLogin = true
-            }
+        //     if(dt.data.status == 200) {
+        //         statusLogin = true
+        //     }
 
-        }).catch(er => {
-            console.log(er)
-        })
+        // }).catch(er => {
+        //     console.log(er)
+        // })
     },
     data() {
         return {
@@ -86,7 +86,7 @@ export default {
                 menuBkAkuntansi : false,
                 menuDevArea     : false
             },
-            statusLogin     : false
+            // statusLogin     : false
         }
     },
     methods: {

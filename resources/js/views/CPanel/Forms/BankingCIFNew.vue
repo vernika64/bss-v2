@@ -9,45 +9,47 @@
             <!-- Box Pertama -->
             <div class="pr-2 pl-2">
                 <p class="pb-2">{{ propertyFormCIF.kd_tipe.label }}</p>
-                <select class="border border-slate-300 bg-white mb-2 pt-1 pb-1 pl-2 rounded-md w-full h-[50px]" v-model="formCIF.kd_tipe">
+                <select class="border border-slate-400 shadow-md bg-white hover:shadow-blue-200 mb-2 pt-1 pb-1 pl-2 rounded-md w-full h-[50px]" v-model="formCIF.kd_tipe">
                     <option :value="''">-- Pilih Jenis Identitas --</option>
                     <option :value="'ktp'">KTP</option>
                     <option :value="'ktm'">KTM</option>
                 </select>
-    
-                <p class="pb-2">{{ propertyFormCIF.kd_identitas.label }}</p>
-                <input type="text" class="border border-slate-300 bg-white mb-2 pt-1 pb-1 pl-2 rounded-md w-full h-[50px]" v-model="formCIF.kd_identitas" placeholder="Kode Identitas sesuai dengan Kartu Identitas" />
+                
+                <div class="flex flex-row items-end">
+                    <div class="flex-auto">
+                        <p class="pb-2">{{ propertyFormCIF.kd_identitas.label }}</p>
+                        <input type="text" class="border border-slate-400 shadow-md bg-white hover:shadow-blue-200 mb-2 pt-1 pb-1 pl-2 rounded-md w-full h-[50px]" placeholder="Kode Identitas sesuai dengan Kartu Identitas" v-model="formCIF.kd_identitas" />
+                    </div>
+                    <div class="flex-none ml-2">
+                        <button class="bg-blue-600 text-white h-[50px] w-[70px] p-2 mb-2 rounded-lg" @click="cariDataId()">Cek</button>
+                    </div>
+                </div>
         
                 <p class="pb-2">{{ propertyFormCIF.nama.label }}</p>
-                <input type="text" class="border border-slate-300 bg-white mb-2 pt-1 pb-1 pl-2 rounded-md w-full h-[50px]" v-model="formCIF.nama" placeholder="Nama Lengkap sesuai Kartu Identitas" />
+                <input type="text" class="border border-slate-400 shadow-md hover:shadow-blue-200 bg-white mb-2 pt-1 pb-1 pl-2 rounded-md w-full h-[50px]" placeholder="Nama Lengkap sesuai Kartu Identitas" v-model="formCIF.nama" />
         
                 <p class="pb-2">{{ propertyFormCIF.tempat_lahir.label }}</p>
-                <input type="text" class="border border-slate-300 bg-white mb-2 pt-1 pb-1 pl-2 rounded-md w-full h-[50px]" v-model="formCIF.tempat_lahir" placeholder="Tempat Lahir sesuai Kartu Identitas" />
+                <input type="text" class="border border-slate-400 shadow-md hover:shadow-blue-200 bg-white mb-2 pt-1 pb-1 pl-2 rounded-md w-full h-[50px]" placeholder="Tempat Lahir sesuai Kartu Identitas" v-model="formCIF.tempat_lahir" />
         
                 <p class="pb-2">{{ propertyFormCIF.tgl_lahir.label }}</p>
-                <input type="date" class="border border-slate-300 bg-white mb-2 pt-1 pb-1 pl-2 rounded-md w-full h-[50px]" v-model="formCIF.tgl_lahir" placeholder="Tanggal Lahir sesuai Kartu Identitas" />
+                <input type="date" class="border border-slate-400 shadow-md hover:shadow-blue-200 bg-white mb-2 pt-1 pb-1 pl-2 rounded-md w-full h-[50px]" placeholder="Tanggal Lahir sesuai Kartu Identitas" v-model="formCIF.tgl_lahir" />
         
                 <p class="pb-2">{{ propertyFormCIF.jenis_kelamin.label }}</p>
-                <select class="border border-slate-300 bg-white mb-2 pt-1 pb-1 pl-2 rounded-md w-full h-[50px]" v-model="formCIF.jenis_kelamin">
+                <select class="border border-slate-400 shadow-md hover:shadow-blue-200 bg-white mb-2 pt-1 pb-1 pl-2 rounded-md w-full h-[50px]" v-model="formCIF.jenis_kelamin">
                     <option :value="''">-- Pilih Jenis Kelamin --</option>
                     <option :value="'laki'">Laki - Laki</option>
                     <option :value="'perempuan'">Perempuan</option>
                 </select>
         
                 <p class="pb-2">{{ propertyFormCIF.status_kawin.label }}</p>
-                <select class="border border-slate-300 bg-white mb-2 pt-1 pb-1 pl-2 rounded-md w-full h-[50px]" v-model="formCIF.status_kawin">
-                    <!-- <option :value="''">-- Pilih Status Kawin --</option>
-                    <option :value="'belum'">Belum Menikah</option>
-                    <option :value="'sudah'">Menikah</option>
-                    <option :value="'janda'">Janda</option>
-                    <option :value="'duda'">Duda</option> -->
+                <select class="border border-slate-400 shadow-md hover:shadow-blue-200 bg-white mb-2 pt-1 pb-1 pl-2 rounded-md w-full h-[50px]" v-model="formCIF.status_kawin">
                     <option v-for="isi in isiSelect.statusKawin" :value="isi.value">{{ isi.label }}</option>
                 </select>
 
                 <p class="pb-2">{{ propertyFormCIF.negara.label }}</p>
-                <input type="text" class="border border-slate-300 mb-2 bg-white pt-1 pb-1 pl-2 rounded-md w-full h-[50px]" v-model="formCIF.negara" placeholder="Kewarganegaraan sekarang. Contoh : WNI" />
+                <input type="text" class="border border-slate-400 shadow-md hover:shadow-blue-200 bg-white pt-1 pb-1 pl-2 rounded-md w-full h-[50px]" placeholder="Kewarganegaraan sekarang. Contoh : Indonesia" v-model="formCIF.negara" />
                 
-                <div class="grid grid-cols-2 gap-2">
+                <div class="md:hidden lg:grid lg:grid-cols-2 lg:gap-2">
                     <button class="bg-blue-500 text-white p-3 mt-4 w-full rounded-lg shadow-md" @click="modalKonfirmasiStatus = true">Simpan</button>
                     <button class="bg-slate-200 text-black p-3 mt-4 w-full rounded-lg shadow-md" @click="resetData()">Reset</button>
                 </div>
@@ -58,47 +60,62 @@
             <div class="pr-2 pl-2">
     
                 <p class="pb-2">{{ propertyFormCIF.alamat.label }}</p>
-                <input type="text" class="border border-slate-300 bg-white mb-2 pt-1 pb-1 pl-2 rounded-md w-full h-[50px]" v-model="formCIF.alamat" placeholder="Alamat tempat tinggal sekarang" />
+                <input type="text" class="border border-slate-400 shadow-md hover:shadow-blue-200 bg-white mb-2 pt-1 pb-1 pl-2 rounded-md w-full h-[50px]" placeholder="Alamat tempat tinggal sekarang" v-model="formCIF.alamat" />
     
                 <div class="grid grid-cols-2 gap-2">
                     <div>
                         <p class="pb-2">{{ propertyFormCIF.rt_rw.label }}</p>
-                        <input type="text" class="border border-slate-300 bg-white mb-2 pt-1 pb-1 pl-2 w-full rounded-md h-[50px]" v-model="formCIF.rt_rw" placeholder="RT / RW" />
+                        <input type="text" class="border border-slate-400 shadow-md hover:shadow-blue-200 bg-white mb-2 pt-1 pb-1 pl-2 w-full rounded-md h-[50px]" placeholder="RT / RW" v-model="formCIF.rt_rw" />
                     </div>
                     <div>
                         <p class="pb-2">{{ propertyFormCIF.desa_kelurahan.label }}</p>
-                        <input type="text" class="border border-slate-300 bg-white mb-2 pt-1 pb-1 pl-2 w-full rounded-md h-[50px]" v-model="formCIF.desa_kelurahan" placeholder="Contoh : Kelurahan Pandanwangi" />
+                        <div class="flex flex-row">
+                            <div class="flex-none">
+                                <select class="border border-slate-400 bg-blue-600 text-white rounded-tl-md rounded-bl-md pl-2 h-[50px]">
+                                    <option>Desa</option>
+                                    <option>Kelurahan</option>
+                                </select>
+                            </div>
+                            <div class="flex-auto">
+                                <input type="text" class="border-t border-b border-r border-slate-400 bg-white mb-2 pt-1 pb-1 pl-2 w-full rounded-tr-md rounded-br-md h-[50px]" v-model="formCIF.desa_kelurahan" placeholder="Contoh : Pandanwangi" />
+                            </div>
+                        </div>
                     </div>
                 </div>
     
                 <div class="grid grid-cols-2 gap-2">
                     <div>
                         <p class="pb-2">{{ propertyFormCIF.kecamatan.label }}</p>
-                        <input type="text" class="border border-slate-300 bg-white mb-2 pt-1 pb-1 pl-2 rounded-md w-full h-[50px]" v-model="formCIF.kecamatan" placeholder="Contoh : Kecamatan Blimbing" />
+                        <input type="text" class="border border-slate-400 shadow-md hover:shadow-blue-200 bg-white mb-2 pt-1 pb-1 pl-2 rounded-md w-full h-[50px]" placeholder="Contoh : Kecamatan Blimbing" v-model="formCIF.kecamatan" />
                     </div>
                     <div>
                         <p class="pb-2">{{ propertyFormCIF.kabupaten_kota.label }}</p>
-                        <input type="text" class="border border-slate-300 bg-white mb-2 pt-1 pb-1 pl-2 rounded-md w-full h-[50px]" v-model="formCIF.kabupaten_kota" placeholder="Contoh : Kota Malang" />
+                        <input type="text" class="border border-slate-400 shadow-md hover:shadow-blue-200 bg-white mb-2 pt-1 pb-1 pl-2 rounded-md w-full h-[50px]" placeholder="Contoh : Kota Malang" v-model="formCIF.kabupaten_kota" />
                     </div>    
                 </div>
     
                 <p class="pb-2">{{ propertyFormCIF.provinsi.label }}</p>
-                <input type="text" class="border border-slate-300 bg-white mb-2 pt-1 pb-1 pl-2 rounded-md w-full h-[50px]" v-model="formCIF.provinsi" placeholder="Contoh : Jawa Timur" />
+                <input type="text" class="border border-slate-400 shadow-md hover:shadow-blue-200 bg-white mb-2 pt-1 pb-1 pl-2 rounded-md w-full h-[50px]" placeholder="Contoh : Jawa Timur" v-model="formCIF.provinsi" />
     
                 <p class="pb-2">{{ propertyFormCIF.kode_pos.label }}</p>
-                <input type="text" class="border border-slate-300 bg-white mb-2 pt-1 pb-1 pl-2 rounded-md w-full h-[50px]" v-model="formCIF.kode_pos" placeholder="Contoh : 65124" />
+                <input type="text" class="border border-slate-400 shadow-md hover:shadow-blue-200 bg-white mb-2 pt-1 pb-1 pl-2 rounded-md w-full h-[50px]" placeholder="Contoh : 65124" v-model="formCIF.kode_pos" />
     
                 <p class="pb-2">{{ propertyFormCIF.no_telp.label }}</p>
-                <input type="text" class="border border-slate-300 bg-white mb-2 pt-1 pb-1 pl-2 rounded-md w-full h-[50px]" v-model="formCIF.no_telp" placeholder="Contoh : 083848261647" />
+                <input type="text" class="border border-slate-400 shadow-md hover:shadow-blue-200 bg-white mb-2 pt-1 pb-1 pl-2 rounded-md w-full h-[50px]" placeholder="Contoh : 083848261647" v-model="formCIF.no_telp" />
     
                 <p class="pb-2">{{ propertyFormCIF.email.label }}</p>
-                <input type="text" class="border border-slate-300 bg-white mb-2 pt-1 pb-1 pl-2 rounded-md w-full h-[50px]" v-model="formCIF.email" placeholder="Contoh : kucingterbang@gmail.com" />
+                <input type="text" class="border border-slate-400 shadow-md hover:shadow-blue-200 bg-white mb-2 pt-1 pb-1 pl-2 rounded-md w-full h-[50px]" placeholder="Contoh : kucingterbang@gmail.com" v-model="formCIF.email" />
     
                 <p class="pb-2">{{ propertyFormCIF.nama_ibu.label }}</p>
-                <input type="text" class="border border-slate-300 bg-white mb-2 pt-1 pb-1 pl-2 rounded-md w-full h-[50px]" v-model="formCIF.nama_ibu" placeholder="Nama Ibu Kandung Pelanggan" />
+                <input type="text" class="border border-slate-400 shadow-md hover:shadow-blue-200 bg-white mb-2 pt-1 pb-1 pl-2 rounded-md w-full h-[50px]" placeholder="Nama Ibu Kandung Pelanggan" v-model="formCIF.nama_ibu" />
     
                 <p class="pb-2">{{ propertyFormCIF.status_pekerjaan.label }}</p>
-                <input type="text" class="border border-slate-300 bg-white mb-2 pt-1 pb-1 pl-2 rounded-md w-full h-[50px]" v-model="formCIF.status_pekerjaan" placeholder="Pekerjaan sekarang" />
+                <input type="text" class="border border-slate-400 shadow-md hover:shadow-blue-200 bg-white mb-2 pt-1 pb-1 pl-2 rounded-md w-full h-[50px]" placeholder="Pekerjaan sekarang" v-model="formCIF.status_pekerjaan" />
+
+                <div class="lg:hidden md:grid md:grid-cols-2 md:gap-2 md:mb-5">
+                    <button class="bg-blue-500 text-white p-3 mt-4 w-full rounded-lg shadow-md" @click="modalKonfirmasiStatus = true">Simpan</button>
+                    <button class="bg-slate-200 text-black p-3 mt-4 w-full rounded-lg shadow-md" @click="resetData()">Reset</button>
+                </div>
 
             </div>
         </div>
@@ -327,6 +344,9 @@ export default {
     components: {
         CheckCircleIcon, XCircleIcon
     },
+    mounted() {
+        // 
+    },
     data() {
         return {
             judulNavbar         : 'Tambah Data CIF Baru',
@@ -462,27 +482,42 @@ export default {
     methods: {
         simpanCIF() {
 
-            // Posting
-            // axios.post('/api/bank/tambahCIF', this.formCIF).then(insert => {
-            //     alert(insert.data.message)
-            //     console.log(insert.data)
-            // }).catch(error => {
-            //     console.log(error)
-            // })
-
-            // Testing
             var pesan = confirm("Apakah anda sudah yakin data CIF sudah benar ?")
 
             if(pesan == true) {
                 console.log('simpan')
                 console.log(this.formCIF)
-                
-                alert('Data berhasil disimpan')
+
+                axios.post('/api/bank/tambahCIF', this.formCIF).then(insert => {
+                    alert(insert.data.message)
+                    console.log(insert.data)
+
+                    return this.$router.push({name: 'CIF'})
+                }).catch(error => {
+                    console.log(error)
+                })
             } else if(pesan == false) {
                 console.log('batal')
             } else {
                 console.log('error')
             }
+        },
+        cariDataId() {
+            var tipeID  = this.formCIF.kd_tipe
+            var nomerID = this.formCIF.kd_identitas
+
+            if(tipeID != '' && nomerID != '') {
+                axios.post('/api/bank/cekStatusCIF', { tipe_id : tipeID, nomer_id : nomerID }).then(dt => {
+                    console.log(dt)
+                    return alert(dt.data.message)
+                }).catch(err => {
+                    console.log(err)
+                    return alert('Terjadi kesalahan dalam cek data, silahkan coba lagi')
+                })
+            } else {
+                return alert('Mohon diisi Tipe Identitas dan Kode Identitas terlebih dahulu sebelum mengecek ketersediaan Identitas')
+            }
+
         },
         translateTipeID(data) {
             switch (data) {
@@ -525,25 +560,36 @@ export default {
             }
         },
         resetData() {
-            this.formCIF.kd_identitas        = ''
-            this.formCIF.kd_tipe             = ''
-            this.formCIF.nama                = ''
-            this.formCIF.tempat_lahir        = ''
-            this.formCIF.tgl_lahir           = ''
-            this.formCIF.jenis_kelamin       = ''
-            this.formCIF.status_kawin        = ''
-            this.formCIF.negara              = ''
-            this.formCIF.alamat              = ''
-            this.formCIF.rt_rw               = ''
-            this.formCIF.desa_kelurahan      = ''
-            this.formCIF.kecamatan           = ''
-            this.formCIF.kabupaten_kota      = ''
-            this.formCIF.provinsi            = ''
-            this.formCIF.kode_pos            = ''
-            this.formCIF.no_telp             = ''
-            this.formCIF.email               = ''
-            this.formCIF.nama_ibu            = ''
-            this.formCIF.status_pekerjaan    = ''        
+            var konfirmasi  = confirm('Apakah anda yakin untuk mereset data di form ?')
+
+            if(konfirmasi == true)
+            {
+                this.formCIF.kd_identitas        = ''
+                this.formCIF.kd_tipe             = ''
+                this.formCIF.nama                = ''
+                this.formCIF.tempat_lahir        = ''
+                this.formCIF.tgl_lahir           = ''
+                this.formCIF.jenis_kelamin       = ''
+                this.formCIF.status_kawin        = ''
+                this.formCIF.negara              = ''
+                this.formCIF.alamat              = ''
+                this.formCIF.rt_rw               = ''
+                this.formCIF.desa_kelurahan      = ''
+                this.formCIF.kecamatan           = ''
+                this.formCIF.kabupaten_kota      = ''
+                this.formCIF.provinsi            = ''
+                this.formCIF.kode_pos            = ''
+                this.formCIF.no_telp             = ''
+                this.formCIF.email               = ''
+                this.formCIF.nama_ibu            = ''
+                this.formCIF.status_pekerjaan    = '' 
+                
+                // console.log('Form berhasil direset')
+            } else {
+                // Do Nothing
+            }
+
+
         }
     }
 }

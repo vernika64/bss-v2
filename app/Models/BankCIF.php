@@ -38,13 +38,13 @@ class BankCIF extends Model
     ];
 
     function getCountCIF($token){
-        $ModelUser = new SysUser();
-        $DataUser = $ModelUser->getInformasiUser($token);
+        $ModelUser              = new SysUser();
+        $DataUser               = $ModelUser->getInformasiUser($token);
 
         if($DataUser->status = true) {
-            $ModelCIF = BankCIF::where(['kd_bank' => $DataUser->kd_bank])->get();
+            $ModelCIF           = BankCIF::where(['kd_bank' => $DataUser->kd_bank])->get();
 
-            $terhitung  = count($ModelCIF);
+            $terhitung          = count($ModelCIF);
 
             $output             = new stdClass;
             $output->status     = true;
@@ -54,6 +54,28 @@ class BankCIF extends Model
         } else {
             $output             = new stdClass;
             $output->status     = false;
+        }
+    }
+
+    function cariStatusID($tipeID, $nomerID, $token){
+        $ModelUser              = new SysUser();
+        $DataUser               = $ModelUser->getInformasiUser($token);
+
+        if($DataUser->status = true) {
+            $QueryCari          = [
+                'tipe_id' => $tipeID, 
+                'kd_identitas' => $nomerID
+            ];
+
+            $ModelCIF           = BankCIF::where($QueryCari)->get();
+
+            $terhitung          = count($ModelCIF);
+
+            $output             = new stdClass;
+            $output->status     = true;
+            $output->count      = $terhitung;
+
+            return $output;
         }
     }
 

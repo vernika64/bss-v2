@@ -39,59 +39,59 @@
             <!-- <div class="bg-white border p-4 m-2 row-span-2" v-if="keputusan == 'terima'">
                 <div>
                     <label>Nama Barang</label>
-                    <input type="text" class="p-2 w-full border" v-model="formDummy.nama_barang" placeholder="Nama barang yang dipesan nasabah" />
+                    <input type="text" class="p-2 w-full border" v-model="formVerifikasiTransaksi.nama_barang" placeholder="Nama barang yang dipesan nasabah" />
                 </div>
                 <div>
                     <label>Harga barang Satuan</label>
-                    <input type="text" class="w-full p-2 border" v-model="formDummy.harga_barang_satuan" placeholder="Harga satuan barang" />
+                    <input type="text" class="w-full p-2 border" v-model="formVerifikasiTransaksi.harga_barang_satuan" placeholder="Harga satuan barang" />
                 </div>
                 <div>
                     <label>Kuantitas barang</label>
                     <div class="flex">
-                        <input class="w-full p-2 border" v-model="formDummy.qty_barang" placeholder="Kuantitas Barang" @keyup="kalkulasiTotalHargaBarang" />
-                        <select class="w-auto p-2 ml-2 flex-1 border" v-model="formDummy.qty_type">
+                        <input class="w-full p-2 border" v-model="formVerifikasiTransaksi.qty_barang" placeholder="Kuantitas Barang" @keyup="kalkulasiTotalHargaBarang" />
+                        <select class="w-auto p-2 ml-2 flex-1 border" v-model="formVerifikasiTransaksi.qty_type">
                             <option :value="'qty'">qty</option>
                         </select>
                     </div>
                 </div>
                 <div>
                     <label>Margin untuk Bank</label>
-                    <input class="p-2 w-full border" v-model="formDummy.surplus_untuk_bank" @keyup="kalkulasiSurplusBank" />
+                    <input class="p-2 w-full border" v-model="formVerifikasiTransaksi.surplus_untuk_bank" @keyup="kalkulasiSurplusBank" />
                 </div>
             </div> -->
             <div class="bg-white border p-4 m-2 row-span-2" v-if="keputusan == 'terima'">
                 <label>Nama Barang</label>
-                <input type="text" class="p-2 w-full border" v-model="formDummy.nama_barang" placeholder="Nama barang yang dipesan nasabah" />
+                <input type="text" class="p-2 w-full border" v-model="formVerifikasiTransaksi.nama_barang" placeholder="Nama barang yang dipesan nasabah" />
                 <label>Harga barang Satuan</label>
-                <input type="text" class="w-full p-2 border" v-model="formDummy.harga_barang_satuan" placeholder="Harga satuan barang" />
+                <input type="text" class="w-full p-2 border" v-model="formPropertiTransaksi.harga_barang_satuan" placeholder="Harga satuan barang" @keyup="beriKomaBarangSatuan()" />
                 <label>Kuantitas barang</label>
                 <div class="flex">
-                    <input class="w-full p-2 border" v-model="formDummy.qty_barang" placeholder="Kuantitas Barang" @keyup="kalkulasiTotalHargaBarang" />
-                    <select class="w-auto p-2 ml-2 flex-1 border" v-model="formDummy.qty_type">
+                    <input class="w-full p-2 border" v-model="formVerifikasiTransaksi.qty_barang" placeholder="Kuantitas Barang" @keyup="kalkulasiTotalHargaBarang" />
+                    <select class="w-auto p-2 ml-2 flex-1 border" v-model="formVerifikasiTransaksi.qty_type">
                         <option :value="'qty'">qty</option>
                     </select>
                 </div>
                 <label>Total Harga Barang</label>
-                <input class="p-2 w-full border bg-slate-200" v-model="formDummy.total_harga_barang" placeholder="Total Harga Barang (Terisi otomatis oleh sistem)" />
+                <input class="p-2 w-full border bg-slate-200" v-model="formVerifikasiTransaksi.total_harga_barang" placeholder="Total Harga Barang (Terisi otomatis oleh sistem)" />
                 <label>Margin untuk Bank</label>
-                <input class="p-2 w-full border" v-model="formDummy.surplus_untuk_bank" @keyup="kalkulasiSurplusBank" />
+                <input class="p-2 w-full border" v-model="formVerifikasiTransaksi.surplus_untuk_bank" @keyup="kalkulasiSurplusBank" />
                 <label>Total Biaya Jual Beli Akad Murabahah tanpa Uang Muka</label>
-                <input class="p-2 w-full border bg-slate-200" v-model="formDummy.total_biaya_akad_murabahah" placeholder="Total Biaya yang akan dibayarkan oleh nasabah sampai akhir akad" readonly />
+                <input class="p-2 w-full border bg-slate-200" v-model="formVerifikasiTransaksi.total_biaya_akad_murabahah" placeholder="Total Biaya yang akan dibayarkan oleh nasabah sampai akhir akad" readonly />
 
                 <label>Uang Muka</label>
-                <input class="p-2 w-full border" v-model="formDummy.uang_muka" @keyup="kalkulasiBiayaSetelahDP" />
+                <input class="p-2 w-full border" v-model="formVerifikasiTransaksi.uang_muka" @keyup="kalkulasiBiayaSetelahDP" />
 
                 <label>Total Biaya Jual Beli setelah dikurangi Uang Muka</label>
-                <input class="p-2 w-full border bg-slate-200" v-model="formDummy.total_biaya_setelah_dp" readonly />
+                <input class="p-2 w-full border bg-slate-200" v-model="formVerifikasiTransaksi.total_biaya_setelah_dp" readonly />
 
                 <label>Frekuensi Angsuran</label>
-                <select class="p-2 w-full border" v-model="formDummy.frekuensi_angsuran" @change="kalkulasiAngsuran">
+                <select class="p-2 w-full border" v-model="formVerifikasiTransaksi.frekuensi_angsuran" @change="kalkulasiAngsuran">
                     <option :value="''">-- Pilih Frekuensi Angsuran --</option>
                     <option v-for="brg in frekuensiAngsuran" :key="brg.item" :value="brg.item">{{ brg.item }} Bulan</option>
                 </select>
 
                 <label>Angsuran Per Bulan</label>
-                <input class="p-2 w-full border bg-slate-200" v-model="formDummy.angsuran_per_bulan" readonly />
+                <input class="p-2 w-full border bg-slate-200" v-model="formVerifikasiTransaksi.angsuran_per_bulan" readonly />
 
                 <button class="w-full bg-blue-700 text-white p-2 mt-4" @click="simpanTransaksi">Simpan untuk menerima permintaan</button>
                 <button class="w-full bg-blue-900 text-white p-2 mt-4" @click="resetTransaksi">Reset</button>
@@ -108,7 +108,7 @@ export default {
     mounted()
     {
         this.formReject.kd_transaksi_murabahah = this.$route.query.id
-        this.formDummy.kd_transaksi_murabahah = this.$route.query.id
+        this.formVerifikasiTransaksi.kd_transaksi_murabahah = this.$route.query.id
 
         axios.get('/api/bank/listJualBeliMurabahah/'+ this.$route.query.id).then(res => {
             // console.log(res.data)
@@ -154,7 +154,7 @@ export default {
                 kd_transaksi_murabahah      : ''
             },
 
-            formDummy       : {
+            formVerifikasiTransaksi       : {
                 kd_transaksi_murabahah      : '',
                 nama_barang                 : '',
                 harga_barang_satuan         : '',
@@ -167,6 +167,11 @@ export default {
                 angsuran_per_bulan          : '',
                 total_biaya_akad_margin     : '',
                 total_biaya_setelah_dp      : ''
+            },
+            formPropertiTransaksi       : {
+                harga_barang_satuan         : '',
+                surplus_untuk_bank          : '',
+                uang_muka                   : ''
             },
 
             // formAccept      : {
@@ -205,50 +210,50 @@ export default {
         },
         kalkulasiTotalHargaBarang()
         {
-            let hargabarang  = this.formDummy.harga_barang_satuan
-            let satuanbarang = this.formDummy.qty_barang
+            let hargabarang  = this.formVerifikasiTransaksi.harga_barang_satuan
+            let satuanbarang = this.formVerifikasiTransaksi.qty_barang
 
-            return this.formDummy.total_harga_barang = hargabarang * satuanbarang
+            return this.formVerifikasiTransaksi.total_harga_barang = hargabarang * satuanbarang
         },
         kalkulasiSurplusBank()
         {
-            let totalhargabarang    = parseInt(this.formDummy.total_harga_barang)
-            let surplusbank         = parseInt(this.formDummy.surplus_untuk_bank)
+            let totalhargabarang    = parseInt(this.formVerifikasiTransaksi.total_harga_barang)
+            let surplusbank         = parseInt(this.formVerifikasiTransaksi.surplus_untuk_bank)
 
-            return this.formDummy.total_biaya_akad_murabahah = totalhargabarang + surplusbank
+            return this.formVerifikasiTransaksi.total_biaya_akad_murabahah = totalhargabarang + surplusbank
         },
         kalkulasiBiayaSetelahDP(){
-            if(this.formDummy.total_biaya_akad_murabahah == 0 || this.formDummy.total_biaya_akad_murabahah == null)
+            if(this.formVerifikasiTransaksi.total_biaya_akad_murabahah == 0 || this.formVerifikasiTransaksi.total_biaya_akad_murabahah == null)
             {
                 return alert('Mohon diisi form sesuai urutan')
             }
 
-            let totalbiayasblmdp          = parseInt(this.formDummy.total_biaya_akad_murabahah)
-            let uangmuka                  = parseInt(this.formDummy.uang_muka)
+            let totalbiayasblmdp          = parseInt(this.formVerifikasiTransaksi.total_biaya_akad_murabahah)
+            let uangmuka                  = parseInt(this.formVerifikasiTransaksi.uang_muka)
 
-            return this.formDummy.total_biaya_setelah_dp = totalbiayasblmdp - uangmuka
+            return this.formVerifikasiTransaksi.total_biaya_setelah_dp = totalbiayasblmdp - uangmuka
 
         },
         kalkulasiAngsuran()
         {
-            let tbmurabahahsetelahdp = parseInt(this.formDummy.total_biaya_setelah_dp)
-            let kuantitas            = parseInt(this.formDummy.frekuensi_angsuran)
+            let tbmurabahahsetelahdp = parseInt(this.formVerifikasiTransaksi.total_biaya_setelah_dp)
+            let kuantitas            = parseInt(this.formVerifikasiTransaksi.frekuensi_angsuran)
 
-            return this.formDummy.angsuran_per_bulan = tbmurabahahsetelahdp / kuantitas
+            return this.formVerifikasiTransaksi.angsuran_per_bulan = tbmurabahahsetelahdp / kuantitas
         },
         resetTransaksi()
         {
-            this.formDummy.nama_barang                 = ''
-            this.formDummy.harga_barang_satuan         = ''
-            this.formDummy.qty_barang                  = ''
-            this.formDummy.qty_type                    = 'qty'
-            this.formDummy.total_harga_barang          = ''
-            this.formDummy.frekuensi_angsuran          = ''
-            this.formDummy.surplus_untuk_bank          = ''
-            this.formDummy.total_biaya_akad_murabahah  = ''
-            this.formDummy.angsuran_per_bulan          = ''
-            this.formDummy.uang_muka                   = ''
-            this.formDummy.total_biaya_setelah_dp      = ''
+            this.formVerifikasiTransaksi.nama_barang                 = ''
+            this.formVerifikasiTransaksi.harga_barang_satuan         = ''
+            this.formVerifikasiTransaksi.qty_barang                  = ''
+            this.formVerifikasiTransaksi.qty_type                    = 'qty'
+            this.formVerifikasiTransaksi.total_harga_barang          = ''
+            this.formVerifikasiTransaksi.frekuensi_angsuran          = ''
+            this.formVerifikasiTransaksi.surplus_untuk_bank          = ''
+            this.formVerifikasiTransaksi.total_biaya_akad_murabahah  = ''
+            this.formVerifikasiTransaksi.angsuran_per_bulan          = ''
+            this.formVerifikasiTransaksi.uang_muka                   = ''
+            this.formVerifikasiTransaksi.total_biaya_setelah_dp      = ''
 
             return true
         },
@@ -258,7 +263,7 @@ export default {
 
             if(memastikan == true)
             {
-                axios.post('/api/bank/terimaTransaksiMurabahah', this.formDummy).then(hasilterima => {
+                axios.post('/api/bank/terimaTransaksiMurabahah', this.formVerifikasiTransaksi).then(hasilterima => {
                     console.log(hasilterima.data)
 
                     return alert(hasilterima.data.message)
@@ -272,6 +277,18 @@ export default {
             {
                 // 
             }
+        },
+        beriKomaBarangSatuan() {
+            var num         = this.formPropertiTransaksi.harga_barang_satuan.replace(/,/gi, "")
+
+            this.formVerifikasiTransaksi.harga_barang_satuan    = num
+            
+            this.formPropertiTransaksi.harga_barang_satuan      = num.split(/(?=(?:\d{3})+$)/).join(",")
+
+            console.log(this.formVerifikasiTransaksi.harga_barang_satuan)
+        },
+        viewBeriKoma() {
+
         }
     }
 }
