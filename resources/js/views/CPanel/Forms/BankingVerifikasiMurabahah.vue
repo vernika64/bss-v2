@@ -72,17 +72,17 @@
                     </select>
                 </div>
                 <label>Total Harga Barang</label>
-                <input class="p-2 w-full border bg-slate-200" v-model="formVerifikasiTransaksi.total_harga_barang" placeholder="Total Harga Barang (Terisi otomatis oleh sistem)" />
+                <input class="p-2 w-full border bg-slate-200" v-model="formPropertiTransaksi.total_harga_barang" placeholder="Total Harga Barang (Terisi otomatis oleh sistem)" />
                 <label>Margin untuk Bank</label>
-                <input class="p-2 w-full border" v-model="formVerifikasiTransaksi.surplus_untuk_bank" @keyup="kalkulasiSurplusBank" />
+                <input class="p-2 w-full border" v-model="formPropertiTransaksi.surplus_untuk_bank" @keyup="kalkulasiSurplusBank" />
                 <label>Total Biaya Jual Beli Akad Murabahah tanpa Uang Muka</label>
-                <input class="p-2 w-full border bg-slate-200" v-model="formVerifikasiTransaksi.total_biaya_akad_murabahah" placeholder="Total Biaya yang akan dibayarkan oleh nasabah sampai akhir akad" readonly />
+                <input class="p-2 w-full border bg-slate-200" v-model="formPropertiTransaksi.total_biaya_akad_murabahah" placeholder="Total Biaya yang akan dibayarkan oleh nasabah sampai akhir akad" readonly />
 
                 <label>Uang Muka</label>
-                <input class="p-2 w-full border" v-model="formVerifikasiTransaksi.uang_muka" @keyup="kalkulasiBiayaSetelahDP" />
+                <input class="p-2 w-full border" v-model="formPropertiTransaksi.uang_muka" @keyup="kalkulasiBiayaSetelahDP" />
 
                 <label>Total Biaya Jual Beli setelah dikurangi Uang Muka</label>
-                <input class="p-2 w-full border bg-slate-200" v-model="formVerifikasiTransaksi.total_biaya_setelah_dp" readonly />
+                <input class="p-2 w-full border bg-slate-200" v-model="formPropertiTransaksi.total_biaya_setelah_dp" readonly />
 
                 <label>Frekuensi Angsuran</label>
                 <select class="p-2 w-full border" v-model="formVerifikasiTransaksi.frekuensi_angsuran" @change="kalkulasiAngsuran">
@@ -91,7 +91,7 @@
                 </select>
 
                 <label>Angsuran Per Bulan</label>
-                <input class="p-2 w-full border bg-slate-200" v-model="formVerifikasiTransaksi.angsuran_per_bulan" readonly />
+                <input class="p-2 w-full border bg-slate-200" v-model="formPropertiTransaksi.angsuran_per_bulan" readonly />
 
                 <button class="w-full bg-blue-700 text-white p-2 mt-4" @click="simpanTransaksi">Simpan untuk menerima permintaan</button>
                 <button class="w-full bg-blue-900 text-white p-2 mt-4" @click="resetTransaksi">Reset</button>
@@ -103,6 +103,17 @@
 
 <script>
 import axios from 'axios'
+
+async function hitungTotalHargaBarang(hargabarang, jmlbarang) {
+    var harga   = parseInt(hargabarang)
+    var jml     = parseInt(jmlbarang)
+
+    let hitung  = new Promise(function(hasil, error) {
+        hasil   = harga * jml
+    })
+
+    return await hitung
+}
 
 export default {
     mounted()
@@ -171,7 +182,11 @@ export default {
             formPropertiTransaksi       : {
                 harga_barang_satuan         : '',
                 surplus_untuk_bank          : '',
-                uang_muka                   : ''
+                uang_muka                   : '',
+                total_harga_barang          : '',
+                total_biaya_akad_murabahah  : '',
+                total_biaya_setelah_dp      : '',
+                angsuran_per_bulan          : ''
             },
 
             // formAccept      : {
@@ -210,28 +225,63 @@ export default {
         },
         kalkulasiTotalHargaBarang()
         {
-            let hargabarang  = this.formVerifikasiTransaksi.harga_barang_satuan
-            let satuanbarang = this.formVerifikasiTransaksi.qty_barang
+            let hargabarang  = parseInt(this.formVerifikasiTransaksi.harga_barang_satuan)
+            let satuanbarang = parseInt(this.formVerifikasiTransaksi.qty_barang)
 
-            return this.formVerifikasiTransaksi.total_harga_barang = hargabarang * satuanbarang
+            var kalkulasi   = hargabarang * satuanbarang
+
+            this.formVerifikasiTransaksi.total_harga_barang         = kalkulasi
+
+            this.formPropertiTransaksi.total_harga_barang           = Intl.NumberFormat(['ban', 'id']).format(kalkulasi)
+            
+            console.log(this.formVerifikasiTransaksi.total_harga_barang)
+            console.log(this.formPropertiTransaksi.total_harga_barang)
         },
         kalkulasiSurplusBank()
         {
+            var nilaiawalsurplus    = this.formPropertiTransaksi.surplus_untuk_bank.replace(/,/gi, "")
+
+            this.formVerifikasiTransaksi.surplus_untuk_bank                     = nilaiawalsurplus
+            
+            this.formPropertiTransaksi.surplus_untuk_bank = nilaiawalsurplus.split(/(?=(?:\d{3})+$)/).join(",")
+
             let totalhargabarang    = parseInt(this.formVerifikasiTransaksi.total_harga_barang)
             let surplusbank         = parseInt(this.formVerifikasiTransaksi.surplus_untuk_bank)
 
-            return this.formVerifikasiTransaksi.total_biaya_akad_murabahah = totalhargabarang + surplusbank
+            var hitung              = totalhargabarang + surplusbank
+
+            this.formVerifikasiTransaksi.total_biaya_akad_murabahah             = hitung
+
+            this.formPropertiTransaksi.total_biaya_akad_murabahah               = Intl.NumberFormat(['ban', 'id']).format(parseInt(hitung))
+            
+            console.log('Total harga barang : ' + totalhargabarang)
+            console.log('Total surplus barang : ' + surplusbank)
         },
         kalkulasiBiayaSetelahDP(){
-            if(this.formVerifikasiTransaksi.total_biaya_akad_murabahah == 0 || this.formVerifikasiTransaksi.total_biaya_akad_murabahah == null)
+            if(this.formVerifikasiTransaksi.total_biaya_akad_murabahah == '' || this.formVerifikasiTransaksi.total_biaya_akad_murabahah == null)
             {
+                this.formPropertiTransaksi.uang_muka        = ''
+
                 return alert('Mohon diisi form sesuai urutan')
             }
 
-            let totalbiayasblmdp          = parseInt(this.formVerifikasiTransaksi.total_biaya_akad_murabahah)
-            let uangmuka                  = parseInt(this.formVerifikasiTransaksi.uang_muka)
+            var uangdpawal                          = this.formPropertiTransaksi.uang_muka.replace(/,/gi, "")
 
-            return this.formVerifikasiTransaksi.total_biaya_setelah_dp = totalbiayasblmdp - uangmuka
+            this.formVerifikasiTransaksi.uang_muka  = uangdpawal
+
+            this.formPropertiTransaksi.uang_muka    = uangdpawal.split(/(?=(?:\d{3})+$)/).join(",")
+
+            let totalbiayasblmdp          = parseInt(this.formVerifikasiTransaksi.total_biaya_akad_murabahah)
+            let uangmuka                  = parseInt(uangdpawal)
+
+            var kalkulasi                 = totalbiayasblmdp - uangmuka
+
+            this.formVerifikasiTransaksi.total_biaya_setelah_dp = kalkulasi
+
+            this.formPropertiTransaksi.total_biaya_setelah_dp   = Intl.NumberFormat(['ban', 'id']).format(kalkulasi)
+
+            console.log('Uang DP setelah disortir: ' + uangdpawal)
+            console.log('Kalkulasi Akad setelah DP' + kalkulasi)
 
         },
         kalkulasiAngsuran()
@@ -239,7 +289,13 @@ export default {
             let tbmurabahahsetelahdp = parseInt(this.formVerifikasiTransaksi.total_biaya_setelah_dp)
             let kuantitas            = parseInt(this.formVerifikasiTransaksi.frekuensi_angsuran)
 
-            return this.formVerifikasiTransaksi.angsuran_per_bulan = tbmurabahahsetelahdp / kuantitas
+            var kalkulasi            = tbmurabahahsetelahdp / kuantitas
+
+            this.formVerifikasiTransaksi.angsuran_per_bulan = kalkulasi
+
+            this.formPropertiTransaksi.angsuran_per_bulan      = Intl.NumberFormat(['ban', 'id']).format(kalkulasi)
+
+            console.log(kalkulasi)
         },
         resetTransaksi()
         {
@@ -279,13 +335,22 @@ export default {
             }
         },
         beriKomaBarangSatuan() {
-            var num         = this.formPropertiTransaksi.harga_barang_satuan.replace(/,/gi, "")
+            var num                                             = this.formPropertiTransaksi.harga_barang_satuan.replace(/,/gi, "")
 
             this.formVerifikasiTransaksi.harga_barang_satuan    = num
             
             this.formPropertiTransaksi.harga_barang_satuan      = num.split(/(?=(?:\d{3})+$)/).join(",")
 
             console.log(this.formVerifikasiTransaksi.harga_barang_satuan)
+        },
+        beriKomaUangMuka() {
+            var num                                             = this.formPropertiTransaksi.uang_muka
+
+            this.formVerifikasiTransaksi.uang_muka              = num
+
+            this.formPropertiTransaksi.uang_muka                = num.split(/(?=(?:\d{3})+$)/).join(",")
+
+            console.log('Uang Muka : ' + this.formVerifikasiTransaksi.uang_muka)
         },
         viewBeriKoma() {
 
