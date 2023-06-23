@@ -30,34 +30,46 @@
         </div>
     </div>
 
-    <!-- Modal Section -->
-    <div class="w-full h-full overflow-auto bg-slate-900 left-0 top-0 fixed bg-opacity-70" v-if="openModalAddTabungan == true">
-        <!-- Modal Content -->
-        <div class="flex justify-center">
-            <div class="bg-white w-[1000px] p-4 mt-[200px] rounded-lg">
-                <div class="grid grid-rows-1">
-                    <h1 class="text-2xl text-black mb-10">Tambah Tabungan Baru</h1>
-                    <div class="grid grid-rows-1 gap-2 mb-10">
-                        <label class="font-bold text-black">Target Nasabah</label>
-                            <select class="border bg-white p-2" v-model="formTabunganBaru.kd_cif">
-                                <option :value="''">-- Pilih Data --</option>
-                                <option v-for="(nsb, index) in listNasabah" :key="index" :value="nsb.id">{{ nsb.kd_identitas }} - {{ nsb.nama_sesuai_identitas }}</option>
-                            </select>
-                        <label class="font-bold text-black">Produk Tabungan</label>
-                            <select class="border bg-white p-2" v-model="formTabunganBaru.kd_produk_tabungan">
-                                <option :value="''">-- Pilih Data --</option>
-                                <option v-for="(tab, index) in listProdukTabungan" :key="index" :value="tab.id">{{ tab.nama_produk }}</option>
-                            </select>
-                    </div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <button class="bg-slate-300 text-black p-2 rounded-md" @click="openModalAddTabungan = false">Tutup</button>
-                        <button class="bg-blue-600 text-white p-2 rounded-md" @click="tambahTabungan">Simpan</button>
+    <Transition name="slide-fade">
+
+        <!-- Modal Section -->
+        <div class="w-full h-full overflow-auto bg-slate-900 left-0 top-0 fixed bg-opacity-70" v-if="openModalAddTabungan == true">
+            <!-- Modal Content -->
+            <div class="flex justify-center">
+                <div class="bg-white w-[1000px] p-4 mt-[200px] rounded-lg">
+                    <div class="grid grid-rows-1">
+                        <h1 class="text-2xl text-black mb-10">Tambah Tabungan Baru</h1>
+                        <div class="grid grid-rows-1 gap-2 mb-10">
+                            
+                            <div>
+                                <label class="font-bold text-black">Target Nasabah</label>
+                                <select class="border bg-white p-2" v-model="formTabunganBaru.kd_cif">
+                                    <option :value="''">-- Pilih Data --</option>
+                                    <option v-for="(nsb, index) in listNasabah" :key="index" :value="nsb.id">{{ nsb.kd_identitas }} - {{ nsb.nama_sesuai_identitas }}</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="font-bold text-black">Produk Tabungan</label>
+                                <select class="border bg-white p-2" v-model="formTabunganBaru.kd_produk_tabungan">
+                                    <option :value="''">-- Pilih Data --</option>
+                                    <option v-for="(tab, index) in listProdukTabungan" :key="index" :value="tab.id">{{ tab.nama_produk }}</option>
+                                </select>
+                            </div>
+
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <button class="bg-slate-300 text-black p-2 rounded-md" @click="openModalAddTabungan = false">Tutup</button>
+                            <button class="bg-blue-600 text-white p-2 rounded-md" @click="tambahTabungan">Simpan</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!--  -->
+        <!--  -->
+        
+    </Transition>
+
 
 </template>
 
