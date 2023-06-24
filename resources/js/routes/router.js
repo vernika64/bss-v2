@@ -184,7 +184,7 @@ const routes = [
     },
 
     { 
-        path            : devurl + '/tabungan',
+        path            : releaseurl + '/tabungan',
         name            : 'Tabungan',
         components      : {
             default : BankingTabungan,
