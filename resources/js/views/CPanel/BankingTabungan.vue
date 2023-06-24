@@ -38,19 +38,41 @@
             <div class="flex justify-center">
                 <div class="bg-white w-[1000px] p-4 mt-[200px] rounded-lg">
                     <div class="grid grid-rows-1">
-                        <h1 class="text-2xl text-black mb-10">Tambah Tabungan Baru</h1>
-                        <div class="grid grid-rows-1 gap-2 mb-10">
-                            
-                            <div>
-                                <label class="font-bold text-black">Target Nasabah</label>
+                        <h1 class="text-2xl text-black mb-4">Tambah Tabungan Baru</h1>
+                        <div class="grid grid-cols-2 gap-2">
+                            <!-- <div class="grid grid-rows-2 mb-2">
+                                <label>Target Nasabah</label>
                                 <select class="border bg-white p-2" v-model="formTabunganBaru.kd_cif">
                                     <option :value="''">-- Pilih Data --</option>
                                     <option v-for="(nsb, index) in listNasabah" :key="index" :value="nsb.id">{{ nsb.kd_identitas }} - {{ nsb.nama_sesuai_identitas }}</option>
                                 </select>
-                            </div>
+                            </div> -->
 
-                            <div>
-                                <label class="font-bold text-black">Produk Tabungan</label>
+                            <fieldset class="border border-slate-300 rounded-md p-4">
+                                <legend>Cari data nasabah</legend>
+                                <div class="grid grid-rows-2">
+                                    <label>Jenis Tanda Pengenal</label>
+                                    <select class="border border-slate-300 bg-white shadow-md rounded-md text-md p-2">
+                                        <option>KTP</option>
+                                        <option>KTM</option>
+                                    </select>
+                                </div>
+                                <div class="grid grid-rows-2">
+                                    <label>Nomor Identitas</label>
+                                    <input class="border border-slate-300 bg-white shadow-md rounded-md text-md p-2" placeholder="Nomor identitas sesuai kartu identitas" />
+                                </div>
+                            </fieldset>
+
+                            <fieldset class="border border-slate-300 rounded-md p-2">
+                                <legend>Hasil Pencarian</legend>
+                                <div class="grid grid-rows-2 mb-2">
+                                    <label>Nama Nasabah</label>
+                                    <input class="border border-slate-300 bg-white shadow-md rounded-md text-md p-2" readonly />
+                                </div>
+                            </fieldset>
+
+                            <div class="grid grid-rows-2 mb-2">
+                                <label>Produk Tabungan</label>
                                 <select class="border bg-white p-2" v-model="formTabunganBaru.kd_produk_tabungan">
                                     <option :value="''">-- Pilih Data --</option>
                                     <option v-for="(tab, index) in listProdukTabungan" :key="index" :value="tab.id">{{ tab.nama_produk }}</option>
@@ -58,7 +80,7 @@
                             </div>
 
                         </div>
-                        <div class="grid grid-cols-2 gap-4">
+                        <div class="grid grid-cols-2 gap-4 mt-2">
                             <button class="bg-slate-300 text-black p-2 rounded-md" @click="openModalAddTabungan = false">Tutup</button>
                             <button class="bg-blue-600 text-white p-2 rounded-md" @click="tambahTabungan">Simpan</button>
                         </div>
