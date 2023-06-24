@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth;
 use App\Http\Controllers\CustomerIdentificationFile;
 use App\Http\Controllers\JualBeliMurabahah;
 use App\Http\Controllers\JurnalAkuntansi;
+use App\Http\Controllers\LaporanTabungan;
 use App\Http\Controllers\MetodeBerguna;
 use App\Http\Controllers\Tabungan;
 use App\Http\Controllers\Testing;
@@ -155,6 +156,8 @@ Route::get('/bank/ambilDataJurnalUmum/{id}', [JurnalAkuntansi::class, 'getDataJu
 Route::get('/bank/cekDataNasabah', [CustomerIdentificationFile::class, 'cekDataNasabah']);
 
 // Untuk testing
+
+Route::get('cetakbuku', [LaporanTabungan::class, 'LaporanBuatTabunganWadiah']);
 
 Route::middleware(['login.auth'])->group(function() {
     Route::get('/teskoneksi', function() {
