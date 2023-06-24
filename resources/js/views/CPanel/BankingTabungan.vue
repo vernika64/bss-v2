@@ -33,57 +33,69 @@
     <Transition name="slide-fade">
 
         <!-- Modal Section -->
-        <div class="w-full h-full overflow-auto bg-slate-900 left-0 top-0 fixed bg-opacity-70" v-if="openModalAddTabungan == true">
+        <div class="flex flex-col w-full h-full bg-slate-900 left-0 top-0 fixed bg-opacity-70 justify-center align-middle" v-if="openModalAddTabungan == true">
             <!-- Modal Content -->
-            <div class="flex justify-center">
-                <div class="bg-white w-[1000px] p-4 mt-[200px] rounded-lg">
-                    <div class="grid grid-rows-1">
-                        <h1 class="text-2xl text-black mb-4">Tambah Tabungan Baru</h1>
-                        <div class="grid grid-cols-2 gap-2">
-                            <!-- <div class="grid grid-rows-2 mb-2">
-                                <label>Target Nasabah</label>
-                                <select class="border bg-white p-2" v-model="formTabunganBaru.kd_cif">
-                                    <option :value="''">-- Pilih Data --</option>
-                                    <option v-for="(nsb, index) in listNasabah" :key="index" :value="nsb.id">{{ nsb.kd_identitas }} - {{ nsb.nama_sesuai_identitas }}</option>
+            <div class="relative bg-white rounded-lg shadow p-4 m-auto md:w-1/2 2xl:w-[60%]">
+                <div class="grid grid-rows-1">
+                    <h1 class="text-2xl text-black mb-4">Tambah Tabungan Baru</h1>
+                    <div class="grid grid-cols-1 2xl:grid-cols-2 gap-4">
+                        <!-- <div class="grid grid-rows-2 mb-2">
+                            <label>Target Nasabah</label>
+                            <select class="border bg-white p-2" v-model="formTabunganBaru.kd_cif">
+                                <option :value="''">-- Pilih Data --</option>
+                                <option v-for="(nsb, index) in listNasabah" :key="index" :value="nsb.id">{{ nsb.kd_identitas }} - {{ nsb.nama_sesuai_identitas }}</option>
+                            </select>
+                        </div> -->
+
+                        <fieldset class="border border-slate-300 rounded-md p-4">
+                            <legend>Step 1 - Cari data nasabah</legend>
+
+                            <div class="flex flex-col gap-2 mb-2">
+                                <label>Jenis Tanda Pengenal</label>
+                                <select class="border border-slate-300 bg-white shadow-md rounded-md text-md p-2">
+                                    <option>KTP</option>
+                                    <option>KTM</option>
                                 </select>
-                            </div> -->
+                            </div>
+                            <div class="flex flex-col gap-2 mb-4">
+                                <label>Nomor Identitas</label>
+                                <input class="border border-slate-300 bg-white shadow-md rounded-md text-md p-2" placeholder="Nomor identitas sesuai kartu identitas" />
+                            </div>
+                            <div class="flex flex-col">
+                                <button class="p-2 bg-blue-700 hover:bg-blue-900 text-white rounded-md shadow-md">Cari data nasabah</button>
+                            </div>
+                        </fieldset>
 
-                            <fieldset class="border border-slate-300 rounded-md p-4">
-                                <legend>Cari data nasabah</legend>
-                                <div class="grid grid-rows-2">
-                                    <label>Jenis Tanda Pengenal</label>
-                                    <select class="border border-slate-300 bg-white shadow-md rounded-md text-md p-2">
-                                        <option>KTP</option>
-                                        <option>KTM</option>
-                                    </select>
-                                </div>
-                                <div class="grid grid-rows-2">
-                                    <label>Nomor Identitas</label>
-                                    <input class="border border-slate-300 bg-white shadow-md rounded-md text-md p-2" placeholder="Nomor identitas sesuai kartu identitas" />
-                                </div>
-                            </fieldset>
+                        <fieldset class="border border-slate-300 rounded-md p-4">
+                            <legend>Step 2 - Hasil Pencarian</legend>
 
-                            <fieldset class="border border-slate-300 rounded-md p-2">
-                                <legend>Hasil Pencarian</legend>
-                                <div class="grid grid-rows-2 mb-2">
-                                    <label>Nama Nasabah</label>
-                                    <input class="border border-slate-300 bg-white shadow-md rounded-md text-md p-2" readonly />
-                                </div>
-                            </fieldset>
+                            <div class="flex flex-col gap-2 mb-2">
+                                <label>Nama Nasabah</label>
+                                <input class="border border-slate-300 bg-white shadow-md rounded-md text-md p-2" readonly />
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <label>Alamat sesuai Identitas</label>
+                                <input class="border border-slate-300 bg-white shadow-md rounded-md text-md p-2" readonly />
+                            </div>
+                        </fieldset>
 
-                            <div class="grid grid-rows-2 mb-2">
+                        <fieldset class="border border-slate-300 rounded-md p-4 mb-2 2xl:col-span-2">
+                            <legend>Step 3 - Pilih produk tabungan</legend>
+
+                            <div class="flex flex-col mb-2">
                                 <label>Produk Tabungan</label>
                                 <select class="border bg-white p-2" v-model="formTabunganBaru.kd_produk_tabungan">
                                     <option :value="''">-- Pilih Data --</option>
                                     <option v-for="(tab, index) in listProdukTabungan" :key="index" :value="tab.id">{{ tab.nama_produk }}</option>
                                 </select>
                             </div>
+                        </fieldset>
 
-                        </div>
-                        <div class="grid grid-cols-2 gap-4 mt-2">
-                            <button class="bg-slate-300 text-black p-2 rounded-md" @click="openModalAddTabungan = false">Tutup</button>
-                            <button class="bg-blue-600 text-white p-2 rounded-md" @click="tambahTabungan">Simpan</button>
-                        </div>
+                    </div>
+                        
+                    <div class="grid grid-cols-2 gap-4 mt-2">
+                        <button class="bg-slate-300 hover:bg-slate-400 text-black p-2 rounded-md" @click="openModalAddTabungan = false">Tutup</button>
+                        <button class="bg-blue-700 hover:bg-blue-900 text-white p-2 rounded-md" @click="tambahTabungan">Simpan</button>
                     </div>
                 </div>
             </div>
