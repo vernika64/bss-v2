@@ -488,9 +488,9 @@ export default {
                 console.log('simpan')
                 console.log(this.formCIF)
 
-                axios.post('/api/bank/tambahCIF', this.formCIF).then(insert => {
-                    alert(insert.data.message)
-                    console.log(insert.data)
+                axios.post('/api/bank/tambahCIF', this.formCIF).then(dat => {
+                    alert(dat.data.message)
+                    console.log(dat.data)
 
                     return this.$router.push({name: 'CIF'})
                 }).catch(error => {

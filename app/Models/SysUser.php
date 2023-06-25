@@ -23,6 +23,7 @@ class SysUser extends Model
             if(!empty($ModelUser)) {
                 $data           = new stdClass;
                 $data->status   = true;
+                $data->user_id  = $ModelUser->id;
                 $data->username = $ModelUser->username;
                 $data->kd_bank  = $ModelUser->kd_bank;
                 $data->role     = $ModelUser->role;
