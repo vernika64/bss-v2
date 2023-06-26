@@ -2,11 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SysBank;
+use App\Models\SysUser;
 use Fpdf\Fpdf;
 
 class HeaderLaporan extends Fpdf {
     
     public function Header() {
+
+        $ModelUser      = new SysUser();
+        $data_user      = $ModelUser->getInformasiUser($_COOKIE['tkn']);
+
+        $kd_bank        = $data_user->kd_bank;
+
+        $ModelBank      = new SysBank();
+        $data_bank      = $ModelBank->cariDataBankById($kd_bank);
+
         $this->SetFont('Arial','B',15);
         
         // Move to the right
@@ -19,17 +30,12 @@ class HeaderLaporan extends Fpdf {
         $this->Ln(15);
     
         $this->SetFont('Arial', 'B', 24);
-        $this->Cell(60,0, 'Bank Amanah Sejahtera',0,1);
+        // $this->Cell(60,0, $data_bank->nama_bank,0,1);
+        $this->Cell(60,0, $data_bank->nama_bank,0,1);
         $this->SetFont('Arial','I',12);
-        $this->Cell(60,10, 'Jl. Selamat Jalan',0,1);
+        $this->Cell(60,10, $data_bank->alamat_bank,0,1);
+        // $this->Cell(60,10, 'Jl. Selamat',0,1);
 
-        $this->Ln(10);
-        $this->SetFont('Arial','B',15);
-        $this->Cell(90,5,'Surat Perjanjian Pembuatan Buku Tabungan',0,1);
-        $this->SetFont('Arial','', 12);
-        $this->Cell(90,10,'No : 12/31/S.P.N/TAB.WDA/2023',0,1);
-
-        $this->Ln(15);
     }
 
     public function Footer() {

@@ -52,17 +52,18 @@
 
                             <div class="flex flex-col gap-2 mb-2">
                                 <label>Jenis Tanda Pengenal</label>
-                                <select class="border border-slate-300 bg-white shadow-md rounded-md text-md p-2">
-                                    <option>KTP</option>
-                                    <option>KTM</option>
+                                <select class="border border-slate-300 bg-white shadow-md rounded-md text-md p-2" v-model="formTabunganBaru.tipe_id">
+                                    <option :value="''">-- Pilih Tipe Identitas --</option>
+                                    <option :value="'ktp'">KTP</option>
+                                    <option :value="'ktm'">KTM</option>
                                 </select>
                             </div>
                             <div class="flex flex-col gap-2 mb-4">
                                 <label>Nomor Identitas</label>
-                                <input class="border border-slate-300 bg-white shadow-md rounded-md text-md p-2" placeholder="Nomor identitas sesuai kartu identitas" />
+                                <input class="border border-slate-300 bg-white shadow-md rounded-md text-md p-2" placeholder="Nomor identitas sesuai kartu identitas" v-model="formTabunganBaru.kd_identitas" />
                             </div>
                             <div class="flex flex-col">
-                                <button class="p-2 bg-blue-700 hover:bg-blue-900 text-white rounded-md shadow-md">Cari data nasabah</button>
+                                <button class="p-2 bg-blue-700 hover:bg-blue-900 text-white rounded-md shadow-md" @click="cekDataNasabah">Cari data nasabah</button>
                             </div>
                         </fieldset>
 
@@ -71,11 +72,16 @@
 
                             <div class="flex flex-col gap-2 mb-2">
                                 <label>Nama Nasabah</label>
-                                <input class="border border-slate-300 bg-white shadow-md rounded-md text-md p-2" readonly />
+                                <input class="border border-slate-300 bg-white shadow-md rounded-md text-md p-2" v-model="dummyFormHasilPencarian.nama_nasabah" readonly />
                             </div>
-                            <div class="flex flex-col gap-2">
+                            <div class="flex flex-col gap-2 mb-4">
                                 <label>Alamat sesuai Identitas</label>
-                                <input class="border border-slate-300 bg-white shadow-md rounded-md text-md p-2" readonly />
+                                <input class="border border-slate-300 bg-white shadow-md rounded-md text-md p-2" v-model="dummyFormHasilPencarian.alamat_nasabah" readonly />
+                            </div>
+                            
+                            <div class="flex flex-row gap-2">
+                                <button class="w-full bg-blue-700 text-white rounded-md shadow-md p-2">Cek Tabungan</button>
+                                <button class="w-full bg-blue-700 text-white rounded-md shadow-md p-2">Cetak Surat Perjanjian</button>
                             </div>
                         </fieldset>
 
@@ -140,7 +146,12 @@ export default {
             judulNavbar             : 'Tabungan Wadiah',
             formTabunganBaru        : {
                 kd_produk_tabungan  : '',
-                kd_cif              : ''
+                kd_identitas        : '',
+                tipe_id             : ''
+            },
+            dummyFormHasilPencarian : {
+                nama_nasabah        : '',
+                alamat_nasabah      : ''
             },
             tabelTabungan           : []
         }
@@ -154,6 +165,30 @@ export default {
             }).catch(err_nxt => {
                 console.log(err_nxt.data)
             })
+        },
+        cekDataNasabah() {
+
+            if(this.formTabunganBaru.kd_identitas == '' && this.formTabunganBaru.tipe_id == '') {
+                return alert('Data pencarian harus diisi terlebih dahulu')    
+            } else if (this.formTabunganBaru.kd_identitas != '' && this.formTabunganBaru.tipe_id != '') {
+                let data = {
+                    tipe_id         : this.formTabunganBaru.tipe_id,
+                    nomer_id        : this.formTabunganBaru.kd_identitas
+                }
+
+                axios.post('/api/bank/cariDataCIF', data).then(hsl => {
+                    if(hsl.data.status == 200) {
+                        this.dummyFormHasilPencarian.nama_nasabah       = hsl.data.data.nama
+                        this.dummyFormHasilPencarian.alamat_nasabah     = hsl.data.data.alamat
+
+                        return alert(hsl.data.message)
+                    } else if(hsl.data.status == 400) {
+                        return alert(hsl.data.message)
+                    }
+                }).catch(err => {
+                    console.log(err.data)
+                })
+            }
         }
     }
 }
