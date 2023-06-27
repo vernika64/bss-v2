@@ -16,6 +16,7 @@ use App\Models\SysLog;
 use App\Models\SysToken;
 use App\Models\SysUser;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,6 +32,15 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+// Untuk buat kode csrf
+Route::get('/buatForm', function(Request $re) {
+    $token      = Hash::make(rand(1,160000));
+
+    return response()->json([
+        'csrf_token'   => $token
+    ]);
 });
 
 // Untuk Testing

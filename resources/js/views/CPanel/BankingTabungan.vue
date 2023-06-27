@@ -49,6 +49,7 @@
 
                         <fieldset class="border border-slate-300 rounded-md p-4">
                             <legend>Step 1 - Cari data nasabah</legend>
+                            <input type="hidden" v-model="csrf" />
 
                             <div class="flex flex-col gap-2 mb-2">
                                 <label>Jenis Tanda Pengenal</label>
@@ -79,9 +80,9 @@
                                 <input class="border border-slate-300 bg-white shadow-md rounded-md text-md p-2" v-model="dummyFormHasilPencarian.alamat_nasabah" readonly />
                             </div>
                             
-                            <div class="flex flex-row gap-2">
+                            <div :class="[status_cek_cif == false ? 'hidden' : 'flex flex-row gap-2']">
                                 <button class="w-full bg-blue-700 text-white rounded-md shadow-md p-2">Cek Tabungan</button>
-                                <button class="w-full bg-blue-700 text-white rounded-md shadow-md p-2">Cetak Surat Perjanjian</button>
+                                <router-link class="w-full bg-blue-700 text-white rounded-md shadow-md p-2 text-center" :to="{ path: '/api/cetakbuku', query: { tipe_id: 'ktp', kode_id: 12300}}" target="_blank">Cetak Surat Perjanjian</router-link>
                             </div>
                         </fieldset>
 
@@ -100,7 +101,7 @@
                     </div>
                         
                     <div class="grid grid-cols-2 gap-4 mt-2">
-                        <button class="bg-slate-300 hover:bg-slate-400 text-black p-2 rounded-md" @click="openModalAddTabungan = false">Tutup</button>
+                        <button class="bg-slate-300 hover:bg-slate-400 text-black p-2 rounded-md" @click="tutupDaftarTabungan">Tutup</button>
                         <button class="bg-blue-700 hover:bg-blue-900 text-white p-2 rounded-md" @click="tambahTabungan">Simpan</button>
                     </div>
                 </div>
@@ -119,6 +120,13 @@ import axios from 'axios'
 export default {
     mounted()
     {
+        axios.get('/api/buatForm').then(hsll => {
+            this.csrf   = hsll.data.csrf_token
+            console.log(this.csrf)
+        }).catch(errr => {
+            console.log('Gagal mengambil token CSRF')
+        })
+
         axios.get('/api/bank/listCIFAll').then(res => {
             this.listNasabah = res.data.data
             // console.log(this.listNasabah)
@@ -153,22 +161,29 @@ export default {
                 nama_nasabah        : '',
                 alamat_nasabah      : ''
             },
-            tabelTabungan           : []
+            tabelTabungan           : [],
+            status_cek_cif          : false
         }
     },
     methods: {
         tambahTabungan() {
             axios.post('/api/bank/listTabungan/Add', this.formTabunganBaru).then(nxt => {
                 console.log(nxt.data)
-                alert(nxt.data.message)
-                return location.reload()
+
+                if(nxt.data.status == 200)
+                {
+                    alert(nxt.data.message)
+                    return location.reload()
+                } else if(nxt.data.status >= 400) {
+                    alert(nxt.data.message)
+                }
             }).catch(err_nxt => {
                 console.log(err_nxt.data)
             })
         },
         cekDataNasabah() {
 
-            if(this.formTabunganBaru.kd_identitas == '' && this.formTabunganBaru.tipe_id == '') {
+            if(this.formTabunganBaru.kd_identitas == '' || this.formTabunganBaru.tipe_id == '') {
                 return alert('Data pencarian harus diisi terlebih dahulu')    
             } else if (this.formTabunganBaru.kd_identitas != '' && this.formTabunganBaru.tipe_id != '') {
                 let data = {
@@ -176,10 +191,16 @@ export default {
                     nomer_id        : this.formTabunganBaru.kd_identitas
                 }
 
+                this.status_cek_cif                                     = false
+                this.dummyFormHasilPencarian.nama_nasabah               = ''
+                this.dummyFormHasilPencarian.alamat_nasabah             = ''
+
                 axios.post('/api/bank/cariDataCIF', data).then(hsl => {
                     if(hsl.data.status == 200) {
                         this.dummyFormHasilPencarian.nama_nasabah       = hsl.data.data.nama
                         this.dummyFormHasilPencarian.alamat_nasabah     = hsl.data.data.alamat
+
+                        this.status_cek_cif                             = true
 
                         return alert(hsl.data.message)
                     } else if(hsl.data.status == 400) {
@@ -188,7 +209,26 @@ export default {
                 }).catch(err => {
                     console.log(err.data)
                 })
+            } else {
+                return alert('Terdapat kesalahan di sisi client, mohon merestart halaman jika tombol tidak berfungsi')
             }
+        },
+        tutupDaftarTabungan() {
+            this.formTabunganBaru.kd_identitas              = ''
+            this.formTabunganBaru.tipe_id                   = ''
+            this.formTabunganBaru.kd_produk_tabungan        = ''
+            this.status_cek_cif                             = false
+            this.dummyFormHasilPencarian.nama_nasabah       = ''
+            this.dummyFormHasilPencarian.alamat_nasabah     = ''
+
+            this.openModalAddTabungan                       = false
+        },
+        cetakSuratPerjanjian() {
+            let tipe_id     = this.formTabunganBaru.tipe_id
+            let kode_id     = this.formTabunganBaru.kd_identitas
+            let csrf        = this.csrf
+
+            return 
         }
     }
 }

@@ -69,37 +69,26 @@ class Tabungan extends Controller
     public function insertDataTabungan(Request $re)
     {
         try {
+            $token          = $re->cookie('tkn');
 
-            $getUserCookie = $re->cookie('tkn');
+            $ModelUser      = new SysUser();
+            $ModelUser->getInformasiUser($token);
 
-            $ModelToken = SysToken::where('token', $getUserCookie)->first();
-
-            if (empty($ModelToken)) {
-                return response('Error 403 - Forbidden', 403);
-            }
-
-            $getUserData = SysUser::where('username', $ModelToken->kd_user)->first();
-            $getBankData = SysBank::find($getUserData->kd_bank);
-
-            if (empty($getBankData)) {
-                return response('Error 403 - Forbidden', 403);
-            }
+            $ModelBank      = SysBank::find($ModelUser->kd_bank)->first();
 
             $cektabungan = BankBukuTabunganWadiah::where('kd_cif', $re->kd_cif)->first();
 
-            if (empty($cektabungan)) {
-                // No Action
-            } else if (!empty($cektabungan)) {
+            if (!empty($cektabungan)) {
                 if ($cektabungan->kd_produk_tabungan == $re->kd_produk_tabungan) {
                     return response()->json([
                         'message' => 'Produk tabungan ini sudah terdaftar di data nasabah'
                     ]);
-                }
+                }    
             }
 
-            $kodeunikbank   = $getBankData->kd_unik_bank;
-            $kodebank       = $getBankData->id;
-            $kdadmin        = $getUserData->id;
+            $kodeunikbank   = $ModelBank->kd_unik_bank;
+            $kodebank       = $ModelUser->kd_bank;
+            $kdadmin        = $ModelUser->user_id;
 
             // Data dari form
 
@@ -120,13 +109,13 @@ class Tabungan extends Controller
             $ModelBankBukuTabunganWadiah->save();
 
             return response()->json([
+                'status'        => 200,
                 'message'       => 'Tabungan berhasil disimpan'
             ]);
         } catch (\Throwable $th) {
-            return response()->json([
-                'data'      => $th->getMessage(),
-                'status'    => 'Server error'
-            ]);
+            $err       = new MetodeBerguna;
+
+            return response()->json($err->outErrCatch($th->getMessage()));
         }
     }
 

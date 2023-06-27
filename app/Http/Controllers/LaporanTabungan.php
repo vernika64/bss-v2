@@ -30,8 +30,13 @@ class LaporanTabungan extends Controller
             
             if($data_user->status == true) {
                 
+                $list_data              = new stdClass;
+                $list_data->tipe_id     = $tipe_id;
+                $list_data->nomer_id    = $kode_id;
+                $list_data->kd_bank     = $data_user->kd_bank;
+
                 $ModelCIF           = new BankCIF();
-                $data_cif           = $ModelCIF->cariInfoCIFByIdDanBank($tipe_id, $kode_id, $data_user->kd_bank);
+                $data_cif           = $ModelCIF->cariInfoCIFByIdDanBank($list_data);
 
                 if($data_cif->status == true ) {
 
