@@ -11,6 +11,7 @@ use App\Models\SysToken;
 use App\Models\SysUser;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use stdClass;
 
 class Tabungan extends Controller
 {
@@ -69,49 +70,74 @@ class Tabungan extends Controller
     public function insertDataTabungan(Request $re)
     {
         try {
-            $token          = $re->cookie('tkn');
+            $token                  = $re->cookie('tkn');
+            $tipe_id                = $re->tipe_id;
+            $kd_identitas           = $re->kd_identitas;
+            $kd_produk_tabungan     = $re->kd_produk_tabungan;
 
             $ModelUser      = new SysUser();
-            $ModelUser->getInformasiUser($token);
 
-            $ModelBank      = SysBank::find($ModelUser->kd_bank)->first();
+            $data_user      = $ModelUser->getInformasiUser($token);
+            
+            $ModelBank      = SysBank::find($data_user->kd_bank)->first();
 
-            $cektabungan = BankBukuTabunganWadiah::where('kd_cif', $re->kd_cif)->first();
+            $ModelCIF       = new BankCIF();
 
-            if (!empty($cektabungan)) {
-                if ($cektabungan->kd_produk_tabungan == $re->kd_produk_tabungan) {
+            $data_pencarian = new stdClass;
+            $data_pencarian->tipe_id        = $tipe_id;
+            $data_pencarian->kd_identitas   = $kd_identitas;
+            $data_pencarian->kd_bank        = $ModelUser->kd_bank;
+
+            $data_cif                       = $ModelCIF->cariInfoCIFByIdDanBank($data_pencarian);
+
+            if($data_cif == true) {
+
+                $data_pencarian_produk_tabungan                         = new stdClass;
+                $data_pencarian_produk_tabungan->kd_cif                 = $ModelCIF->id;
+                $data_pencarian_produk_tabungan->kd_produk_tabungan     = $kd_produk_tabungan;
+
+                $ModelBukuTabunganWadiah    = new BankBukuTabunganWadiah();
+                $hasil_pencarian            = $ModelBukuTabunganWadiah->cariDataTabunganNasabah($data_pencarian_produk_tabungan);
+
+                if($hasil_pencarian->status == false) {
                     return response()->json([
-                        'message' => 'Produk tabungan ini sudah terdaftar di data nasabah'
+                        'status'        => 400,
+                        'message'       => 'Tabungan gagal disimpan, nasabah sudah mendaftar tabungan sebelumnya'
                     ]);
-                }    
+                } else if($hasil_pencarian->status == true) {
+
+                    $hitung_tabungan = BankBukuTabunganWadiah::count() + 1;
+                    
+                    $format_buku_tabungan = $ModelBank->kd_unik_bank . '-' . Carbon::now()->format('Y-m-d') . '-' . $hitung_tabungan;
+
+                    $data_buat_diinput      = new stdClass;
+                    $data_buat_diinput->kd_bank                 = $ModelUser->kd_bank;
+                    $data_buat_diinput->kd_admin                = $ModelUser->user_id;
+                    $data_buat_diinput->kd_cif                  = $ModelCIF->id;
+                    $data_buat_diinput->format_buku_tabungan    = $format_buku_tabungan;
+        
+                    return response()->json([
+                        'status'        => 200,
+                        'message'       => 'Tabungan berhasil disimpan'
+                    ]);
+
+                }
+
+            } else if($data_cif == false) {
+
+                return response()->json([
+                    'status'        => 400,
+                    'message'       => 'Data CIF tidak ditemukan'
+                ]);
+
+            } else {
+
+                return response()->json([
+                    'status'        => 400,
+                    'message'       => 'Data CIF tidak ditemukan'
+                ]);
+
             }
-
-            $kodeunikbank   = $ModelBank->kd_unik_bank;
-            $kodebank       = $ModelUser->kd_bank;
-            $kdadmin        = $ModelUser->user_id;
-
-            // Data dari form
-
-            $produk_tabungan = $re->kd_produk_tabungan;
-            $kode_nasabah    = $re->kd_cif;
-
-            $hitungtabungan = BankBukuTabunganWadiah::count() + 1;
-
-            $formatbukutabungan = $kodeunikbank . '-' . Carbon::now()->format('Y-m-d') . '-' . $hitungtabungan;
-
-            $ModelBankBukuTabunganWadiah                        = new BankBukuTabunganWadiah;
-            $ModelBankBukuTabunganWadiah->kd_produk_tabungan    = $produk_tabungan;
-            $ModelBankBukuTabunganWadiah->kd_buku_tabungan      = $formatbukutabungan;
-            $ModelBankBukuTabunganWadiah->kd_cif                = $kode_nasabah;
-            $ModelBankBukuTabunganWadiah->kd_bank               = $kodebank;
-            $ModelBankBukuTabunganWadiah->total_nilai           = 0;
-            $ModelBankBukuTabunganWadiah->kd_admin              = $kdadmin;
-            $ModelBankBukuTabunganWadiah->save();
-
-            return response()->json([
-                'status'        => 200,
-                'message'       => 'Tabungan berhasil disimpan'
-            ]);
         } catch (\Throwable $th) {
             $err       = new MetodeBerguna;
 

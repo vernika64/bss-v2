@@ -16,6 +16,7 @@ use App\Models\SysLog;
 use App\Models\SysToken;
 use App\Models\SysUser;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 
@@ -169,6 +170,21 @@ Route::get('/bank/cekDataNasabah', [CustomerIdentificationFile::class, 'cekDataN
 // Untuk testing
 
 Route::get('cetakbuku', [LaporanTabungan::class, 'LaporanBuatTabunganWadiah']);
+
+Route::get('testings', function(Request $re) {
+    $tabel = DB::table('INFORMATION_SCHEMA.TABLES')
+                ->select('TABLE_NAME')
+                ->where('TABLE_SCHEMA', '=', 'bss')
+                ->where('TABLE_TYPE', '=', 'BASE TABLE')
+                ->get();
+
+    dd($tabel);
+    // return response()->json([
+    //     'data'  => $tabel
+    // ]);
+});
+
+Route::get('tescaridatatabungan', [Testing::class, 'tescaridatatabungan']);
 
 Route::middleware(['login.auth'])->group(function() {
     Route::get('/teskoneksi', function() {

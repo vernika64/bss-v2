@@ -167,19 +167,21 @@ export default {
     },
     methods: {
         tambahTabungan() {
-            axios.post('/api/bank/listTabungan/Add', this.formTabunganBaru).then(nxt => {
-                console.log(nxt.data)
+            console.log(this.formTabunganBaru)
 
-                if(nxt.data.status == 200)
-                {
-                    alert(nxt.data.message)
-                    return location.reload()
-                } else if(nxt.data.status >= 400) {
-                    alert(nxt.data.message)
-                }
-            }).catch(err_nxt => {
-                console.log(err_nxt.data)
-            })
+            // axios.post('/api/bank/listTabungan/Add', this.formTabunganBaru).then(nxt => {
+            //     console.log(nxt.data)
+
+            //     if(nxt.data.status == 200)
+            //     {
+            //         alert(nxt.data.message)
+            //         return location.reload()
+            //     } else if(nxt.data.status >= 400) {
+            //         alert(nxt.data.message)
+            //     }
+            // }).catch(err_nxt => {
+            //     console.log(err_nxt.data)
+            // })
         },
         cekDataNasabah() {
 

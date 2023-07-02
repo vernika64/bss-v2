@@ -98,6 +98,7 @@ class BankCIF extends Model
             if(!empty($ModelCIF)) {
                 $output                     = new stdClass;
                 $output->status             = true;
+                $output->id                 = $ModelCIF->id;
                 $output->kd_identitas       = $ModelCIF->kd_identitas;
                 $output->nama               = $ModelCIF->nama_sesuai_identitas;
                 $output->alamat             = $ModelCIF->alamat_sekarang;
@@ -119,7 +120,33 @@ class BankCIF extends Model
 
             return $output;
         }
-        
+    }
+
+    public function cariIDCIF($data){
+        try {
+            $query                  = [
+                'tipe_id'       => $data->tipe_id,
+                'kd_identitas'  => $data->kd_identitas
+            ];
+
+            $ModelCIF               = BankCIF::where($query)->first();
+
+            if(empty($ModelCIF)) {
+                $output             = new stdClass;
+                $output->status     = false;
+                $output->message    = 'Data nasabah tidak ditemukan';
+
+                return $output;
+            }
+            
+
+        } catch (\Throwable $th) {
+            $output                 = new stdClass;
+            $output->status         = false;
+            $output->message        = $th->getMessage();
+
+            return $output;
+        }
     }
 
 }
