@@ -204,6 +204,11 @@ class DatabaseSeeder extends Seeder
 
         );
 
+        DB::table('bank_produk_tabungan')->insert([[
+            'nama_produk'       => 'Tabungan Wadiah',
+            'desc_produk'       => 'Tabungan dengan akad Wadiah'
+        ]]);
+
         // DB::table('sys_buku_akuntansi')->insert([
         //     'kd_master_buku'        => 1,
         //     'kd_sub_master_buku'    => 11001,

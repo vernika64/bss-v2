@@ -22,8 +22,7 @@ class BankBukuTabunganWadiah extends Migration
             $table->bigInteger('total_nilai')->nullable();
             $table->integer('kd_admin');
             $table->timestamps();
-            $table->unique(['kd_produk_tabungan', 'kd_cif'], 'index_tabungan');
-            $table->unique(['kd_buku_tabungan'], 'index_nomor_buku_tabungan');
+            $table->unique(['kd_produk_tabungan', 'kd_cif', 'kd_buku_tabungan'], 'index_tabungan');
         });
     }
 

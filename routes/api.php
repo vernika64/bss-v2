@@ -16,6 +16,8 @@ use App\Models\SysLog;
 use App\Models\SysToken;
 use App\Models\SysUser;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,6 +33,15 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+// Untuk buat kode csrf
+Route::get('/buatForm', function(Request $re) {
+    $token      = Hash::make(rand(1,160000));
+
+    return response()->json([
+        'csrf_token'   => $token
+    ]);
 });
 
 // Untuk Testing
@@ -117,12 +128,13 @@ Route::post('/bank/tambahCIF', [CustomerIdentificationFile::class, 'insertDataCI
 Route::get('/bank/cariCIF/{id}', [CustomerIdentificationFile::class, 'getDataCIFById']);
 Route::post('/bank/cariIdentitas', [CustomerIdentificationFile::class, 'getNomorIdentitas']);
 Route::post('/bank/cekStatusCIF', [CustomerIdentificationFile::class, 'cekKetersediaanNomerId']);
+Route::post('/bank/cariDataCIF/', [CustomerIdentificationFile::class, 'cariDataNasabah']);
 
 // Sub Tabungan
 
 Route::get('/bank/listProdukTabungan', [Tabungan::class, 'getDataProdukTabungan']);
 Route::get('/bank/listTabunganTabel', [Tabungan::class, 'getDataTabunganForTabel']);
-Route::post('/bank/listTabungan/Add', [Tabungan::class, 'insertDataTabungan']);
+Route::post('/bank/tabungan/tambah', [Tabungan::class, 'insertDataTabungan']);
 
 Route::get('/bank/listTabungan/{id}', [Tabungan::class, 'getDataTabunganForTransaksi']);
 Route::post('/bank/tambahTransaksiTabungan', [Tabungan::class, 'insertTransaksiTabungan']);
@@ -158,6 +170,21 @@ Route::get('/bank/cekDataNasabah', [CustomerIdentificationFile::class, 'cekDataN
 // Untuk testing
 
 Route::get('cetakbuku', [LaporanTabungan::class, 'LaporanBuatTabunganWadiah']);
+
+Route::get('testings', function(Request $re) {
+    $tabel = DB::table('INFORMATION_SCHEMA.TABLES')
+                ->select('TABLE_NAME')
+                ->where('TABLE_SCHEMA', '=', 'bss')
+                ->where('TABLE_TYPE', '=', 'BASE TABLE')
+                ->get();
+
+    dd($tabel);
+    // return response()->json([
+    //     'data'  => $tabel
+    // ]);
+});
+
+Route::get('tescaridatatabungan', [Testing::class, 'tescaridatatabungan']);
 
 Route::middleware(['login.auth'])->group(function() {
     Route::get('/teskoneksi', function() {

@@ -11,6 +11,7 @@ use App\Models\SysToken;
 use App\Models\SysUser;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use stdClass;
 
 class Tabungan extends Controller
 {
@@ -69,64 +70,94 @@ class Tabungan extends Controller
     public function insertDataTabungan(Request $re)
     {
         try {
+            $token                              = $re->cookie('tkn');
+            $tipe_id                            = $re->tipe_id;
+            $kd_identitas                       = $re->kd_identitas;
+            $kd_produk_tabungan                 = $re->kd_produk_tabungan;
 
-            $getUserCookie = $re->cookie('tkn');
+            $ModelUser                          = new SysUser();
 
-            $ModelToken = SysToken::where('token', $getUserCookie)->first();
+            $data_user                          = $ModelUser->getInformasiUser($token);
+            
+            $data_bank                          = SysBank::find($data_user->kd_bank)->first();
 
-            if (empty($ModelToken)) {
-                return response('Error 403 - Forbidden', 403);
-            }
+            $ModelCIF                           = new BankCIF();
 
-            $getUserData = SysUser::where('username', $ModelToken->kd_user)->first();
-            $getBankData = SysBank::find($getUserData->kd_bank);
+            $data_pencarian = new stdClass;
+            $data_pencarian->tipe_id            = $tipe_id;
+            $data_pencarian->kd_identitas       = $kd_identitas;
+            $data_pencarian->kd_bank            = $data_user->kd_bank;
 
-            if (empty($getBankData)) {
-                return response('Error 403 - Forbidden', 403);
-            }
+            $data_pencarian;
 
-            $cektabungan = BankBukuTabunganWadiah::where('kd_cif', $re->kd_cif)->first();
+            $data_cif                           = $ModelCIF->cariInfoCIFByIdDanBank($data_pencarian);
 
-            if (empty($cektabungan)) {
-                // No Action
-            } else if (!empty($cektabungan)) {
-                if ($cektabungan->kd_produk_tabungan == $re->kd_produk_tabungan) {
+            if($data_cif == true) {
+
+                $hitung_tabungan                            = BankBukuTabunganWadiah::count() + 1;
+                    
+                $format_buku_tabungan                       = $data_bank->kd_unik_bank . '-' . Carbon::now()->format('Y-m-d') . '-' . $hitung_tabungan;
+
+                $data_buat_diinput                          = new stdClass;
+                $data_buat_diinput->kd_bank                 = $data_user->kd_bank;
+                $data_buat_diinput->kd_admin                = $data_user->user_id;
+                $data_buat_diinput->kd_cif                  = $data_cif->id;
+                $data_buat_diinput->format_buku_tabungan    = $format_buku_tabungan;
+                $data_buat_diinput->kd_produk_tabungan      = $kd_produk_tabungan;
+
+                $data_buat_diinput;
+                
+                $ModelTabungan                              = new BankBukuTabunganWadiah();
+                $TambahBukuTabungan                         = $ModelTabungan->buatTabunganWadiah($data_buat_diinput);
+
+                if($TambahBukuTabungan->status == true) {
+                    
                     return response()->json([
-                        'message' => 'Produk tabungan ini sudah terdaftar di data nasabah'
+                        'status'        => 200,
+                        'message'       => 'Tabungan berhasil disimpan',
+                        'kd_tabungan'   => $format_buku_tabungan,
+                        'qr_status'     => true
                     ]);
+
+                } else if($TambahBukuTabungan->status == false) {
+
+                    return response()->json([
+                        'status'        => 200,
+                        'message'       => 'Tabungan gagal disimpan, silahkan hubungi staff IT',
+                        'qr_status'     => false
+                    ]);
+
+                } else {
+
+                    return response()->json([
+                        'status'        => 200,
+                        'message'       => 'Tabungan gagal disimpan, silahkan hubungi staff IT',
+                        'qr_status'     => false
+                    ]);
+
                 }
+
+            } else if($data_cif == false) {
+
+                return response()->json([
+                    'status'        => 200,
+                    'message'       => 'Data CIF tidak ditemukan',
+                    'qr_status'     => false
+                ]);
+
+            } else {
+
+                return response()->json([
+                    'status'        => 400,
+                    'message'       => 'Terjadi kesalahan pada saat menyimpan data tabungan, silahkan hubungi staff IT',
+                    'qr_status'     => false
+                ]);
+
             }
-
-            $kodeunikbank   = $getBankData->kd_unik_bank;
-            $kodebank       = $getBankData->id;
-            $kdadmin        = $getUserData->id;
-
-            // Data dari form
-
-            $produk_tabungan = $re->kd_produk_tabungan;
-            $kode_nasabah    = $re->kd_cif;
-
-            $hitungtabungan = BankBukuTabunganWadiah::count() + 1;
-
-            $formatbukutabungan = $kodeunikbank . '-' . Carbon::now()->format('Y-m-d') . '-' . $hitungtabungan;
-
-            $ModelBankBukuTabunganWadiah                        = new BankBukuTabunganWadiah;
-            $ModelBankBukuTabunganWadiah->kd_produk_tabungan    = $produk_tabungan;
-            $ModelBankBukuTabunganWadiah->kd_buku_tabungan      = $formatbukutabungan;
-            $ModelBankBukuTabunganWadiah->kd_cif                = $kode_nasabah;
-            $ModelBankBukuTabunganWadiah->kd_bank               = $kodebank;
-            $ModelBankBukuTabunganWadiah->total_nilai           = 0;
-            $ModelBankBukuTabunganWadiah->kd_admin              = $kdadmin;
-            $ModelBankBukuTabunganWadiah->save();
-
-            return response()->json([
-                'message'       => 'Tabungan berhasil disimpan'
-            ]);
         } catch (\Throwable $th) {
-            return response()->json([
-                'data'      => $th->getMessage(),
-                'status'    => 'Server error'
-            ]);
+            $err       = new MetodeBerguna;
+
+            return response()->json($err->outErrCatch($th->getMessage()));
         }
     }
 

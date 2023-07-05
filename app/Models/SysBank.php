@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use stdClass;
 
 class SysBank extends Model
 {
@@ -19,4 +20,28 @@ class SysBank extends Model
         'kd_admin'
     ];
     
+    // Cari berdasarkan kode bank (id)
+    public function cariDataBankById($kdbank) {
+        try {
+            $query                  = SysBank::find($kdbank)->first();
+            
+            if($query != null) {
+                $output                 = new stdClass;
+                $output->status         = true;
+                $output->nama_bank      = $query->nama_bank;
+                $output->alamat_bank    = $query->alamat_bank;
+    
+                return $output;
+            } else {
+                $output                 = new stdClass;
+                $output->status         = false;
+            }
+        } catch (\Throwable $th) {
+            $output             = new stdClass();
+            $output->status     = false;
+
+            return $output;
+        }
+    }
+
 }

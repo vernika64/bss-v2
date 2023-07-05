@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LaporanTabungan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +16,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/{any}', function () {
     return view('tampilan');
-})->where('any', '(?!.*(api)).*');
+})->where('any', '(?!.*(api,)).*');
+
+// Route::get('/laporan/cetakbuku', [LaporanTabungan::class, 'LaporanBuatTabunganWadiah']);
