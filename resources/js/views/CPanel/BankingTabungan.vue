@@ -41,9 +41,15 @@
                         <label>Kode Tabungan</label>
                         <input class="border border-slate-300 bg-white shadow-md rounded-md text-md p-2" readonly v-model="modalDetailTabungan.data.kd_buku_tabungan">
                     </div>
-                    <div class="flex flex-col gap-2 mb-4">
+                    <div class="flex flex-col gap-2 mb-2">
                         <label>Nominal Tabungan</label>
-                        <input class="border border-slate-300 bg-white shadow-md rounded-md text-md p-2" readonly v-model="modalDetailTabungan.data.total_nilai">
+                        <div class="flex flex-row gap-2">
+                            <input class="flex-auto border border-slate-300 bg-white shadow-md rounded-md text-md p-2" readonly v-model="modalDetailTabungan.data.total_nilai">
+                            <button class="flex-none bg-blue-700 hover:bg-blue-900 text-white p-2 rounded-md shadow-md" @click="lihatNominalTabungan">Lihat Nominal</button>
+                        </div>
+                    </div>
+                    <div class="flex flex-col mb-4">
+                        <button class="bg-blue-500 hover:bg-blue-900 text-white p-2 rounded-md shadow-md">Cetak Riwayat Transaksi</button>
                     </div>
                     <div class="grid grid-cols-2 gap-4 mt-2">
                         <button class="bg-slate-300 hover:bg-slate-400 text-black p-2 rounded-md" @click="tutupModalDetailTabungan">Tutup</button>
@@ -273,12 +279,28 @@ export default {
 
             this.modalDetailTabungan.status                     = true
             this.modalDetailTabungan.data.kd_buku_tabungan      = kd_buku_tabungan
-            this.modalDetailTabungan.data.total_nilai           = 5000
+            this.modalDetailTabungan.data.total_nilai           = '<Hidden>'
         },
         tutupModalDetailTabungan() {
             this.modalDetailTabungan.status                     = false
             this.modalDetailTabungan.data.kd_buku_tabungan      = ''
             this.modalDetailTabungan.data.total_nilai           = ''
+        },
+        lihatNominalTabungan() {
+
+            let kd_buku_tabungan                                = this.modalDetailTabungan.data.kd_buku_tabungan
+
+            axios.get('/api/bank/listTabungan/kdTabungan/' + kd_buku_tabungan).then(hasil => {
+                let nominal_tabungan                                = String(hasil.data.data.total_nilai)
+    
+                this.modalDetailTabungan.data.total_nilai           = 'Rp. ' + nominal_tabungan.split(/(?=(?:\d{3})+$)/).join(",")
+
+                return alert('Data berhasil diambil')
+            }).catch(error => {
+                console.log(error.data)
+                return alert('Terjadi kesalahan')
+            })
+
         }
     }
 }
