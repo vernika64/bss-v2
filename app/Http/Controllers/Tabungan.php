@@ -377,4 +377,27 @@ class Tabungan extends Controller
             ]);
         }
     }
+
+    public function cariDataTabunganDariKodeBukuTabungan($id) {
+        try {
+            $kd_buku_tabungan           = $id;
+
+            $ModelTabungan      = new BankBukuTabunganWadiah();
+
+            $cari_data_tabungan = $ModelTabungan->cariDataTabunganByKodeBukuTabungan($kd_buku_tabungan);
+
+            return response()->json([
+                'status'                => 200,
+                'message'               => $cari_data_tabungan->message,
+                'qr_status'             => $cari_data_tabungan->status,
+                'data'                  => $cari_data_tabungan->data,
+                'kd_buku_tabungan'      => $kd_buku_tabungan
+            ]);
+
+        } catch (\Throwable $th) {
+            $err       = new MetodeBerguna;
+
+            return response()->json($err->outErrCatch($th->getMessage()));
+        }
+    }
 }

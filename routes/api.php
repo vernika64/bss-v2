@@ -137,6 +137,7 @@ Route::get('/bank/listTabunganTabel', [Tabungan::class, 'getDataTabunganForTabel
 Route::post('/bank/tabungan/tambah', [Tabungan::class, 'insertDataTabungan']);
 
 Route::get('/bank/listTabungan/{id}', [Tabungan::class, 'getDataTabunganForTransaksi']);
+Route::get('/bank/listTabungan/kdTabungan/{id}', [Tabungan::class, 'cariDataTabunganDariKodeBukuTabungan']);
 Route::post('/bank/tambahTransaksiTabungan', [Tabungan::class, 'insertTransaksiTabungan']);
 
 // Sub Jual Beli Murabahah

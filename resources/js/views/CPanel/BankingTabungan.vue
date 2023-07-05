@@ -22,13 +22,38 @@
                             <td class="border border-white p-3">{{ tb.kd_buku_tabungan }}</td>
                             <td class="border border-white p-3">{{ tb.nama_produk }}</td>
                             <td class="border border-white p-3">{{ tb.nama_sesuai_identitas }}</td>
-                            <td class="border border-white p-3 text-center"><router-link :to="''" class="bg-blue-500 text-white p-2">Details</router-link></td>
+                            <td class="border border-white p-3 text-center"><button class="bg-blue-500 text-white p-2" @click="bukaModalDetailTabungan(tb.kd_buku_tabungan)">Details</button></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
+
+    <Transition name="slide-fade">
+        <div class="flex flex-col w-full h-full bg-slate-900 left-0 top-0 fixed bg-opacity-70 justify-center align-middle" v-if="modalDetailTabungan.status == true">
+            <!-- Modal Content -->
+            <div class="relative bg-white rounded-lg shadow p-4 m-auto md:w-1/2 2xl:w-[60%]">
+                <div class="grid grid-rows-1">
+                <h1 class="text-2xl text-black mb-4">Detail Tabungan | {{ modalDetailTabungan.data.kd_buku_tabungan }}</h1>
+                <div class="grid grid-cols-1 gap-4">
+                    <div class="flex flex-col gap-2 mb-2">
+                        <label>Kode Tabungan</label>
+                        <input class="border border-slate-300 bg-white shadow-md rounded-md text-md p-2" readonly v-model="modalDetailTabungan.data.kd_buku_tabungan">
+                    </div>
+                    <div class="flex flex-col gap-2 mb-4">
+                        <label>Nominal Tabungan</label>
+                        <input class="border border-slate-300 bg-white shadow-md rounded-md text-md p-2" readonly v-model="modalDetailTabungan.data.total_nilai">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 mt-2">
+                        <button class="bg-slate-300 hover:bg-slate-400 text-black p-2 rounded-md" @click="tutupModalDetailTabungan">Tutup</button>
+                        <button class="bg-blue-700 hover:bg-blue-900 text-white p-2 rounded-md" >Simpan</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </Transition>
 
     <Transition name="slide-fade">
 
@@ -161,6 +186,13 @@ export default {
                 nama_nasabah        : '',
                 alamat_nasabah      : ''
             },
+            modalDetailTabungan     : {
+                status          : false,
+                data            : {
+                    kd_buku_tabungan    : '',
+                    total_nilai         : ''
+                }
+            },
             tabelTabungan           : [],
             status_cek_cif          : false
         }
@@ -186,7 +218,6 @@ export default {
             })
         },
         cekDataNasabah() {
-
             if(this.formTabunganBaru.kd_identitas == '' || this.formTabunganBaru.tipe_id == '') {
                 return alert('Data pencarian harus diisi terlebih dahulu')    
             } else if (this.formTabunganBaru.kd_identitas != '' && this.formTabunganBaru.tipe_id != '') {
@@ -236,6 +267,18 @@ export default {
             // let csrf        = this.csrf
 
             // return 
+        },
+        bukaModalDetailTabungan(uid) {
+            let kd_buku_tabungan            = uid
+
+            this.modalDetailTabungan.status                     = true
+            this.modalDetailTabungan.data.kd_buku_tabungan      = kd_buku_tabungan
+            this.modalDetailTabungan.data.total_nilai           = 5000
+        },
+        tutupModalDetailTabungan() {
+            this.modalDetailTabungan.status                     = false
+            this.modalDetailTabungan.data.kd_buku_tabungan      = ''
+            this.modalDetailTabungan.data.total_nilai           = ''
         }
     }
 }

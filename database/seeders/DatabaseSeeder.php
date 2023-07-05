@@ -130,6 +130,58 @@ class DatabaseSeeder extends Seeder
             'updated_at'                => Carbon::now()
         ]);
 
+        DB::table('bank_cif')->insert([
+            'kd_identitas'              => '12300',
+            'tipe_id'                   => 'ktp',
+            'nama_sesuai_identitas'     => 'Joei Atreides',
+            'tempat_lahir'              => 'Kota Malang',
+            'tgl_lahir'                 => '2001/12/24',
+            'jenis_kelamin'             => 'laki',
+            'status_kawin'              => 'belum',
+            'kewarganegaraan'           => 'Indonesia',
+            'alamat_sekarang'           => 'Jl. Raya Ki Ageng Gribig',
+            'rt_rw'                     => '06/010',
+            'desa_kelurahan'            => 'Kelurahan Lesanpuro',
+            'kecamatan'                 => 'Kedungkandang',
+            'kabupaten_kota'            => 'Kota Malang',
+            'provinsi'                  => 'Jawa Timur',
+            'kode_pos'                  => '65138',
+            'no_telp'                   => '0341665522',
+            'email'                     => 'joei@gmail.com',
+            'nama_ibu_kandung'          => 'Ani',
+            'status_pekerjaan'          => 'Pejabat',
+            'kd_user'                   => 2,
+            'kd_bank'                   => 2,
+            'created_at'                => "2023-07-05 17:14:57",
+            'updated_at'                => "2023-07-05 17:14:57"
+        ]);
+
+        DB::table('bank_cif')->insert([
+            'kd_identitas'              => '12400',
+            'tipe_id'                   => 'ktp',
+            'nama_sesuai_identitas'     => 'Subroto',
+            'tempat_lahir'              => 'Kota Solo',
+            'tgl_lahir'                 => '1998/02/11',
+            'jenis_kelamin'             => 'laki',
+            'status_kawin'              => 'belum',
+            'kewarganegaraan'           => 'Indonesia',
+            'alamat_sekarang'           => 'Jl. Muharto',
+            'rt_rw'                     => '02/014',
+            'desa_kelurahan'            => 'Kelurahan Jodipan',
+            'kecamatan'                 => 'Blimbing',
+            'kabupaten_kota'            => 'Kota Malang',
+            'provinsi'                  => 'Jawa Timur',
+            'kode_pos'                  => '65137',
+            'no_telp'                   => '0341665522',
+            'email'                     => 'joei@gmail.com',
+            'nama_ibu_kandung'          => 'Jessy',
+            'status_pekerjaan'          => 'Bakul Soto',
+            'kd_user'                   => 2,
+            'kd_bank'                   => 2,
+            'created_at'                => "2023-04-11 14:24:22",
+            'updated_at'                => "2023-04-11 14:24:22"
+        ]);
+
         // Untuk Tabungan
         DB::table('bank_buku_tabungan_wadiah')->insert([
             'kd_produk_tabungan'        => 1,

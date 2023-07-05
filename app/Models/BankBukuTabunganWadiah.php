@@ -61,6 +61,52 @@ class BankBukuTabunganWadiah extends Model
 
     }
 
+    public function cariDataTabunganByKodeBukuTabungan($data) {
+        try {
+            $kd_buku_tabungan           = $data;
+
+            $ModelTabungan              = BankBukuTabunganWadiah::where(['kd_buku_tabungan' => $kd_buku_tabungan])->first();
+
+            if(empty($ModelTabungan)) {
+                $output                 = new stdClass;
+                $output->status         = false;
+                $output->message        = 'Data tabungan tidak ditemukan';
+                $output->data           = null;
+            } else if(!empty($ModelTabungan)) {
+                $data                       = new stdClass;
+                $data->kd_buku_tabungan     = $ModelTabungan->kd_buku_tabungan;
+                $data->total_nilai          = $ModelTabungan->total_nilai;
+
+                $output                 = new stdClass;
+                $output->status         = true;
+                $output->message        = 'Data tabungan berhasil dicari';
+                $output->data           = $data;
+            } else {
+                $buat_log               = new SysLog();
+
+                $buat_log->buatErrorLog($ModelTabungan);
+
+                $output                 = new stdClass;
+                $output->status         = false;
+                $output->message        = 'Terjadi kesalahan di kueri data';
+                $output->data           = null;
+            }
+
+            return $output;
+
+        } catch (\Throwable $th) {
+            $buat_log       = new SysLog();
+
+            $buat_log->buatErrorLog($th->getMessage());
+
+            $output                     = new stdClass;
+            $output->status             = false;
+            $output->message            = 'Terjadi kesalahan di server, mohon mencoba kembali';
+
+            return $output;
+        }
+    }
+
     public function buatTabunganWadiah($data) {
         try {
             $kd_produk_tabungan          = $data->kd_produk_tabungan;
