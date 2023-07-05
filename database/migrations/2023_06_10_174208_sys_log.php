@@ -18,7 +18,7 @@ class SysLog extends Migration
             $table->enum('metode', ['get', 'post', 'put', 'delete']);
             $table->string('url');
             $table->string('status');
-            $table->string('desc')->nullable();
+            $table->longText('desc')->nullable();
             $table->string('kd_user')->nullable();
             $table->string('ip_address');
             $table->timestamps();

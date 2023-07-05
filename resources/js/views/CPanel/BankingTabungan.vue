@@ -169,19 +169,21 @@ export default {
         tambahTabungan() {
             console.log(this.formTabunganBaru)
 
-            // axios.post('/api/bank/listTabungan/Add', this.formTabunganBaru).then(nxt => {
-            //     console.log(nxt.data)
+            axios.post('/api/bank/tabungan/tambah', this.formTabunganBaru).then(nxt => {
+                console.log('Error sukses')
+                console.log(nxt.data)
 
-            //     if(nxt.data.status == 200)
-            //     {
-            //         alert(nxt.data.message)
-            //         return location.reload()
-            //     } else if(nxt.data.status >= 400) {
-            //         alert(nxt.data.message)
-            //     }
-            // }).catch(err_nxt => {
-            //     console.log(err_nxt.data)
-            // })
+                if(nxt.data.status == 200)
+                {
+                    alert(nxt.data.message)
+                    return location.reload()
+                } else if(nxt.data.status >= 400) {
+                    alert(nxt.data.message)
+                }
+            }).catch(err_nxt => {
+                console.log('Error catch')
+                console.log(err_nxt)
+            })
         },
         cekDataNasabah() {
 
@@ -190,7 +192,7 @@ export default {
             } else if (this.formTabunganBaru.kd_identitas != '' && this.formTabunganBaru.tipe_id != '') {
                 let data = {
                     tipe_id         : this.formTabunganBaru.tipe_id,
-                    nomer_id        : this.formTabunganBaru.kd_identitas
+                    kd_identitas    : this.formTabunganBaru.kd_identitas
                 }
 
                 this.status_cek_cif                                     = false
@@ -198,7 +200,10 @@ export default {
                 this.dummyFormHasilPencarian.alamat_nasabah             = ''
 
                 axios.post('/api/bank/cariDataCIF', data).then(hsl => {
+                    console.log(hsl.data)
                     if(hsl.data.status == 200) {
+                        console.log(hsl.data)
+
                         this.dummyFormHasilPencarian.nama_nasabah       = hsl.data.data.nama
                         this.dummyFormHasilPencarian.alamat_nasabah     = hsl.data.data.alamat
 
@@ -226,11 +231,11 @@ export default {
             this.openModalAddTabungan                       = false
         },
         cetakSuratPerjanjian() {
-            let tipe_id     = this.formTabunganBaru.tipe_id
-            let kode_id     = this.formTabunganBaru.kd_identitas
-            let csrf        = this.csrf
+            // let tipe_id     = this.formTabunganBaru.tipe_id
+            // let kode_id     = this.formTabunganBaru.kd_identitas
+            // let csrf        = this.csrf
 
-            return 
+            // return 
         }
     }
 }

@@ -134,7 +134,7 @@ Route::post('/bank/cariDataCIF/', [CustomerIdentificationFile::class, 'cariDataN
 
 Route::get('/bank/listProdukTabungan', [Tabungan::class, 'getDataProdukTabungan']);
 Route::get('/bank/listTabunganTabel', [Tabungan::class, 'getDataTabunganForTabel']);
-Route::post('/bank/listTabungan/Add', [Tabungan::class, 'insertDataTabungan']);
+Route::post('/bank/tabungan/tambah', [Tabungan::class, 'insertDataTabungan']);
 
 Route::get('/bank/listTabungan/{id}', [Tabungan::class, 'getDataTabunganForTransaksi']);
 Route::post('/bank/tambahTransaksiTabungan', [Tabungan::class, 'insertTransaksiTabungan']);

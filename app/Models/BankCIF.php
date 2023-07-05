@@ -89,7 +89,7 @@ class BankCIF extends Model
 
             $query                  = [
                 'tipe_id'       => $data->tipe_id,
-                'kd_identitas'  => $data->nomer_id,
+                'kd_identitas'  => $data->kd_identitas,
                 'kd_bank'       => $data->kd_bank
             ];
     

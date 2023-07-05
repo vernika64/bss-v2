@@ -70,55 +70,69 @@ class Tabungan extends Controller
     public function insertDataTabungan(Request $re)
     {
         try {
-            $token                  = $re->cookie('tkn');
-            $tipe_id                = $re->tipe_id;
-            $kd_identitas           = $re->kd_identitas;
-            $kd_produk_tabungan     = $re->kd_produk_tabungan;
+            $token                              = $re->cookie('tkn');
+            $tipe_id                            = $re->tipe_id;
+            $kd_identitas                       = $re->kd_identitas;
+            $kd_produk_tabungan                 = $re->kd_produk_tabungan;
 
-            $ModelUser      = new SysUser();
+            $ModelUser                          = new SysUser();
 
-            $data_user      = $ModelUser->getInformasiUser($token);
+            $data_user                          = $ModelUser->getInformasiUser($token);
             
-            $ModelBank      = SysBank::find($data_user->kd_bank)->first();
+            $data_bank                          = SysBank::find($data_user->kd_bank)->first();
 
-            $ModelCIF       = new BankCIF();
+            $ModelCIF                           = new BankCIF();
 
             $data_pencarian = new stdClass;
-            $data_pencarian->tipe_id        = $tipe_id;
-            $data_pencarian->kd_identitas   = $kd_identitas;
-            $data_pencarian->kd_bank        = $ModelUser->kd_bank;
+            $data_pencarian->tipe_id            = $tipe_id;
+            $data_pencarian->kd_identitas       = $kd_identitas;
+            $data_pencarian->kd_bank            = $data_user->kd_bank;
 
-            $data_cif                       = $ModelCIF->cariInfoCIFByIdDanBank($data_pencarian);
+            $data_pencarian;
+
+            $data_cif                           = $ModelCIF->cariInfoCIFByIdDanBank($data_pencarian);
 
             if($data_cif == true) {
 
-                $data_pencarian_produk_tabungan                         = new stdClass;
-                $data_pencarian_produk_tabungan->kd_cif                 = $ModelCIF->id;
-                $data_pencarian_produk_tabungan->kd_produk_tabungan     = $kd_produk_tabungan;
-
-                $ModelBukuTabunganWadiah    = new BankBukuTabunganWadiah();
-                $hasil_pencarian            = $ModelBukuTabunganWadiah->cariDataTabunganNasabah($data_pencarian_produk_tabungan);
-
-                if($hasil_pencarian->status == false) {
-                    return response()->json([
-                        'status'        => 400,
-                        'message'       => 'Tabungan gagal disimpan, nasabah sudah mendaftar tabungan sebelumnya'
-                    ]);
-                } else if($hasil_pencarian->status == true) {
-
-                    $hitung_tabungan = BankBukuTabunganWadiah::count() + 1;
+                $hitung_tabungan                            = BankBukuTabunganWadiah::count() + 1;
                     
-                    $format_buku_tabungan = $ModelBank->kd_unik_bank . '-' . Carbon::now()->format('Y-m-d') . '-' . $hitung_tabungan;
+                $format_buku_tabungan                       = $data_bank->kd_unik_bank . '-' . Carbon::now()->format('Y-m-d') . '-' . $hitung_tabungan;
 
-                    $data_buat_diinput      = new stdClass;
-                    $data_buat_diinput->kd_bank                 = $ModelUser->kd_bank;
-                    $data_buat_diinput->kd_admin                = $ModelUser->user_id;
-                    $data_buat_diinput->kd_cif                  = $ModelCIF->id;
-                    $data_buat_diinput->format_buku_tabungan    = $format_buku_tabungan;
-        
+                $data_buat_diinput                          = new stdClass;
+                $data_buat_diinput->kd_bank                 = $data_user->kd_bank;
+                $data_buat_diinput->kd_admin                = $data_user->user_id;
+                $data_buat_diinput->kd_cif                  = $data_cif->id;
+                $data_buat_diinput->format_buku_tabungan    = $format_buku_tabungan;
+                $data_buat_diinput->kd_produk_tabungan      = $kd_produk_tabungan;
+
+                $data_buat_diinput;
+                
+                $ModelTabungan                              = new BankBukuTabunganWadiah();
+                $TambahBukuTabungan                         = $ModelTabungan->buatTabunganWadiah($data_buat_diinput);
+
+                if($TambahBukuTabungan->status == true) {
+                    
                     return response()->json([
                         'status'        => 200,
-                        'message'       => 'Tabungan berhasil disimpan'
+                        'message'       => 'Tabungan berhasil disimpan',
+                        'kd_tabungan'   => $format_buku_tabungan,
+                        'qr_status'     => true
+                    ]);
+
+                } else if($TambahBukuTabungan->status == false) {
+
+                    return response()->json([
+                        'status'        => 200,
+                        'message'       => 'Tabungan gagal disimpan, silahkan hubungi staff IT',
+                        'qr_status'     => false
+                    ]);
+
+                } else {
+
+                    return response()->json([
+                        'status'        => 200,
+                        'message'       => 'Tabungan gagal disimpan, silahkan hubungi staff IT',
+                        'qr_status'     => false
                     ]);
 
                 }
@@ -126,15 +140,17 @@ class Tabungan extends Controller
             } else if($data_cif == false) {
 
                 return response()->json([
-                    'status'        => 400,
-                    'message'       => 'Data CIF tidak ditemukan'
+                    'status'        => 200,
+                    'message'       => 'Data CIF tidak ditemukan',
+                    'qr_status'     => false
                 ]);
 
             } else {
 
                 return response()->json([
                     'status'        => 400,
-                    'message'       => 'Data CIF tidak ditemukan'
+                    'message'       => 'Terjadi kesalahan pada saat menyimpan data tabungan, silahkan hubungi staff IT',
+                    'qr_status'     => false
                 ]);
 
             }

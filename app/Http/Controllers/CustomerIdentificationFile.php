@@ -316,24 +316,27 @@ class CustomerIdentificationFile extends Controller
             $data_user   = $ModelUser->getInformasiUser($token_user);
             
             if($data_user->status == true) {
-                $data_cif   = new stdClass;
-                $data_cif->tipe_id      = $re->tipe_id;
-                $data_cif->nomer_id     = $re->nomer_id;
-                $data_cif->kd_bank      = $data_user->kd_bank;
+                $data_cif                       = new stdClass;
+                $data_cif->tipe_id              = $re->tipe_id;
+                $data_cif->kd_identitas         = $re->kd_identitas;
+                $data_cif->kd_bank              = $data_user->kd_bank;
 
-                $ModelCIF   = new BankCIF();
-                $hasil_cif  = $ModelCIF->cariInfoCIFByIdDanBank($data_cif);
+                $ModelCIF                       = new BankCIF();
+                $hasil_cif                      = $ModelCIF->cariInfoCIFByIdDanBank($data_cif);
 
                 if ($hasil_cif->status == true) {
                     return response()->json([
-                        'data'      => $hasil_cif,
-                        'message'   => 'Data berhasil diambil',
-                        'status'    => 200
+                        'data'              => $hasil_cif,
+                        'message'           => 'Data berhasil diambil',
+                        'status'            => 200,
+                        'qr_status'         => true
                     ]);
                 } else if($hasil_cif->status == false) {
                     return response()->json([
-                        'status'    => 400,
-                        'message'   => 'Data tidak ditemukan',
+                        'status'            => 200,
+                        'message'           => $hasil_cif->message,
+                        'qr_status'         => false,
+
                         // 'data'      => $hasil_cif->message,
                         // 'form'      => $data_cif
                     ]);
