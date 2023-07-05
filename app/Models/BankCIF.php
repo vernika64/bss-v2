@@ -122,6 +122,27 @@ class BankCIF extends Model
         }
     }
 
+    public function cariInfoCIFById($data) {
+        try {
+            $id_cif         = $data;
+
+            $data_cif       = BankCIF::find($id_cif);
+
+            $output                 = new stdClass;
+            $output->status         = true;
+            $output->message        = 'Data berhasil diambil';
+            $output->data           = $data_cif;
+
+            return $output;
+        } catch (\Throwable $th) {
+            $output             = new stdClass;
+            $output->status     = false;
+            $output->message    = $th->getMessage();
+
+            return $output;
+        }
+    }
+
     public function cariIDCIF($data){
         try {
             $query                  = [

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Http\Controllers\MetodeBerguna;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use stdClass;
@@ -95,7 +94,7 @@ class BankBukuTabunganWadiah extends Model
             return $output;
 
         } catch (\Throwable $th) {
-            $buat_log       = new SysLog();
+            $buat_log                   = new SysLog();
 
             $buat_log->buatErrorLog($th->getMessage());
 

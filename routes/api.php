@@ -172,6 +172,10 @@ Route::get('/bank/cekDataNasabah', [CustomerIdentificationFile::class, 'cekDataN
 
 Route::get('cetakbuku', [LaporanTabungan::class, 'LaporanBuatTabunganWadiah']);
 
+Route::get('duar', function() {
+// 
+});
+
 Route::get('testings', function(Request $re) {
     $tabel = DB::table('INFORMATION_SCHEMA.TABLES')
                 ->select('TABLE_NAME')
@@ -185,7 +189,7 @@ Route::get('testings', function(Request $re) {
     // ]);
 });
 
-Route::get('tescaridatatabungan', [Testing::class, 'tescaridatatabungan']);
+Route::get('tesbukutab', [LaporanTabungan::class, 'TampilkanPDFBuatRiwayatTabungan']);
 
 Route::middleware(['login.auth'])->group(function() {
     Route::get('/teskoneksi', function() {
