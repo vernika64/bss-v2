@@ -206,7 +206,7 @@ class JualBeliMurabahah extends Controller
             $countadd           = $counttransaksi + 1;
 
             // Input yang dibutuhkan dari form
-            $nasabah            = $re->kd_nasabah;
+            $nasabah            = $re->kd_cif;
             $judul_permintaan   = $re->nama_permintaan;
             $deskripsi          = $re->deskripsi_permintaan;
             $link               = $re->link_pendukung;
