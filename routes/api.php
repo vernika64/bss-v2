@@ -12,6 +12,7 @@ use App\Http\Controllers\Testing;
 use App\Http\Controllers\UserManagement;
 use App\Http\Middleware\CekTokenLogin;
 use App\Models\BankCIF;
+use App\Models\SysBank;
 use App\Models\SysLog;
 use App\Models\SysToken;
 use App\Models\SysUser;
@@ -174,8 +175,8 @@ Route::get('/bank/cekDataNasabah', [CustomerIdentificationFile::class, 'cekDataN
 
 // Untuk testing
 
-Route::get('duar', function() {
-// 
+Route::get('duar', function(Request $re) {
+    // 
 });
 
 Route::get('testings', function(Request $re) {
