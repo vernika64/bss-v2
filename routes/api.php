@@ -137,7 +137,12 @@ Route::get('/bank/listTabunganTabel', [Tabungan::class, 'getDataTabunganForTabel
 Route::post('/bank/tabungan/tambah', [Tabungan::class, 'insertDataTabungan']);
 
 Route::get('/bank/listTabungan/{id}', [Tabungan::class, 'getDataTabunganForTransaksi']);
+Route::get('/bank/listTabungan/kdTabungan/{id}', [Tabungan::class, 'cariDataTabunganDariKodeBukuTabungan']);
 Route::post('/bank/tambahTransaksiTabungan', [Tabungan::class, 'insertTransaksiTabungan']);
+
+// Sub Tabungan untuk cetak pdf
+Route::get('/bank/laporan/riwayatTransaksiTabungan/{id}', [LaporanTabungan::class, 'TampilkanPDFBuatRiwayatTabungan']);
+Route::get('/bank/laporan/buatKontrakTabungan', [LaporanTabungan::class, 'LaporanBuatTabunganWadiah']);
 
 // Sub Jual Beli Murabahah
 
@@ -169,7 +174,9 @@ Route::get('/bank/cekDataNasabah', [CustomerIdentificationFile::class, 'cekDataN
 
 // Untuk testing
 
-Route::get('cetakbuku', [LaporanTabungan::class, 'LaporanBuatTabunganWadiah']);
+Route::get('duar', function() {
+// 
+});
 
 Route::get('testings', function(Request $re) {
     $tabel = DB::table('INFORMATION_SCHEMA.TABLES')
@@ -184,7 +191,6 @@ Route::get('testings', function(Request $re) {
     // ]);
 });
 
-Route::get('tescaridatatabungan', [Testing::class, 'tescaridatatabungan']);
 
 Route::middleware(['login.auth'])->group(function() {
     Route::get('/teskoneksi', function() {

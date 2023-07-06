@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\BankBukuTabunganWadiah;
 use App\Models\BankCIF;
 use App\Models\BankLaporanPerjanjian;
+use App\Models\BankTransaksiTabunganWadiah;
 use App\Models\SysBank;
 use App\Models\SysUser;
 use Illuminate\Http\Request;
@@ -23,20 +24,20 @@ class LaporanTabungan extends Controller
         try {
             $token              = $re->cookie('tkn');
             $tipe_id            = $re->tipe_id;
-            $kode_id            = $re->kode_id;
+            $kd_identitas       = $re->kd_identitas;
             
             $ModelUser          = new SysUser();
             $data_user          = $ModelUser->getInformasiUser($token);
             
             if($data_user->status == true) {
                 
-                $list_data              = new stdClass;
-                $list_data->tipe_id     = $tipe_id;
-                $list_data->nomer_id    = $kode_id;
-                $list_data->kd_bank     = $data_user->kd_bank;
+                $list_data                      = new stdClass;
+                $list_data->tipe_id             = $tipe_id;
+                $list_data->kd_identitas        = $kd_identitas;
+                $list_data->kd_bank             = $data_user->kd_bank;
 
-                $ModelCIF           = new BankCIF();
-                $data_cif           = $ModelCIF->cariInfoCIFByIdDanBank($list_data);
+                $ModelCIF                       = new BankCIF();
+                $data_cif                       = $ModelCIF->cariInfoCIFByIdDanBank($list_data);
 
                 if($data_cif->status == true ) {
 
@@ -137,6 +138,75 @@ class LaporanTabungan extends Controller
         $this->pdf->Cell(90,10,'Anton',0,0,'C');
         $this->pdf->Cell(90,10, $data->nama,0,0,'C');
         $this->pdf->Output();
+
+        exit;
+    }
+
+    public function TampilkanPDFBuatRiwayatTabungan($id) {
+
+        $kd_buku_tabungan   = $id;
+
+        $ModelTabungan      = new BankBukuTabunganWadiah();
+        $data_tabungan      = $ModelTabungan->cariDataTabunganByKodeBukuTabungan($kd_buku_tabungan);
+
+        $kd_cif             = $data_tabungan->data->id;
+
+        $ModelCIF           = new BankCIF();
+        $info_nasabah       = $ModelCIF->cariInfoCIFById($kd_cif);
+
+        // $ModelTabungan      = new BankBukuTabunganWadiah();
+        // $info_tabungan      = $ModelTabungan->cariDataTabunganByKodeBukuTabungan($kd_buku_tabungan);
+
+        $ModelRiwayatTabungan   = new BankTransaksiTabunganWadiah();
+        $data_riwayat           = $ModelRiwayatTabungan->lihatRiwayatTransaksi($kd_buku_tabungan);
+
+        $pdf                    = new HeaderLaporanBukuTabungan();
+
+        $pdf->AliasNbPages();
+        $pdf->AddPage();
+
+        $pdf->Ln(10);
+        $pdf->SetFont('Arial', 'B', 15);
+        $pdf->Cell(90,5,'Dokumen Riwayat Tabungan Wadiah',0,1);
+        $pdf->SetFont('Arial','', 10);
+        $pdf->Cell(90,5, 'No. Dokumen : 2000', 0, 1);
+
+        $pdf->Ln(5);
+
+        // Nama Nasabah
+        $pdf->Cell(40,5, 'Nama Nasabah', 0, 0, 'L');
+        $pdf->Cell(10,5, ' : ', 0, 0, 'C');
+        $pdf->Cell(40,5, $info_nasabah->data->nama_sesuai_identitas, 0, 1, 'L');
+
+        // Nomor Tabungan
+        $pdf->Cell(40,5, 'Nomor Tabungan', 0, 0, 'L');
+        $pdf->Cell(10,5, ' : ', 0, 0, 'C');
+        $pdf->Cell(40,5, $kd_buku_tabungan, 0, 1, 'L');
+
+        // Produk Tabungan
+        $pdf->Cell(40,5, 'Produk Tabungan', 0, 0, 'L');
+        $pdf->Cell(10,5, ' : ', 0, 0, 'C');
+        $pdf->Cell(40,5, 'Tabungan Wadiah', 0, 1, 'L');
+
+        $pdf->Ln(5);
+
+        $pdf->Cell(10,10, 'No.', 1,0,'C');
+        $pdf->Cell(50,10, 'Kd. Tr', 1,0,'C');
+        $pdf->Cell(30,10, 'Tipe Tr', 1,0,'C');
+        $pdf->Cell(60,10, 'Nom. Tr', 1,0,'C');
+        $pdf->Cell(40,10, 'Tgl. Tr', 1,1,'C');
+
+        foreach($data_riwayat->data as $val) {
+            $a = 0;
+            $pdf->Cell(10,10, $a++, 1,0, 'C');
+            $pdf->Cell(50,10, $val->kd_transaksi_tabungan, 1,0, 'L');
+            $pdf->Cell(30,10, ucfirst($val->jenis_transaksi), 1,0, 'C');
+            $pdf->Cell(60,10, 'Rp. ' . number_format($val->nominal_transaksi), 1,0, 'L');
+            $pdf->Cell(40,10, $val->created_at, 1,1, 'C');
+            
+        }
+
+        $pdf->Output();
 
         exit;
     }
