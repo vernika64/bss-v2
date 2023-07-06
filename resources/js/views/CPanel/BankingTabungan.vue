@@ -49,7 +49,7 @@
                         </div>
                     </div>
                     <div class="flex flex-col mb-4">
-                        <button class="bg-blue-500 hover:bg-blue-900 text-white p-2 rounded-md shadow-md">Cetak Riwayat Transaksi</button>
+                        <router-link class="bg-blue-500 hover:bg-blue-900 text-white text-center p-2 rounded-md shadow-md" :to="{ path: '/api/bank/laporan/riwayatTransaksiTabungan/' + this.modalDetailTabungan.data.kd_buku_tabungan}" target="_blank">Cetak Riwayat Transaksi</router-link>
                     </div>
                     <div class="grid grid-cols-2 gap-4 mt-2">
                         <button class="bg-slate-300 hover:bg-slate-400 text-black p-2 rounded-md" @click="tutupModalDetailTabungan">Tutup</button>
@@ -113,7 +113,7 @@
                             
                             <div :class="[status_cek_cif == false ? 'hidden' : 'flex flex-row gap-2']">
                                 <button class="w-full bg-blue-700 text-white rounded-md shadow-md p-2">Cek Tabungan</button>
-                                <router-link class="w-full bg-blue-700 text-white rounded-md shadow-md p-2 text-center" :to="{ path: '/api/cetakbuku', query: { tipe_id: 'ktp', kode_id: 12300}}" target="_blank">Cetak Surat Perjanjian</router-link>
+                                <router-link class="w-full bg-blue-700 text-white rounded-md shadow-md p-2 text-center" :to="{ path: '/api/bank/laporan/buatKontrakTabungan', query: { tipe_id: this.formTabunganBaru.tipe_id, kd_identitas: this.formTabunganBaru.kd_identitas}}" target="_blank">Cetak Surat Perjanjian</router-link>
                             </div>
                         </fieldset>
 
@@ -266,13 +266,6 @@ export default {
             this.dummyFormHasilPencarian.alamat_nasabah     = ''
 
             this.openModalAddTabungan                       = false
-        },
-        cetakSuratPerjanjian() {
-            // let tipe_id     = this.formTabunganBaru.tipe_id
-            // let kode_id     = this.formTabunganBaru.kd_identitas
-            // let csrf        = this.csrf
-
-            // return 
         },
         bukaModalDetailTabungan(uid) {
             let kd_buku_tabungan            = uid

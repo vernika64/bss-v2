@@ -24,20 +24,20 @@ class LaporanTabungan extends Controller
         try {
             $token              = $re->cookie('tkn');
             $tipe_id            = $re->tipe_id;
-            $kode_id            = $re->kode_id;
+            $kd_identitas       = $re->kd_identitas;
             
             $ModelUser          = new SysUser();
             $data_user          = $ModelUser->getInformasiUser($token);
             
             if($data_user->status == true) {
                 
-                $list_data              = new stdClass;
-                $list_data->tipe_id     = $tipe_id;
-                $list_data->nomer_id    = $kode_id;
-                $list_data->kd_bank     = $data_user->kd_bank;
+                $list_data                      = new stdClass;
+                $list_data->tipe_id             = $tipe_id;
+                $list_data->kd_identitas        = $kd_identitas;
+                $list_data->kd_bank             = $data_user->kd_bank;
 
-                $ModelCIF           = new BankCIF();
-                $data_cif           = $ModelCIF->cariInfoCIFByIdDanBank($list_data);
+                $ModelCIF                       = new BankCIF();
+                $data_cif                       = $ModelCIF->cariInfoCIFByIdDanBank($list_data);
 
                 if($data_cif->status == true ) {
 
@@ -142,10 +142,14 @@ class LaporanTabungan extends Controller
         exit;
     }
 
-    function TampilkanPDFBuatRiwayatTabungan(Request $re) {
+    public function TampilkanPDFBuatRiwayatTabungan($id) {
 
-        $kd_cif             = 3;
-        $kd_buku_tabungan   = '201-2023-07-05-2';
+        $kd_buku_tabungan   = $id;
+
+        $ModelTabungan      = new BankBukuTabunganWadiah();
+        $data_tabungan      = $ModelTabungan->cariDataTabunganByKodeBukuTabungan($kd_buku_tabungan);
+
+        $kd_cif             = $data_tabungan->data->id;
 
         $ModelCIF           = new BankCIF();
         $info_nasabah       = $ModelCIF->cariInfoCIFById($kd_cif);

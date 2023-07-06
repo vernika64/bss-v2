@@ -73,6 +73,7 @@ class BankBukuTabunganWadiah extends Model
                 $output->data           = null;
             } else if(!empty($ModelTabungan)) {
                 $data                       = new stdClass;
+                $data->id                   = $ModelTabungan->kd_cif;
                 $data->kd_buku_tabungan     = $ModelTabungan->kd_buku_tabungan;
                 $data->total_nilai          = $ModelTabungan->total_nilai;
 
