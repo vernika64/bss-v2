@@ -1,11 +1,12 @@
 <template>
 
-    <div class="flex h-screen bg-gedung-akuntansi bg-cover">
+    <div class="flex h-screen bg-pikisuperstars-circle bg-cover">
         <div class=" lg:w-1/2 lg:h-[70%] xl:w-1/4 xl:h-[70%] m-auto bg-white rounded-md">
             <!-- Login Section -->
             <div class="pl-8 pr-8 text-center mt-[50px]">
-                <h1 class="text-4xl italic mb-4">Login</h1>
-                <p>Aplikasi Mini Bank Syariah</p>
+                <h1 class="text-4xl italic mb-2">BSS</h1>
+                <p class="mb-4">Bank Syariah Simulator</p>
+                
                 <p class="mt-4 mb-4">Silahkan login untuk melanjutkan</p>
 
                 <form class="grid gap-4">

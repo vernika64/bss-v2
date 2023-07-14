@@ -7,7 +7,7 @@
     </div>
     <div v-else>
         <div class="flex h-full">
-            <div class="bg-sidebar text-white md:w-[30%] lg:w-[18%] bg-fixed h-full overflow-auto">
+            <div class="bg-pikisuperstars-circle bg-left text-white md:w-[30%] lg:w-[18%] bg-fixed h-full overflow-auto">
                 <router-view name="sidebar"></router-view>
             </div>
             <div class="flex-1 h-full overflow-auto">

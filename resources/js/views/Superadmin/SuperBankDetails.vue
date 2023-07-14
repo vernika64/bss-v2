@@ -104,12 +104,11 @@
 
     <!-- Modal Update Buku Akuntansi -->
 
-    <div class="w-full h-full overflow-auto bg-slate-900 left-0 top-0 fixed bg-opacity-70" v-if="maintainDataBukuAkuntansi.modalUpdateBukuAkuntansi == true">
-        <!-- Modal Content -->
-        <div class="flex justify-center">
-            <div class="bg-white w-[1000px] p-4 mt-[200px] rounded-lg">
+    <Transition name="slide-fade">
+        <div class="flex flex-col w-full h-full bg-slate-900 left-0 top-0 fixed bg-opacity-70 justify-center align-middle" v-if="maintainDataBukuAkuntansi.modalUpdateBukuAkuntansi == true">
+            <div class="relative bg-white rounded-lg shadow p-4 m-auto md:w-1/2 2xl:w-1/2">
                 <div class="grid grid-rows-1">
-                    <h1 class="text-2xl text-black mb-10">Update Data Buku Akuntansi</h1>
+                    <h1 class="text-xl text-black mb-5">Update Akun Buku Besar</h1>
                     <div class="grid grid-rows-1 gap-2 mb-10">
                         <p class="font-bold text-lg">Daftar Buku yang tidak tersedia di bank</p>
                         <table class="border-collapse w-full">
@@ -133,10 +132,10 @@
                         <button class="bg-slate-300 text-black p-2 rounded-md" @click="tutupModalUpdateBukuAkuntansi">Tutup</button>
                         <button class="bg-blue-600 text-white p-2 rounded-md" @click="updateBukuAkuntansi">Simpan</button>
                     </div>
-                </div>
+                </div>  
             </div>
         </div>
-    </div>
+    </Transition>
 
     <!--  -->
 
