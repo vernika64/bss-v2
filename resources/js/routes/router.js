@@ -193,7 +193,7 @@ const routes = [
     },
 
     {
-        path            : devurl + '/tabungan/tarik_setor_tunai',
+        path            : releaseurl + '/tabungan/tarik_setor_tunai',
         name            : 'TabunganTarikSetorTunai',
         components      : {
             default : BankingTabunganTarikSetorTunai,
@@ -202,7 +202,7 @@ const routes = [
     },
 
     {
-        path            : devurl + '/tabungan/transfer_uang',
+        path            : releaseurl + '/tabungan/transfer_uang',
         name            : 'TabunganTransferUang',
         component       : {
             default : BankingTabunganTransferUang,
@@ -211,7 +211,7 @@ const routes = [
     },
 
     {
-        path            : devurl + '/jualbeli',
+        path            : releaseurl + '/jualbeli',
         name            : 'JualBeliMurabahah',
         components      : {
             default : BankingJualBeliMurabahah,
@@ -220,7 +220,7 @@ const routes = [
     },
 
     {
-        path            : devurl + '/jualbelidetail/',
+        path            : releaseurl + '/jualbelidetail/',
         name            : 'JualBeliMurabahahDetail',
         components      : {
             default : BankingJualBeliMurabahahDetail,
@@ -229,7 +229,7 @@ const routes = [
     },
 
     {
-        path            : devurl + '/permintaanbarang/',
+        path            : releaseurl + '/permintaanbarang/',
         name            : 'PermintaanBarangMurabahah',
         components      : {
             default : BankingPermintaanBarangMurabahah,
@@ -238,7 +238,7 @@ const routes = [
     },
 
     {
-        path            : devurl + '/angsuranmurabahah/',
+        path            : releaseurl + '/angsuranmurabahah/',
         name            : 'AngsuranMurabahah',
         components      : {
             default : BankingAngsuranMurabahah,
@@ -249,7 +249,7 @@ const routes = [
     // Untuk Jurnal Umum
 
     {
-        path            : devurl + '/daftarjurnalumum',
+        path            : releaseurl + '/daftarjurnalumum',
         name            : 'DaftarJurnalUmum',
         components      : {
             default : BankingDaftarJurnalUmum,
@@ -258,7 +258,7 @@ const routes = [
     },
 
     {
-        path            : devurl + '/daftarjurnalumum/',
+        path            : releaseurl + '/daftarjurnalumum/',
         name            : 'DaftarJurnalUmumDetail',
         components      : {
             default : BankingDaftarJurnalUmumDetail,

@@ -51,7 +51,9 @@
                         <input type="text" class="border border-slate-500 bg-white p-1" v-model="formAngsuranPertama.kd_transaksi_murabahah" readonly />
                         <label class="font-bold text-black">Nama Barang</label>
                         <input type="text" class="border border-slate-500 bg-white p-1" v-model="formAngsuranPertama.nama_barang" readonly />
-                        <label class="font-bold text-black">Total Biaya Angsuran</label>
+                        <label class="font-bold text-black">Total Biaya</label>
+                        <input type="text" class="border border-slate-500 bg-white p-1" v-model="dummyFormAngsuranPertama.jumlah_transaksi" readonly />
+                        <label class="font-bold text-black">Sisa Angsuran</label>
                         <input type="text" class="border border-slate-500 bg-white p-1" v-model="dummyFormAngsuranPertama.jumlah_angsuran" readonly />
                         <label class="font-bold text-black">Biaya Angsuran Pertama</label>
                         <input type="text" class="border border-slate-500 bg-white p-1" v-model="dummyFormAngsuranPertama.angsuran_perbulan" readonly />
@@ -59,7 +61,7 @@
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <button class="bg-slate-300 text-black p-2 rounded-md" @click="modalAngsuranBaru = false">Batal</button>
-                        <button class="bg-blue-600 text-white p-2 rounded-md" @click="simpanAngsuranPertama">Bayar</button>
+                        <button class="bg-blue-600 text-white p-2 rounded-md" @click="simpanAngsuran">Bayar</button>
                     </div>
                 </div>
             </div>
@@ -98,15 +100,25 @@
                         <input type="text" class="border border-slate-500 bg-white p-1" v-model="formAngsuranLama.kd_transaksi_murabahah" readonly />
                         <label class="font-bold text-black">Nama Barang</label>
                         <input type="text" class="border border-slate-500 bg-white p-1" v-model="formAngsuranLama.nama_barang" readonly />
-                        <label class="font-bold text-black">Total Biaya Angsuran</label>
+                        <label class="font-bold text-black">Total Biaya</label>
+                        <input type="text" class="border border-slate-500 bg-white p-1" v-model="dummyFormAngsuranLama.jumlah_transaksi" readonly />
+                        <label class="font-bold text-black">Sisa Angsuran</label>
                         <input type="text" class="border border-slate-500 bg-white p-1" v-model="dummyFormAngsuranLama.jumlah_angsuran" readonly />
+
+                        <label class="font-bold text-black">Total Frekuensi Angsuran</label>
+                        <input type="text" class="border border-slate-500 bg-white p-1" v-model="dummyFormAngsuranLama.total_frekuensi_angsuran" readonly />
+
+                        <label class="font-bold text-black">Sisa Frekuensi Angsuran</label>
+                        <input type="text" class="border border-slate-500 bg-white p-1" v-model="dummyFormAngsuranLama.frekuensi_angsuran" readonly />
+
+
                         <label class="font-bold text-black">Biaya Angsuran</label>
                         <input type="text" class="border border-slate-500 bg-white p-1" v-model="dummyFormAngsuranLama.angsuran_perbulan" readonly />
                         <!-- <button class="bg-slate-200 text-black p-2 mt-4 border border-slate-700">Cetak Lembar Angsuran</button> -->
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <button class="bg-slate-300 text-black p-2 rounded-md" @click="modalAngsuranLama = false">Batal</button>
-                        <button class="bg-blue-600 text-white p-2 rounded-md" @click="simpanAngsuranLama">Bayar</button>
+                        <button class="bg-blue-600 text-white p-2 rounded-md" @click="simpanAngsuran">Bayar</button>
                     </div>
                 </div>
             </div>
@@ -156,13 +168,21 @@ export default {
                 angsuran_perbulan               : '',
                 angsuran_pertama                : false
             },
+            formAngsuranMk2         : {
+                kd_transaksi_murabahah      : '',
+                jenis_angsuran              : ''
+            },
             dummyFormAngsuranPertama    : {
                 jumlah_angsuran     : '',
-                angsuran_perbulan   : ''
+                angsuran_perbulan   : '',
+                jumlah_transaksi    : '',
+                frekuensi_angsuran  : ''
             },
             dummyFormAngsuranLama       : {
                 jumlah_angsuran     : '',
-                angsuran_perbulan   : ''
+                angsuran_perbulan   : '',
+                jumlah_transaksi    : '',
+                frekuensi_angsuran  : ''
             },
             btnTambahAngsuranBaru   : false,
             modalAngsuranBaru       : false,
@@ -180,69 +200,97 @@ export default {
                 return alert('Mohon diisi field pencarian sebelum mencari data')
             }
 
-            this.formAngsuranPertama.kd_transaksi_murabahah     = ''
-            this.formAngsuranPertama.nama_barang                = ''
-            this.formAngsuranPertama.jumlah_angsuran            = ''
-            this.formAngsuranPertama.frekuensi_angsuran         = ''
-            this.formAngsuranPertama.angsuran_perbulan          = ''
+            // this.formAngsuranPertama.kd_transaksi_murabahah     = ''
+            // this.formAngsuranPertama.nama_barang                = ''
+            // this.formAngsuranPertama.jumlah_angsuran            = ''
+            // this.formAngsuranPertama.frekuensi_angsuran         = ''
+            // this.formAngsuranPertama.angsuran_perbulan          = ''
 
-            this.formAngsuranLama.kd_transaksi_murabahah        = ''
-            this.formAngsuranLama.nama_barang                   = ''
-            this.formAngsuranLama.jumlah_angsuran               = ''
-            this.formAngsuranLama.frekuensi_angsuran            = ''
-            this.formAngsuranLama.angsuran_perbulan             = ''
+            // this.formAngsuranLama.kd_transaksi_murabahah        = ''
+            // this.formAngsuranLama.nama_barang                   = ''
+            // this.formAngsuranLama.jumlah_angsuran               = ''
+            // this.formAngsuranLama.frekuensi_angsuran            = ''
+            // this.formAngsuranLama.angsuran_perbulan             = ''
+
+            this.dummyFormAngsuranPertama.jumlah_angsuran       = '',
+            this.dummyFormAngsuranPertama.angsuran_perbulan     = '',
+            this.dummyFormAngsuranPertama.jumlah_transaksi      = '',
+            this.dummyFormAngsuranPertama.frekuensi_angsuran    = '',
+
+            this.dummyFormAngsuranLama.jumlah_angsuran          = '',
+            this.dummyFormAngsuranLama.angsuran_perbulan        = '',
+            this.dummyFormAngsuranLama.jumlah_transaksi         = '',
+            this.dummyFormAngsuranLama.frekuensi_angsuran       = '',
+            this.dummyFormAngsuranLama.total_frekuensi_angsuran = '',
 
             this.tabelAngsuran = []
 
             axios.get('/api/bank/cariAngsuranMurabahah/' + kode).then(ags => {
                 // console.log(ags)
 
-                if(ags.data.status == 'error')
+                let data = ags.data
+
+                console.log(data)
+
+                this.formAngsuranMk2.kd_transaksi_murabahah     = kode
+                this.formAngsuranMk2.jenis_angsuran             = data.jenis_angsuran
+
+                if(data.qr_status == false)
                 {
-                    alert(ags.data.message)
-                } else if(ags.data.status == 'true')
+                    alert(data.message)
+                } else if(data.qr_status == true)
                 {
-                    alert('Transaksi sudah diverifikasi, silahkan membuat angsuran baru')
+                    if(data.jenis_angsuran == 'baru') {
+
+                        alert('Transaksi sudah diverifikasi, silahkan membuat angsuran baru')
                     
-                    this.formAngsuranPertama.kd_transaksi_murabahah = ags.data.data.kd_transaksi_murabahah
-                    this.formAngsuranPertama.nama_barang            = ags.data.data.nama_barang
-                    this.formAngsuranPertama.jumlah_angsuran        = parseInt(ags.data.data.jumlah_angsuran)
-                    this.formAngsuranPertama.frekuensi_angsuran     = ags.data.data.frekuensi_angsuran
-                    this.formAngsuranPertama.angsuran_perbulan      = parseInt(ags.data.data.angsuran_perbulan)
+                        // this.formAngsuranPertama.jumlah_angsuran        = parseInt(data.data.jumlah_angsuran)
+                        // this.formAngsuranPertama.frekuensi_angsuran     = ags.data.data.frekuensi_angsuran
+                        // this.formAngsuranPertama.angsuran_perbulan      = parseInt(data.data.angsuran_perbulan)
+                        
+                        this.formAngsuranPertama.kd_transaksi_murabahah     = data.data.kd_transaksi_murabahah
+                        this.formAngsuranPertama.nama_barang                = data.data.nama_barang
+                        this.dummyFormAngsuranPertama.jumlah_angsuran       = 'Rp. ' + new Intl.NumberFormat(['ban', 'id']).format(data.data.jumlah_angsuran) + ',-'
+                        this.dummyFormAngsuranPertama.angsuran_perbulan     = 'Rp. ' + new Intl.NumberFormat(['ban', 'id']).format(data.data.angsuran_perbulan) + ',-'
+                        this.dummyFormAngsuranPertama.jumlah_transaksi      = 'Rp. ' + new Intl.NumberFormat(['ban', 'id']).format(data.data.total_biaya_jual_beli) + ',-'
+                        this.dummyFormAngsuranPertama.frekuensi_angsuran    = data.data.frekuensi_angsuran + ' Kali'
 
-                    this.dummyFormAngsuranPertama.jumlah_angsuran   = 'Rp. ' + new Intl.NumberFormat(['ban', 'id']).format(ags.data.data.jumlah_angsuran) + ',-'
-                    this.dummyFormAngsuranPertama.angsuran_perbulan = 'Rp. ' + new Intl.NumberFormat(['ban', 'id']).format(ags.data.data.angsuran_perbulan) + ',-'
+                        this.btnTambahAngsuranBaru = true
 
-                    this.btnTambahAngsuranBaru = true
-                    console.log(this.btnTambahAngsuranBaru)
-                } else if(ags.data.status == 'false')
-                {
-                    console.log(ags)
+                    } else if(data.jenis_angsuran == 'lama') {
 
-                    axios.get('/api/bank/historiDataAngsuran/' + kode).then(hst => {
-                        // console.log(hst.data)
-                        this.tabelHistoriAngsuran = hst.data.data
-                    }).catch(hsterr => {
-                        console.log(hsterr)
-                    })
-                    let untukForm = ags.data.data2
+                        this.btnTambahAngsuranBaru = false
 
-                    this.tabelAngsuran = ags.data.data1
+                        axios.get('/api/bank/historiDataAngsuran/' + kode).then(hst => {
+                            this.tabelHistoriAngsuran = hst.data.data
+                        }).catch(hsterr => {
+                            console.log(hsterr)
+                        })
 
-                    this.formAngsuranLama.kd_transaksi_murabahah     = untukForm.kd_transaksi_murabahah
-                    this.formAngsuranLama.nama_barang                = untukForm.nama_barang
-                    this.formAngsuranLama.jumlah_angsuran            = untukForm.jumlah_angsuran
-                    this.formAngsuranLama.frekuensi_angsuran         = untukForm.frekuensi_angsuran
-                    this.formAngsuranLama.angsuran_perbulan          = untukForm.angsuran_perbulan
+                        let untukForm = data.data2
 
-                    this.dummyFormAngsuranLama.jumlah_angsuran       = 'Rp. ' + new Intl.NumberFormat(['ban', 'id']).format(untukForm.jumlah_angsuran) + ',-'
-                    this.dummyFormAngsuranLama.angsuran_perbulan     = 'Rp. ' + new Intl.NumberFormat(['ban', 'id']).format(untukForm.angsuran_perbulan) + ',-'
+                        this.tabelAngsuran = data.data1
 
-                    console.log(this.formAngsuranLama)
+                        // this.formAngsuranLama.jumlah_angsuran            = untukForm.jumlah_angsuran
+                        // this.formAngsuranLama.frekuensi_angsuran         = untukForm.frekuensi_angsuran
+                        // this.formAngsuranLama.angsuran_perbulan          = untukForm.angsuran_perbulan
+                        
+                        this.formAngsuranLama.kd_transaksi_murabahah            = untukForm.kd_transaksi_murabahah
+                        this.formAngsuranLama.nama_barang                       = untukForm.nama_barang
+                        this.dummyFormAngsuranLama.frekuensi_angsuran           = data.data2.sisa_frekuensi_angsuran + ' Kali'
+                        this.dummyFormAngsuranLama.total_frekuensi_angsuran     = data.data2.total_frekuensi_angsuran + ' Kali'
 
+                        this.dummyFormAngsuranLama.jumlah_angsuran              = 'Rp. ' + new Intl.NumberFormat(['ban', 'id']).format(untukForm.jumlah_angsuran) + ',-'
+                        this.dummyFormAngsuranLama.angsuran_perbulan            = 'Rp. ' + new Intl.NumberFormat(['ban', 'id']).format(untukForm.angsuran_perbulan) + ',-'
+                        this.dummyFormAngsuranLama.jumlah_transaksi             = 'Rp. ' + new Intl.NumberFormat(['ban', 'id']).format(untukForm.jumlah_transaksi) + ',-'
+                        
+                        console.log(this.formAngsuranLama)
+
+                    }
+
+                    console.log(this.formAngsuranMk2)
                 } else {
-                    alert('Server error')
-                    console.log(ags)
+                    alert(data.message)
                 }
             }).catch(ags_error => {
                 console.log(ags_error)
@@ -252,16 +300,35 @@ export default {
         {
             return 'Rp. ' + new Intl.NumberFormat(['ban', 'id']).format(number) + ',-'
         },
+        simpanAngsuran() {
+            let konfirmasi = confirm('Apakah anda yakin ?')
+
+            if(konfirmasi == true)
+            {
+                axios.post('/api/bank/tambahAngsuranMurabahah', this.formAngsuranMk2).then(hasil => {
+                    console.log(hasil)
+
+                    let data = hasil.data
+
+                    alert(data.message)
+                }).catch(proses1_error => {
+                    console.log(proses1_error)
+                })
+            } else if(konfirmasi == false) {
+                // No Action
+            }
+        },
         simpanAngsuranPertama()
         {
             let konfirmasi = confirm('Apakah anda yakin ?')
 
             if(konfirmasi == true)
             {
-                axios.post('/api/bank/tambahAngsuranMurabahah', this.formAngsuranPertama).then(proses1 => {
-                    console.log(proses1)
+                axios.post('/api/bank/tambahAngsuranMurabahah', this.formAngsuranMk2).then(hasil => {
+                    console.log(hasil)
 
-                    let data = proses1.data
+                    let data = hasil.data
+
                     alert(data.message)
                 }).catch(proses1_error => {
                     console.log(proses1_error)

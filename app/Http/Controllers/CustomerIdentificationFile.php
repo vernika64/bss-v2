@@ -336,6 +336,8 @@ class CustomerIdentificationFile extends Controller
                         'status'            => 200,
                         'message'           => $hasil_cif->message,
                         'qr_status'         => false,
+                        'tipe_id'           => $re->tipe_id,
+                        'kd_identitas'      => $re->kd_identitas
 
                         // 'data'      => $hasil_cif->message,
                         // 'form'      => $data_cif

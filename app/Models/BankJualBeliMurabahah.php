@@ -23,4 +23,5 @@ class BankJualBeliMurabahah extends Model
         'status_admin_acc',
         'status_admin_reject'
     ];
+
 }

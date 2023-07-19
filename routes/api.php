@@ -12,6 +12,7 @@ use App\Http\Controllers\Testing;
 use App\Http\Controllers\UserManagement;
 use App\Http\Middleware\CekTokenLogin;
 use App\Models\BankCIF;
+use App\Models\BankJualBeliMurabahah;
 use App\Models\SysBank;
 use App\Models\SysLog;
 use App\Models\SysToken;
@@ -187,9 +188,6 @@ Route::get('testings', function(Request $re) {
                 ->get();
 
     dd($tabel);
-    // return response()->json([
-    //     'data'  => $tabel
-    // ]);
 });
 
 

@@ -78,7 +78,7 @@ export default {
         CurrencyDollarIcon
     },
     mounted() {
-        console.log(this.sidebarItems)
+        // console.log(this.sidebarItems)
     },
     methods: {
         logout() {

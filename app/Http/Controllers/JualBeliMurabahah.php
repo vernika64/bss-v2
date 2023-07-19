@@ -14,6 +14,7 @@ use App\Models\SysToken;
 use App\Models\SysUser;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use stdClass;
 
 class JualBeliMurabahah extends Controller
 {
@@ -37,36 +38,44 @@ class JualBeliMurabahah extends Controller
     {
         try {
 
-            $getUserCookie = $re->cookie('tkn');
+            $token = $re->cookie('tkn');
 
-            $ModelToken = SysToken::where('token', $getUserCookie)->first();
+            $ModelUser      = new SysUser();
 
-            if(empty($ModelToken))
+            $data_user      = $ModelUser->getInformasiUser($token);
+
+            if($data_user->status == false)
             {
-                return response('Error 403 - Forbidden', 403);
+                return response()->json([
+                    'status'        => 200,
+                    'qr_status'     => false,
+                    'message'       => 'User belum login, silahkan login terlebih dahulu',
+                    'data'          => null
+                ]);
             }
 
-            $ModelUser = SysUser::where('username', $ModelToken->kd_user)->first();
-        
-            if(empty($ModelUser))
-            {
-                return response('Error 404 - User not found', 403);
-            }
+            $kd_user            = $data_user->user_id;
+            $kd_bank            = $data_user->kd_bank;
 
-            $ModelJualBeli = BankJualBeliMurabahah::where('bank_jualbeli_murabahah.kd_bank', $ModelUser->kd_bank)
+            $ModelJualBeli = BankJualBeliMurabahah::where('bank_jualbeli_murabahah.kd_bank', $kd_bank)
                              ->join('bank_cif', 'bank_jualbeli_murabahah.kd_cif', '=', 'bank_cif.id')
                              ->get(['bank_jualbeli_murabahah.id','kd_transaksi_murabahah', 'nama_sesuai_identitas', 'nama_permintaan', 'status_transaksi']);
 
             if(empty($ModelJualBeli))
             {
                 return response()->json([
-                    'message'   => 'Data kosong'
+                    'status'        => 200,
+                    'qr_status'     => false,
+                    'message'       => 'Data kosong',
+                    'data'          => null
                 ]);
             }
 
             return response()->json([
-                'data'      => $ModelJualBeli,
-                'message'   => 'Data berhasil diambil'
+                'status'        => 200,
+                'qr_status'     => true,
+                'message'       => 'Data berhasil diambil',
+                'data'          => $ModelJualBeli
             ]);
         } catch (\Throwable $th) {
             return response()->json([
@@ -180,59 +189,59 @@ class JualBeliMurabahah extends Controller
     public function insertTransaksiMurabahah(Request $re)
     {
         try {
-            $getUserCookie = $re->cookie('tkn');
+            $token  = $re->cookie('tkn');
 
-            $ModelToken = SysToken::where('token', $getUserCookie)->first();
+            $ModelUser      = new SysUser();
+            
+            $data_user      = $ModelUser->getInformasiUser($token);
 
-            if(empty($ModelToken))
-            {
-                return response('Error 403 - Forbidden', 403);
+            if($data_user->status == false) {
+                return response()->json([
+                    'status'    => 200,
+                    'qr_status' => false,
+                    'message'   => 'User belum login, silahkan login terlebih dahulu',
+                    'data'      => null  
+                ]);
             }
 
-            $ModelUser = SysUser::where('username', $ModelToken->kd_user)->first();
-        
-            if(empty($ModelUser))
-            {
-                return response('Error 404 - User not found', 403);
-            }
-
-            $ModelBank = SysBank::find($ModelUser->kd_bank);
-
-            $kodebank  = $ModelBank->id;
-            $kodeadmin = $ModelUser->id;
+            $kodebank  = $data_user->user_id;
+            $kodeadmin = $data_user->kd_bank;
 
             // Input yang dibutuhkan dari user admin
             $counttransaksi     = BankJualBeliMurabahah::count();
             $countadd           = $counttransaksi + 1;
 
+            $data_nasabah  = BankCIF::where(['kd_identitas' => $re->kd_identitas])->first();
             // Input yang dibutuhkan dari form
-            $nasabah            = $re->kd_cif;
-            $judul_permintaan   = $re->nama_permintaan;
-            $deskripsi          = $re->deskripsi_permintaan;
-            $link               = $re->link_pendukung;
-            $status             = 'pending';                    // Pertama kali status dipending dahulu untuk diverifikasi oleh petugas back office
+
+            $data                     = new stdClass;
+            $data->kd_identitas       = $data_nasabah->id;
+            $data->judul_permintaan   = $re->nama_permintaan;
+            $data->deskripsi          = $re->deskripsi_permintaan;
+            $data->link               = $re->link_pendukung;
+            $data->status             = 'pending';                    // Pertama kali status dipending dahulu untuk diverifikasi oleh petugas back office
             
             $ModelJualBeli              = new BankJualBeliMurabahah;
             $ModelJualBeli->kd_transaksi_murabahah      = 'JB-MB-' . Carbon::now()->format('Y-m-d') . '-' .$countadd;
             $ModelJualBeli->tanggal_transaksi_murabahah = Carbon::now();
             $ModelJualBeli->kd_bank                     = $kodebank;
-            $ModelJualBeli->kd_cif                      = $nasabah;
-            $ModelJualBeli->nama_permintaan             = $judul_permintaan;
-            $ModelJualBeli->deskripsi_permintaan        = $deskripsi;
-            $ModelJualBeli->link_lampiran               = $link;
-            $ModelJualBeli->status_transaksi            = $status;
+            $ModelJualBeli->kd_cif                      = $data->kd_identitas;
+            $ModelJualBeli->nama_permintaan             = $data->judul_permintaan;
+            $ModelJualBeli->deskripsi_permintaan        = $data->deskripsi;
+            $ModelJualBeli->link_lampiran               = $data->link;
+            $ModelJualBeli->status_transaksi            = $data->status;
             $ModelJualBeli->status_admin_pembuat        = $kodeadmin;
             $ModelJualBeli->save();
             
             return response()->json([
-                'message'       => 'Permintaan berhasil ditambahkan'
+                'status'        => 200,
+                'qr_status'     => true,
+                'message'       => 'Permintaan berhasil ditambahkan',
+                'data'          => null
             ]);
         } catch (\Throwable $th) {
-            return response()->json([
-                'data'      => $th->getMessage(),
-                'status'    => 'Server error',
-                'message'   => 'Server Error'
-            ]);
+            $err = new MetodeBerguna();
+            return response()->json($err->outErrCatch($th->getMessage()));
         }
     }
 
@@ -324,42 +333,35 @@ class JualBeliMurabahah extends Controller
     public function acceptTransaksiMurabahah(Request $re)
     {
         try {
-            $getUserCookie = $re->cookie('tkn');
+            $token = $re->cookie('tkn');
 
-            $ModelToken = SysToken::where('token', $getUserCookie)->first();
+            $ModelUser      = new SysUser();
+            $data_user      = $ModelUser->getInformasiUser($token);
 
-            if(empty($ModelToken))
+            if($data_user->status == false)
             {
-                // return response('Error 403 - Forbidden', 403);
                 return response()->json([
-                    'message'   => 'Token tidak ditemukan'
+                    'status'                => 200,
+                    'qc_status'             => false,
+                    'message'               => 'User tidak ditemukan',
+                    'data'                  => null 
                 ]);
             }
 
-            $ModelUser = SysUser::where('username', $ModelToken->kd_user)->first();
+            $kd_user                    = $data_user->user_id;
+            $kd_bank                    = $data_user->kd_bank;
+            $kdtransaksi                = $re->kd_transaksi_murabahah;
 
-            if(empty($ModelUser))
-            {
-                // return response('Error 404 - User not found', 404);
-                return response()->json([
-                    'message'   => 'User tidak ditemukan'
-                ]);
-            }
-
-            $kodeadmin   = $ModelUser->id;
-            $kodebank    = $ModelUser->kd_bank;
-            $kdtransaksi = $re->kd_transaksi_murabahah;
-
-            $angsuran           = $re->angsuran_per_bulan;
-            $frekuensi          = $re->frekuensi_angsuran;
-            $hargabarangsatuan  = $re->harga_barang_satuan;
-            $namabarang         = $re->nama_barang;
-            $kuantitas          = $re->qty_barang;
-            $tipekuantitas      = $re->qty_type;
-            $surplus            = $re->surplus_untuk_bank;
-            $totalbiaya         = $re->total_biaya_akad_murabahah;
-            $totalhargabarang   = $re->total_harga_barang;
-            $totaldp            = $re->uang_muka;
+            $angsuran                   = $re->angsuran_per_bulan;
+            $frekuensi                  = $re->frekuensi_angsuran;
+            $hargabarangsatuan          = $re->harga_barang_satuan;
+            $namabarang                 = $re->nama_barang;
+            $kuantitas                  = $re->qty_barang;
+            $tipekuantitas              = $re->qty_type;
+            $surplus                    = $re->surplus_untuk_bank;
+            $totalbiaya                 = $re->total_biaya_akad_murabahah;
+            $totalhargabarang           = $re->total_harga_barang;
+            $totaldp                    = $re->uang_muka;
 
             $ModelJualBeli                          = BankJualBeliMurabahah::find($kdtransaksi);
 
@@ -369,7 +371,7 @@ class JualBeliMurabahah extends Controller
                     'message'   => 'Transaksi Murabahah tidak ditemukan'
                 ]);
             }
-
+            
             $ModelJualBeli->harga_barang_satuan     = $hargabarangsatuan;
             $ModelJualBeli->kuantitas_barang        = $kuantitas;
             $ModelJualBeli->tipe_kuantitas          = $tipekuantitas;
@@ -377,22 +379,22 @@ class JualBeliMurabahah extends Controller
             $ModelJualBeli->frekuensi_angsuran      = $frekuensi;
             $ModelJualBeli->jumlah_angsuran         = $totalbiaya;
             $ModelJualBeli->surplus_murabahah       = $surplus;
-            $ModelJualBeli->status_admin_acc        = $kodeadmin;
+            $ModelJualBeli->status_admin_acc        = $kd_user;
             $ModelJualBeli->status_transaksi        = 'active';
             $ModelJualBeli->save();
         
-            $ModelPermintaanBarang = new BankPermintaanBarangMurabahah;
+            $BuatPermintaanBarang = new BankPermintaanBarangMurabahah;
         
-            $ModelPermintaanBarang->kd_transaksi_murabahah          = $kdtransaksi;
-            $ModelPermintaanBarang->tgl_permintaan_barang_dibuat    = Carbon::now();
-            $ModelPermintaanBarang->kd_bank                         = $kodebank;
-            $ModelPermintaanBarang->nama_barang                     = $namabarang;
-            $ModelPermintaanBarang->harga_barang_satuan             = $hargabarangsatuan;
-            $ModelPermintaanBarang->kuantitas_barang                = $kuantitas;
-            $ModelPermintaanBarang->tipe_kuantitas                  = $tipekuantitas;
-            $ModelPermintaanBarang->status_barang                   = 'pending';
-            $ModelPermintaanBarang->kd_admin_buat                   = $kodeadmin;
-            $ModelPermintaanBarang->save();
+            $BuatPermintaanBarang->kd_transaksi_murabahah          = $kdtransaksi;
+            $BuatPermintaanBarang->tgl_permintaan_barang_dibuat    = Carbon::now();
+            $BuatPermintaanBarang->kd_bank                         = $kd_bank;
+            $BuatPermintaanBarang->nama_barang                     = $namabarang;
+            $BuatPermintaanBarang->harga_barang_satuan             = $hargabarangsatuan;
+            $BuatPermintaanBarang->kuantitas_barang                = $kuantitas;
+            $BuatPermintaanBarang->tipe_kuantitas                  = $tipekuantitas;
+            $BuatPermintaanBarang->status_barang                   = 'pending';
+            $BuatPermintaanBarang->kd_admin_buat                   = $kd_user;
+            $BuatPermintaanBarang->save();
 
             // Tambahkan Pencatatan ke Jurnal Umum
 
@@ -403,7 +405,7 @@ class JualBeliMurabahah extends Controller
 
             $total_biaya        = ($hargabrgsatuan * $brgqty) + $brgmargin;
 
-            // Untuk Pendanaan Barang Permintaan
+            // Buat Jurnal Untuk Pendanaan Barang Permintaan
             
             $count_jurnal_one           = SysBukuJurnalUmum::count() + 1;
             $kd_transaksi_pendanaan     = 'JB-MA' . '-' . Carbon::now()->format('Y-m-d') . '-' . $count_jurnal_one;
@@ -415,8 +417,8 @@ class JualBeliMurabahah extends Controller
                 'Pendanaan Barang untuk Jual Beli Murabahah',
                 $total_harga_barang,
                 'Alokasi dana untuk pendanaan barang jual beli murabahah',
-                $kodeadmin,
-                $kodebank
+                $kd_user,
+                $kd_bank
             );
 
             $this->JurnalAkuntansi->insertJurnalUmumDetail(
@@ -425,8 +427,8 @@ class JualBeliMurabahah extends Controller
                 $kd_transaksi_pendanaan,
                 $total_harga_barang,
                 'Tambah Credit untuk Pendanaan Barang Jual Beli Murabahah',
-                $kodeadmin,
-                $kodebank
+                $kd_user,
+                $kd_bank
             );
 
             $this->JurnalAkuntansi->insertJurnalUmumDetail(
@@ -435,8 +437,8 @@ class JualBeliMurabahah extends Controller
                 $kd_transaksi_pendanaan,
                 $total_harga_barang,
                 'Kurangi Credit Kas ke Aset Pendanaan Barang Jual Beli Murabahah',
-                $kodeadmin,
-                $kodebank
+                $kd_user,
+                $kd_bank
             );
             
             // Untuk Penerimaan Uang Muka
@@ -450,8 +452,8 @@ class JualBeliMurabahah extends Controller
                 'Terima Credit Dari bayar DP Jual Beli Murabahah',
                 $re->uang_muka,
                 'Terima Credit Dari bayar DP Jual Beli Murabahah',
-                $kodeadmin,
-                $kodebank
+                $kd_user,
+                $kd_bank
             );
 
             $this->JurnalAkuntansi->insertJurnalUmumDetail(
@@ -460,8 +462,8 @@ class JualBeliMurabahah extends Controller
                 $kd_transaksi_dp,
                 $re->uang_muka,
                 'Tambah penghasilan dari pembayaran uang muka produk jual beli murabahah',
-                $kodeadmin,
-                $kodebank
+                $kd_user,
+                $kd_bank
             );
 
             $this->JurnalAkuntansi->insertJurnalUmumDetail(
@@ -470,8 +472,8 @@ class JualBeliMurabahah extends Controller
                 $kd_transaksi_dp,
                 $re->uang_muka,
                 'Kurangi Credit',
-                $kodeadmin,
-                $kodebank
+                $kd_user,
+                $kd_bank
             );
 
             // Untuk Pengukuhan Akad
@@ -486,8 +488,8 @@ class JualBeliMurabahah extends Controller
                 'Pengukuhan Akad Murabahah', 
                 $total_biaya_pengukuhan,
                 'Pengukuhan transaksi jual beli akad murabahah', 
-                $kodeadmin, 
-                $kodebank
+                $kd_user, 
+                $kd_bank
             );
 
             $this->JurnalAkuntansi->insertJurnalUmumDetail(
@@ -496,8 +498,8 @@ class JualBeliMurabahah extends Controller
                 $kd_transaksi_pengukuhan, 
                 $total_biaya, 
                 'Tambah Credit Piutang Murabahah', 
-                $kodeadmin, 
-                $kodebank
+                $kd_user, 
+                $kd_bank
             );
 
             $this->JurnalAkuntansi->insertJurnalUmumDetail(
@@ -506,8 +508,8 @@ class JualBeliMurabahah extends Controller
                 $kd_transaksi_pengukuhan, 
                 $re->surplus_untuk_bank, 
                 'Pindah marjin keuntungan ke Piutang Murabahah', 
-                $kodeadmin, 
-                $kodebank
+                $kd_user, 
+                $kd_bank
             );
 
             $sumhargabarang = $re->harga_barang_satuan * $re->qty_barang;
@@ -518,8 +520,8 @@ class JualBeliMurabahah extends Controller
                 $kd_transaksi_pengukuhan,
                 $sumhargabarang,
                 'Alokasikan dana ke Piutang Murabahah',
-                $kodeadmin,
-                $kodebank
+                $kd_user,
+                $kd_bank
             );
 
             $this->JurnalAkuntansi->insertJurnalUmumDetail(
@@ -528,8 +530,8 @@ class JualBeliMurabahah extends Controller
                 $kd_transaksi_pengukuhan,
                 $re->uang_muka,
                 'Impaskan uang muka yang sudah dipindah ke kas sebelumnya',
-                $kodeadmin,
-                $kodebank
+                $kd_user,
+                $kd_bank
             );
 
             $this->JurnalAkuntansi->insertJurnalUmumDetail(
@@ -538,11 +540,13 @@ class JualBeliMurabahah extends Controller
                 $kd_transaksi_pengukuhan,
                 $re->uang_muka,
                 'Potongan dari Uang Muka',
-                $kodeadmin,
-                $kodebank
+                $kd_user,
+                $kd_bank
             );
 
             return response()->json([
+                'status'        => 200,
+                'qr_status'     => true,
                 'message'       => 'Permintaan berhasil diverifikasi dan bisa mulai proses pembelian barang dari supplier'
             ]);
 
@@ -720,62 +724,40 @@ class JualBeliMurabahah extends Controller
     public function cariTransaksiMurabahahUntukAngsuran($id, Request $re)
     {
         try {
-            $getUserCookie = $re->cookie('tkn');
+            $token = $re->cookie('tkn');
 
-            $ModelToken = SysToken::where('token', $getUserCookie)->first();
+            $ModelUser      = new SysUser();
+            $data_user      = $ModelUser->getInformasiUser($token);
 
-            if(empty($ModelToken))
-            {
-                // return response('Error 403 - Forbidden', 403);
-                return response()->json([
-                    'message'   => 'Token tidak ditemukan'
-                ]);
-            }
+            $kd_user        = $data_user->user_id;
+            $kd_bank        = $data_user->kd_bank;
 
-            $ModelUser = SysUser::where('username', $ModelToken->kd_user)->first();
-
-            if(empty($ModelUser))
-            {
-                // return response('Error 404 - User not found', 404);
-                return response()->json([
-                    'message'   => 'User tidak ditemukan'
-                ]);
-            }
-
-            $kodeadmin   = $ModelUser->id;
-            $kodebank    = $ModelUser->kd_bank;
-
-            $ModelJualBeli = BankJualBeliMurabahah::where('kd_transaksi_murabahah', $id)->first();
+            $ModelJualBeli  = BankJualBeliMurabahah::where('kd_transaksi_murabahah', $id)->first();
             
-            if(empty($ModelJualBeli))
-            {
+            if(empty($ModelJualBeli)) {
                 return response()->json([
-                    'message'       => 'Transaksi murabahah tidak ditemukan',
-                    'status'        => 'error'
+                    'status'        => 200,
+                    'message'       => 'Transaksi murabahah tidak ditemukan'
                 ]);
-            } elseif($ModelJualBeli->status_transaksi == 'pending')
-            {
+            } elseif($ModelJualBeli->status_transaksi == 'pending') {
                 return response()->json([
-                    'message'       => 'Transaksi masih belum diverifikasi',
-                    'status'        => 'error'
+                    'status'        => 200,
+                    'message'       => 'Transaksi masih belum diverifikasi'
                 ]);
-            } elseif($ModelJualBeli->status_transaksi == 'pass')
-            {
+            } elseif($ModelJualBeli->status_transaksi == 'pass') {
                 return response()->json([
-                    'message'       => 'Transaksi sudah lunas',
-                    'status'        => 'error'
+                    'status'        => 200,
+                    'message'       => 'Transaksi sudah lunas'
                 ]);
-            } elseif($ModelJualBeli->status_transaksi == 'fail')
-            {
+            } elseif($ModelJualBeli->status_transaksi == 'fail') {
                 return response()->json([
-                    'message'       => 'Transaksi sudah diverifikasi gagal bayar',
-                    'status'        => 'error'
+                    'status'        => 200,
+                    'message'       => 'Transaksi sudah diverifikasi gagal bayar'
                 ]);
-            } elseif($ModelJualBeli->status_transaksi == 'reject')
-            {
+            } elseif($ModelJualBeli->status_transaksi == 'reject') {
                 return response()->json([
-                    'message'       => 'Transaksi tidak lolos verifikasi',
-                    'status'        => 'error'
+                    'status'        => 200,
+                    'message'       => 'Transaksi tidak lolos verifikasi'
                 ]);
             }
 
@@ -792,38 +774,52 @@ class JualBeliMurabahah extends Controller
                 $data = [
                     'kd_transaksi_murabahah'    => $ModelJualBeliAwal->kd_transaksi_murabahah,
                     'nama_barang'               => $ModelJualBeliKedua->nama_barang,
-                    'jumlah_angsuran'           => $ModelJualBeliAwal->jumlah_angsuran,
+                    'total_biaya_jual_beli'     => $ModelJualBeli->jumlah_angsuran,
+                    'jumlah_angsuran'           => $SelisihAngsuran,
                     'frekuensi_angsuran'        => $ModelJualBeliAwal->frekuensi_angsuran,
                     'angsuran_perbulan'         => $HitungAngsuran
                 ];
 
                 return response()->json([
-                    'status'        => 'true',
-                    'message'       => 'Angsuran Pertama',
-                    'data'          => $data
+                    'status'                => 200,
+                    'qr_status'             => true,
+                    'message'               => 'Angsuran Pertama',
+                    'data'                  => $data,
+                    'jenis_angsuran'        => 'baru'
                 ]);
             }
 
-            $ModelJB1           = BankJualBeliMurabahah::where('kd_transaksi_murabahah', $id)->first();
-            $GetJB1ID           = $ModelJB1->id;
-            $ModelJBPersediaan  = BankPermintaanBarangMurabahah::where('kd_transaksi_murabahah', $GetJB1ID)->first();
+            $pencarian          = ['kd_transaksi_murabahah' => $id];
 
-            $ModelJB2 = BankJualBeliMurabahah::where('bank_jualbeli_murabahah.kd_transaksi_murabahah', $id)
-                       ->join('bank_permintaan_barang_murabahah', 'bank_jualbeli_murabahah.id', '=', 'bank_permintaan_barang_murabahah.kd_transaksi_murabahah')
-                       ->get(['bank_jualbeli_murabahah.kd_transaksi_murabahah', 'nama_barang', 'status_transaksi']);
+            $ModelJB1           = BankJualBeliMurabahah::where($pencarian)->first();
+            $GetJB1ID           = $ModelJB1->id;
+            $ModelJBPersediaan  = BankPermintaanBarangMurabahah::where(['kd_transaksi_murabahah' => $GetJB1ID])->first();
+
+            $CountAngsuranById  = BankJualBeliMurabahahAngsuran::where($pencarian)->get()->count();
+
+            $sisa_angsuran      = $ModelJB1->frekuensi_angsuran - $CountAngsuranById;
+
+            $ModelJB2           = BankJualBeliMurabahah::where('bank_jualbeli_murabahah.kd_transaksi_murabahah', $id)
+                                    ->join('bank_permintaan_barang_murabahah', 'bank_jualbeli_murabahah.id', '=', 'bank_permintaan_barang_murabahah.kd_transaksi_murabahah')
+                                    ->get(['bank_jualbeli_murabahah.kd_transaksi_murabahah', 'nama_barang', 'status_transaksi']);
 
             $DataUntukForm = [
                 'kd_transaksi_murabahah'    => $ModelJB1->kd_transaksi_murabahah,
                 'nama_barang'               => $ModelJBPersediaan->nama_barang,
-                'jumlah_angsuran'           => $ModelJB1->jumlah_angsuran,
-                'frekuensi_angsuran'        => $ModelJB1->frekuensi_angsuran,
+                'jumlah_angsuran'           => $ModelJB1->jumlah_angsuran - $ModelJB1->uang_muka,
+                'jumlah_transaksi'          => $ModelJB1->jumlah_angsuran,
+                'total_frekuensi_angsuran'  => $ModelJB1->frekuensi_angsuran,
+                'sisa_frekuensi_angsuran'        => $sisa_angsuran,
                 'angsuran_perbulan'         => ((($ModelJB1->harga_barang_satuan * $ModelJB1->frekuensi_angsuran)+ $ModelJB1->surplus_murabahah)- $ModelJB1->uang_muka) / $ModelJB1->frekuensi_angsuran
             ];
 
             return response()->json([
+                'status'             => 200,
+                'qr_status'          => true,
                 'data1'              => $ModelJB2,
                 'data2'              => $DataUntukForm,
-                'status'             => 'false'
+                'message'            => 'Data Angsuran berhasil diambil',
+                'jenis_angsuran'     => 'lama'
             ]);
             
         } catch (\Throwable $th) {
@@ -878,34 +874,19 @@ class JualBeliMurabahah extends Controller
     {
         try {
 
-            $getUserCookie = $re->cookie('tkn');
+            $token                      = $re->cookie('tkn');
 
-            $ModelToken = SysToken::where('token', $getUserCookie)->first();
+            $ModelUser                  = new SysUser();
+            $data_user                  = $ModelUser->getInformasiUser($token);
 
-            if(empty($ModelToken))
-            {
-                // return response('Error 403 - Forbidden', 403);
-                return response()->json([
-                    'message'   => 'Token tidak ditemukan'
-                ]);
-            }
+            $kodeadmin                  = $data_user->user_id;
+            $kodebank                   = $data_user->kd_bank;
 
-            $ModelUser = SysUser::where('username', $ModelToken->kd_user)->first();
 
-            if(empty($ModelUser))
-            {
-                // return response('Error 404 - User not found', 404);
-                return response()->json([
-                    'message'   => 'User tidak ditemukan'
-                ]);
-            }
+            $jenis_transaksi         = $re->jenis_angsuran;
+            $kd_transaksi_jb            = $re->kd_transaksi_murabahah;
 
-            $kodeadmin   = $ModelUser->id;
-            $kodebank    = $ModelUser->kd_bank;
-
-            $tipe_transaksi = $re->angsuran_pertama;
-
-            $CariTransaksi = BankJualBeliMurabahah::where('kd_transaksi_murabahah', $re->kd_transaksi_murabahah)->first();
+            $CariTransaksi              = BankJualBeliMurabahah::where('kd_transaksi_murabahah', $kd_transaksi_jb)->first();
 
             if(empty($CariTransaksi))
             {
@@ -917,35 +898,61 @@ class JualBeliMurabahah extends Controller
             $CountAngsuranAll  = BankJualBeliMurabahahAngsuran::count();
             $KalkulasiAngsuran = $CountAngsuranAll + 1;
 
-            if($tipe_transaksi == true)
+            if($jenis_transaksi == 'baru')
             {
-                $ModelAngsuran      = new BankJualBeliMurabahahAngsuran;
+                $query_pencarian_jb = ['kd_transaksi_murabahah' => $kd_transaksi_jb];
+
+                $ModelJB            = BankJualBeliMurabahah::where($query_pencarian_jb)->first();
+                
+                if(empty($ModelJB)) {
+                    return response()->json([
+                        'status'        => 200,
+                        'qr_status'     => false,
+                        'message'       => 'Kode Transaksi Jual Beli Murabahah tidak ditemukan'
+                    ]);
+                }
+
+                $total_angsuran     = $ModelJB->jumlah_angsuran - $ModelJB->uang_muka;
+                $frekuensi_angsuran = $ModelJB->frekuensi_angsuran;
+
+                $data_jb                        = new stdClass;
+                $data_jb->angsuran_pertama      = $total_angsuran / $frekuensi_angsuran;
+                $data_jb->sisa_angsuran         = $frekuensi_angsuran - 1;
+
+                $ModelAngsuran                          = new BankJualBeliMurabahahAngsuran;
                 $ModelAngsuran->kd_angsuran_murabahah   = 'JB-MA-' . Carbon::now()->format('Y-m-d') . $KalkulasiAngsuran;
-                $ModelAngsuran->kd_transaksi_murabahah  = $re->kd_transaksi_murabahah;
+                $ModelAngsuran->kd_transaksi_murabahah  = $kd_transaksi_jb;
                 $ModelAngsuran->tgl_bayar_angsuran      = Carbon::now();
                 $ModelAngsuran->angsuran_ke             = 1;
-                $ModelAngsuran->nominal_bayar           = $re->angsuran_perbulan;
-                $ModelAngsuran->sisa_angsuran           = $re->frekuensi_angsuran - 1;
+                $ModelAngsuran->nominal_bayar           = $data_jb->angsuran_pertama;
+                $ModelAngsuran->sisa_angsuran           = $data_jb->sisa_angsuran;
                 $ModelAngsuran->kd_admin                = $kodeadmin;
                 $ModelAngsuran->save();
 
                 // Untuk Pencatatan di Jurnal Umum
                 
                 $HitungJumlahJurnalUmum     = $this->CountJurnalUmum + 1;
-                                
-                $kd_transaksi       = 'JB-MA' . '-' . Carbon::now()->format('Y-m-d') . '-' . $HitungJumlahJurnalUmum;
-                $tgl_pencatatan     = Carbon::now();
-                $nama_transaksi     = 'Angsuran Pertama Produk Jual Beli Akad Murabahah dengan kode transaksi : ' . $re->kd_transaksi_murabahah;
-                $nilai_transaksi  = $re->angsuran_perbulan;
-                $deskripsi          = 'Angsuran Produk Jual Beli Akad Murabahah';
+                
+                $jurnal_kd_transaksi       = 'JB-MA' . '-' . Carbon::now()->format('Y-m-d') . '-' . $HitungJumlahJurnalUmum;
+                $jurnal_tgl_pencatatan     = Carbon::now();
+                $jurnal_nama_transaksi     = 'Angsuran Pertama Produk Jual Beli Akad Murabahah dengan kode transaksi : ' . $re->kd_transaksi_murabahah;
+                $jurnal_nilai_transaksi    = $data_jb->angsuran_pertama;
+                $jurnal_deskripsi          = 'Angsuran Produk Jual Beli Akad Murabahah';
 
-                $this->JurnalAkuntansi->insertJurnalUmum($kd_transaksi, $tgl_pencatatan, $nama_transaksi, $nilai_transaksi, $deskripsi, $kodeadmin, $kodebank);
+                $this->JurnalAkuntansi->insertJurnalUmum(
+                    $jurnal_kd_transaksi, 
+                    $jurnal_tgl_pencatatan, 
+                    $jurnal_nama_transaksi, 
+                    $jurnal_nilai_transaksi, 
+                    $jurnal_deskripsi, 
+                    $kodeadmin, 
+                    $kodebank);
 
                 $this->JurnalAkuntansi->insertJurnalUmumDetail(
                     'debit', 
                     11001, 
-                    $kd_transaksi, 
-                    $nilai_transaksi, 
+                    $jurnal_kd_transaksi, 
+                    $jurnal_nilai_transaksi, 
                     'Pendapatan dari Angsuran Produk Jual Beli Murabahah', 
                     $kodeadmin, 
                     $kodebank
@@ -954,31 +961,54 @@ class JualBeliMurabahah extends Controller
                 $this->JurnalAkuntansi->insertJurnalUmumDetail(
                     'kredit', 
                     13201, 
-                    $kd_transaksi, 
-                    $nilai_transaksi, 
+                    $jurnal_kd_transaksi, 
+                    $jurnal_nilai_transaksi, 
                     'Piutang Murabahah dialokasikan ke Kas', 
                     $kodeadmin, 
                     $kodebank
                 );
 
                 return response()->json([
+                    'status'        => 200,
+                    'qr_status'     => true,
                     'message'       => 'Angsuran Pertama berhasil disimpan'
                 ]);
 
-            } else if($tipe_transaksi == false)
+            } else if($jenis_transaksi == 'lama')
             {
+                $query_pencarian        = ['kd_transaksi_murabahah' => $kd_transaksi_jb];
+
+                $ModelJB                = BankJualBeliMurabahah::where($query_pencarian)->first();
+
+                if(empty($ModelJB)) {
+                    return response()->json([
+                        'status'        => 200,
+                        'qr_status'     => false,
+                        'message'       => 'Kode Transaksi Jual Beli Murabahah tidak ditemukan'
+                    ]);
+                }
+
+                $total_angsuran     = $ModelJB->jumlah_angsuran - $ModelJB->uang_muka;
+                $frekuensi_angsuran = $ModelJB->frekuensi_angsuran;
+
                 $HitungAngsuran = BankJualBeliMurabahahAngsuran::where('kd_transaksi_murabahah', $re->kd_transaksi_murabahah)->count();
 
-                $Kalkulasi      = $HitungAngsuran + 1;
-                $SisaAngsuran   = $re->frekuensi_angsuran - $Kalkulasi;
+                $angsuran_perbulan              = $total_angsuran / $frekuensi_angsuran;
+
+                $data_jb                        = new stdClass;
+                $data_jb->angsuran_perbulan     = $angsuran_perbulan;
+                $data_jb->sisa_angsuran         = $total_angsuran - $angsuran_perbulan; 
+
+                $kalkulasi      = $HitungAngsuran + 1;
+                $sisaAngsuran   = $frekuensi_angsuran - $kalkulasi;
 
                 $ModelAngsuranAda = new BankJualBeliMurabahahAngsuran;
                 $ModelAngsuranAda->kd_angsuran_murabahah   = 'JB-MA-' . Carbon::now()->format('Y-m-d') . $KalkulasiAngsuran;
-                $ModelAngsuranAda->kd_transaksi_murabahah  = $re->kd_transaksi_murabahah;
+                $ModelAngsuranAda->kd_transaksi_murabahah  = $kd_transaksi_jb;
                 $ModelAngsuranAda->tgl_bayar_angsuran      = Carbon::now();
-                $ModelAngsuranAda->angsuran_ke             = $Kalkulasi;
-                $ModelAngsuranAda->nominal_bayar           = $re->angsuran_perbulan;
-                $ModelAngsuranAda->sisa_angsuran           = $SisaAngsuran;
+                $ModelAngsuranAda->angsuran_ke             = $kalkulasi;
+                $ModelAngsuranAda->nominal_bayar           = $data_jb->angsuran_perbulan;
+                $ModelAngsuranAda->sisa_angsuran           = $sisaAngsuran;
                 $ModelAngsuranAda->kd_admin                = $kodeadmin;
                 $ModelAngsuranAda->save();
                 
@@ -986,42 +1016,71 @@ class JualBeliMurabahah extends Controller
                 
                 $HitungJumlahJurnalUmum     = $this->CountJurnalUmum + 1;
                 
-                $kd_transaksi  = 'JB-MA' . '-' . Carbon::now()->format('Y-m-d') . '-' . $HitungJumlahJurnalUmum;
-                $tgl_pencatatan     = Carbon::now();
-                $nama_transaksi     = 'Angsuran Produk Jual Beli Akad Murabahah dengan kode transaksi : ' . $re->kd_transaksi_murabahah;
-                $nilai_transaksi  = $re->angsuran_perbulan;
-                $deskripsi          = 'Angsuran Produk Jual Beli Akad Murabahah';
+                $ju_kd_transaksi           = 'JB-MA' . '-' . Carbon::now()->format('Y-m-d') . '-' . $HitungJumlahJurnalUmum;
+                $ju_tgl_pencatatan         = Carbon::now();
+                $ju_nama_transaksi         = 'Angsuran Produk Jual Beli Akad Murabahah dengan kode transaksi : ' . $re->kd_transaksi_murabahah;
+                $ju_nilai_transaksi        = $data_jb->angsuran_perbulan;
+                $ju_deskripsi              = 'Angsuran Produk Jual Beli Akad Murabahah';
 
-                $this->JurnalAkuntansi->insertJurnalUmum($kd_transaksi, $tgl_pencatatan, $nama_transaksi, $nilai_transaksi, $deskripsi, $kodeadmin, $kodebank);
+                $this->JurnalAkuntansi->insertJurnalUmum(
+                    $ju_kd_transaksi, 
+                    $ju_tgl_pencatatan, 
+                    $ju_nama_transaksi, 
+                    $ju_nilai_transaksi, 
+                    $ju_deskripsi, 
+                    $kodeadmin, 
+                    $kodebank
+                );
 
-                $this->JurnalAkuntansi->insertJurnalUmumDetail('debit', 11002, $kd_transaksi, $nilai_transaksi, 'Debet dari Piutang Murabahah', $kodeadmin, $kodebank);
+                $this->JurnalAkuntansi->insertJurnalUmumDetail(
+                    'debit', 
+                    11002, 
+                    $ju_kd_transaksi, 
+                    $ju_nilai_transaksi, 
+                    'Debet dari Piutang Murabahah', 
+                    $kodeadmin, 
+                    $kodebank
+                );
 
-                $this->JurnalAkuntansi->insertJurnalUmumDetail('kredit', 13201, $kd_transaksi, $nilai_transaksi, 'Kredit ke Kas Penjualan Produk JB Murabahah', $kodeadmin, $kodebank);
+                $this->JurnalAkuntansi->insertJurnalUmumDetail(
+                    'kredit',
+                    13201, 
+                    $ju_kd_transaksi,
+                    $ju_nilai_transaksi, 
+                    'Kredit ke Kas Penjualan Produk JB Murabahah', 
+                    $kodeadmin, 
+                    $kodebank
+                );
 
-                if($SisaAngsuran == 0)
+                if($sisaAngsuran == 0)
                 {
                     $ModelJualBeliMurabahah = BankJualBeliMurabahah::where('kd_transaksi_murabahah', $re->kd_transaksi_murabahah)->first();
                     $ModelJualBeliMurabahah->status_transaksi = 'pass';
                     $ModelJualBeliMurabahah->save();
 
                     return response()->json([
-                        'message' => 'Angsuran berhasil disimpan dan sudah lunas'
+                        'status'        => 200,
+                        'qr_status'     => true,
+                        'message'       => 'Angsuran berhasil disimpan dan sudah lunas',
                     ]);
                 }
                 
                 return response()->json([
+                    'status'        => 200,
+                    'qr_status'     => true,
                     'message'       => 'Angsuran berhasil disimpan'
                 ]);
 
             } else {
-                return response('403 Forbidden', 403);
+                return response()->json([
+                    'status'        => 200,
+                    'qr_status'     => false,
+                    'message'       => 'Terjadi kesalahan saat menyimpan transaksi'
+                ]);
             }
         } catch (\Throwable $th) {
-            return response()->json([
-                'data'      => $th->getMessage(),
-                'status'    => 'Server error',
-                'message'   => 'Server Error'
-            ]);
+            $err = new MetodeBerguna();
+            return response()->json($err->outErrCatch($th->getMessage()));
         }
     }
     
