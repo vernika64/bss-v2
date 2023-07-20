@@ -220,7 +220,7 @@ export default {
             axios.post('/api/bank/listJualBeliMurabahah/Add', this.formJualBeli).then(hsl => {
                 console.log(hsl.data)
                 alert(hsl.data.message)
-                // return location.reload()
+                return location.reload()
             }).catch(hslerr => {
                 console.log(hslerr)
             })

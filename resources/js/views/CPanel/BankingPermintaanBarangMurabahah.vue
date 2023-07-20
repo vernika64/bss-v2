@@ -146,6 +146,7 @@ export default {
 
                 axios.put('/api/bank/terimaBarangPermintaan', this.formPermintaanBarang).then(terima => {
                     alert(terima.data.message)
+                    return location.reload()
                 }).catch(terima_error => {
                     alert('Server Error')
                 })
@@ -161,6 +162,7 @@ export default {
             {
                 axios.put('/api/bank/keluarBarangPermintaan', { kd_permintaan_barang : uid}).then(keluar => {
                     alert(keluar.data.message)
+                    return location.reload()
                 }).catch(keluarerror => {
                     console.log(keluarerror)
                     alert('Server Error')

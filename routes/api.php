@@ -70,6 +70,9 @@ Route::get('/super/memberListFilterBank/{bankKeys}', [Administrator::class, 'get
 Route::get('/super/groupList', [Administrator::class, 'getGroupList']);
 Route::post('/super/addNewGroup', [Administrator::class, 'addNewGroups']);
 
+// Sub Manajemen Dashboard
+
+
 // Sub Manajemen Bank
 Route::get('/super/bankList', [Administrator::class, 'getBankList']);
 Route::get('/super/bankList/{keys}', [Administrator::class, 'getBankListById']);
@@ -176,9 +179,7 @@ Route::get('/bank/cekDataNasabah', [CustomerIdentificationFile::class, 'cekDataN
 
 // Untuk testing
 
-Route::get('duar', function(Request $re) {
-    // 
-});
+Route::get('duar', [MetodeBerguna::class, 'totalTabuganWadiahByBank']);
 
 Route::get('testings', function(Request $re) {
     $tabel = DB::table('INFORMATION_SCHEMA.TABLES')

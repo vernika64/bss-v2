@@ -51,7 +51,7 @@
                         <input type="text" class="border border-slate-500 bg-white p-1" v-model="formAngsuranPertama.kd_transaksi_murabahah" readonly />
                         <label class="font-bold text-black">Nama Barang</label>
                         <input type="text" class="border border-slate-500 bg-white p-1" v-model="formAngsuranPertama.nama_barang" readonly />
-                        <label class="font-bold text-black">Total Biaya</label>
+                        <label class="font-bold text-black">Total Biaya Transaksi</label>
                         <input type="text" class="border border-slate-500 bg-white p-1" v-model="dummyFormAngsuranPertama.jumlah_transaksi" readonly />
                         <label class="font-bold text-black">Sisa Angsuran</label>
                         <input type="text" class="border border-slate-500 bg-white p-1" v-model="dummyFormAngsuranPertama.jumlah_angsuran" readonly />
@@ -70,60 +70,62 @@
     <!--  -->
 
     <!-- Modal Section -->
-    <div class="w-full h-full overflow-auto bg-slate-900 left-0 top-0 fixed bg-opacity-70" v-if="modalAngsuranLama == true">
+
+    <Transition name="slide-fade">
+        <div class="flex flex-col w-full h-full bg-slate-900 left-0 top-0 fixed bg-opacity-70 justify-center align-middle" v-if="modalAngsuranLama == true">
         <!-- Modal Content -->
-        <div class="flex justify-center">
-            <div class="bg-white w-[1000px] p-4 mt-[200px] rounded-lg">
-                <div class="grid grid-rows-1">
-                    <h1 class="text-2xl text-black mb-10">Bayar Angsuran</h1>
-                    <div class="grid grid-rows-1 gap-2 mb-10">
-                        <label class="font-bold text-black">History Angsuran</label>
-                        <div class="mb-4">
-                            <table class="border border-white w-full">
-                                <thead class="bg-slate-500 text-white">
-                                    <tr>
-                                        <th class="p-2 bold font-md text-left font-semibold w-[50px]">#</th>
-                                        <th class="p-2 bold font-md text-left font-semibold">Tgl Transaksi</th>
-                                        <th class="p-2 bold font-md text-left font-semibold">Nominal Bayar</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="bg-white">
-                                    <tr v-for="(bb, index) in tabelHistoriAngsuran" class="even:bg-slate-200 even:text-black" :key="index">
-                                        <td>{{ index + 1 }}</td>
-                                        <td>{{ bb.tgl_bayar_angsuran }}</td>
-                                        <td>{{ konversiKeRp(bb.nominal_bayar) }}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+            <div class="relative bg-white rounded-lg shadow p-4 m-auto md:w-1/2 2xl:w-[60%]">
+                    <div class="grid grid-rows-1">
+                        <h1 class="text-2xl text-black mb-10">Bayar Angsuran</h1>
+                        <div class="grid grid-rows-1 gap-2 mb-10">
+                            <label class="font-bold text-black">Riwayat Angsuran</label>
+                            <div class="mb-4">
+                                <table class="border border-white w-full">
+                                    <thead class="bg-slate-500 text-white">
+                                        <tr>
+                                            <th class="p-2 bold font-md text-left font-semibold w-[50px]">#</th>
+                                            <th class="p-2 bold font-md text-left font-semibold">Tgl Transaksi</th>
+                                            <th class="p-2 bold font-md text-left font-semibold">Nominal Bayar</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white">
+                                        <tr v-for="(bb, index) in tabelHistoriAngsuran" class="even:bg-slate-200 even:text-black" :key="index">
+                                            <td>{{ index + 1 }}</td>
+                                            <td>{{ bb.tgl_bayar_angsuran }}</td>
+                                            <td>{{ konversiKeRp(bb.nominal_bayar) }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <label class="font-bold text-black">Kode Transaksi Murabahah</label>
+                            <input type="text" class="border border-slate-500 bg-white p-1" v-model="formAngsuranLama.kd_transaksi_murabahah" readonly />
+                            <label class="font-bold text-black">Nama Barang</label>
+                            <input type="text" class="border border-slate-500 bg-white p-1" v-model="formAngsuranLama.nama_barang" readonly />
+                            <label class="font-bold text-black">Total Biaya Transaksi</label>
+                            <input type="text" class="border border-slate-500 bg-white p-1" v-model="dummyFormAngsuranLama.jumlah_transaksi" readonly />
+                            <label class="font-bold text-black">Sisa Angsuran</label>
+                            <input type="text" class="border border-slate-500 bg-white p-1" v-model="dummyFormAngsuranLama.jumlah_angsuran" readonly />
+
+                            <label class="font-bold text-black">Total Frekuensi Angsuran</label>
+                            <input type="text" class="border border-slate-500 bg-white p-1" v-model="dummyFormAngsuranLama.total_frekuensi_angsuran" readonly />
+
+                            <label class="font-bold text-black">Sisa Frekuensi Angsuran</label>
+                            <input type="text" class="border border-slate-500 bg-white p-1" v-model="dummyFormAngsuranLama.frekuensi_angsuran" readonly />
+
+
+                            <label class="font-bold text-black">Biaya Angsuran</label>
+                            <input type="text" class="border border-slate-500 bg-white p-1" v-model="dummyFormAngsuranLama.angsuran_perbulan" readonly />
+                            <!-- <button class="bg-slate-200 text-black p-2 mt-4 border border-slate-700">Cetak Lembar Angsuran</button> -->
                         </div>
-                        <label class="font-bold text-black">Kode Transaksi Murabahah</label>
-                        <input type="text" class="border border-slate-500 bg-white p-1" v-model="formAngsuranLama.kd_transaksi_murabahah" readonly />
-                        <label class="font-bold text-black">Nama Barang</label>
-                        <input type="text" class="border border-slate-500 bg-white p-1" v-model="formAngsuranLama.nama_barang" readonly />
-                        <label class="font-bold text-black">Total Biaya</label>
-                        <input type="text" class="border border-slate-500 bg-white p-1" v-model="dummyFormAngsuranLama.jumlah_transaksi" readonly />
-                        <label class="font-bold text-black">Sisa Angsuran</label>
-                        <input type="text" class="border border-slate-500 bg-white p-1" v-model="dummyFormAngsuranLama.jumlah_angsuran" readonly />
-
-                        <label class="font-bold text-black">Total Frekuensi Angsuran</label>
-                        <input type="text" class="border border-slate-500 bg-white p-1" v-model="dummyFormAngsuranLama.total_frekuensi_angsuran" readonly />
-
-                        <label class="font-bold text-black">Sisa Frekuensi Angsuran</label>
-                        <input type="text" class="border border-slate-500 bg-white p-1" v-model="dummyFormAngsuranLama.frekuensi_angsuran" readonly />
-
-
-                        <label class="font-bold text-black">Biaya Angsuran</label>
-                        <input type="text" class="border border-slate-500 bg-white p-1" v-model="dummyFormAngsuranLama.angsuran_perbulan" readonly />
-                        <!-- <button class="bg-slate-200 text-black p-2 mt-4 border border-slate-700">Cetak Lembar Angsuran</button> -->
-                    </div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <button class="bg-slate-300 text-black p-2 rounded-md" @click="modalAngsuranLama = false">Batal</button>
-                        <button class="bg-blue-600 text-white p-2 rounded-md" @click="simpanAngsuran">Bayar</button>
+                        <div class="grid grid-cols-2 gap-4">
+                            <button class="bg-slate-300 text-black p-2 rounded-md" @click="modalAngsuranLama = false">Batal</button>
+                            <button class="bg-blue-600 text-white p-2 rounded-md" @click="simpanAngsuran">Bayar</button>
+                        </div>
                     </div>
                 </div>
-            </div>
         </div>
-    </div>
+    </Transition>
+
     <!--  -->
 
 </div>

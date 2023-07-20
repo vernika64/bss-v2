@@ -480,7 +480,7 @@ class JualBeliMurabahah extends Controller
             
             $count_jurnal_three                      = SysBukuJurnalUmum::count() + 1;
             $kd_transaksi_pengukuhan                 = 'JB-MA' . '-' . Carbon::now()->format('Y-m-d') . '-' . $count_jurnal_three;
-            $total_biaya_pengukuhan                  = ($hargabrgsatuan * $brgqty) + $brgmargin;
+            $total_biaya_pengukuhan                  = ($hargabrgsatuan * $brgqty) + $brgmargin + $re->uang_muka;
             
             $this->JurnalAkuntansi->insertJurnalUmum(
                 $kd_transaksi_pengukuhan, 
@@ -803,14 +803,22 @@ class JualBeliMurabahah extends Controller
                                     ->join('bank_permintaan_barang_murabahah', 'bank_jualbeli_murabahah.id', '=', 'bank_permintaan_barang_murabahah.kd_transaksi_murabahah')
                                     ->get(['bank_jualbeli_murabahah.kd_transaksi_murabahah', 'nama_barang', 'status_transaksi']);
 
+            
+            $jumlah_angsuran         = $ModelJB1->jumlah_angsuran - $ModelJB1->uang_muka;
+            $angsuran_bulanan        = $jumlah_angsuran / $ModelJB1->frekuensi_angsuran;
+            $total_angsuran          = $angsuran_bulanan * $CountAngsuranById;
+            $sisa_angsuran_jb        = $jumlah_angsuran - $total_angsuran;
+            $sisa_frekuensi_angsuran = $ModelJB1->frekuensi_angsuran - $CountAngsuranById;
+            // $angsuran_bulanan        = ((($ModelJB1->harga_barang_satuan * $ModelJB1->frekuensi_angsuran) + $ModelJB1->surplus_murabahah) - $ModelJB1->uang_muka) / $ModelJB1->frekuensi_angsuran;
+
             $DataUntukForm = [
                 'kd_transaksi_murabahah'    => $ModelJB1->kd_transaksi_murabahah,
                 'nama_barang'               => $ModelJBPersediaan->nama_barang,
-                'jumlah_angsuran'           => $ModelJB1->jumlah_angsuran - $ModelJB1->uang_muka,
+                'jumlah_angsuran'           => $sisa_angsuran_jb,
                 'jumlah_transaksi'          => $ModelJB1->jumlah_angsuran,
                 'total_frekuensi_angsuran'  => $ModelJB1->frekuensi_angsuran,
-                'sisa_frekuensi_angsuran'        => $sisa_angsuran,
-                'angsuran_perbulan'         => ((($ModelJB1->harga_barang_satuan * $ModelJB1->frekuensi_angsuran)+ $ModelJB1->surplus_murabahah)- $ModelJB1->uang_muka) / $ModelJB1->frekuensi_angsuran
+                'sisa_frekuensi_angsuran'   => $sisa_frekuensi_angsuran,
+                'angsuran_perbulan'         => $angsuran_bulanan
             ];
 
             return response()->json([
