@@ -890,15 +890,15 @@ class JualBeliMurabahah extends Controller
             $kodeadmin                  = $data_user->user_id;
             $kodebank                   = $data_user->kd_bank;
 
-
             $jenis_transaksi         = $re->jenis_angsuran;
             $kd_transaksi_jb            = $re->kd_transaksi_murabahah;
 
             $CariTransaksi              = BankJualBeliMurabahah::where('kd_transaksi_murabahah', $kd_transaksi_jb)->first();
 
-            if(empty($CariTransaksi))
-            {
+            if(empty($CariTransaksi)) {
                 return response()->json([
+                    'status'        => 200,
+                    'qr_status'     => false,
                     'message'       => 'Transaksi tidak ditemukan'
                 ]);
             }
@@ -906,8 +906,8 @@ class JualBeliMurabahah extends Controller
             $CountAngsuranAll  = BankJualBeliMurabahahAngsuran::count();
             $KalkulasiAngsuran = $CountAngsuranAll + 1;
 
-            if($jenis_transaksi == 'baru')
-            {
+            if($jenis_transaksi == 'baru') {
+
                 $query_pencarian_jb = ['kd_transaksi_murabahah' => $kd_transaksi_jb];
 
                 $ModelJB            = BankJualBeliMurabahah::where($query_pencarian_jb)->first();
@@ -982,8 +982,7 @@ class JualBeliMurabahah extends Controller
                     'message'       => 'Angsuran Pertama berhasil disimpan'
                 ]);
 
-            } else if($jenis_transaksi == 'lama')
-            {
+            } else if($jenis_transaksi == 'lama') {
                 $query_pencarian        = ['kd_transaksi_murabahah' => $kd_transaksi_jb];
 
                 $ModelJB                = BankJualBeliMurabahah::where($query_pencarian)->first();
@@ -1030,6 +1029,21 @@ class JualBeliMurabahah extends Controller
                 $ju_nilai_transaksi        = $data_jb->angsuran_perbulan;
                 $ju_deskripsi              = 'Angsuran Produk Jual Beli Akad Murabahah';
 
+                
+                // Prototype Penulisan Jurnal mk2
+                // $ProsesJurnal              = new JurnalAkuntansi;
+
+                // $judulTransaksi                     = new stdClass;
+                // $judulTransaksi->kd_transaksi       = $ju_kd_transaksi;
+                // $judulTransaksi->tgl_pencatatan     = $ju_tgl_pencatatan;
+                // $judulTransaksi->nama_transaksi     = $ju_nama_transaksi;
+                // $judulTransaksi->nominal            = $ju_nilai_transaksi;
+                // $judulTransaksi->deskripsi          = $ju_deskripsi;
+                // $judulTransaksi->user_id            = $kodeadmin;
+                // $judulTransaksi->kd_bank            = $kodebank;
+
+                // $ProsesJurnal->tulisJurnalUmum('judul', $judulTransaksi);
+
                 $this->JurnalAkuntansi->insertJurnalUmum(
                     $ju_kd_transaksi, 
                     $ju_tgl_pencatatan, 
@@ -1059,6 +1073,10 @@ class JualBeliMurabahah extends Controller
                     $kodeadmin, 
                     $kodebank
                 );
+
+                for($a = 0; $a < 3; $a++) {
+
+                }
 
                 if($sisaAngsuran == 0)
                 {
