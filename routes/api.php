@@ -13,6 +13,7 @@ use App\Http\Controllers\UserManagement;
 use App\Http\Middleware\CekTokenLogin;
 use App\Models\BankCIF;
 use App\Models\BankJualBeliMurabahah;
+use App\Models\BankTransaksiTabunganWadiah;
 use App\Models\SysBank;
 use App\Models\SysLog;
 use App\Models\SysToken;
@@ -71,7 +72,16 @@ Route::get('/super/groupList', [Administrator::class, 'getGroupList']);
 Route::post('/super/addNewGroup', [Administrator::class, 'addNewGroups']);
 
 // Sub Manajemen Dashboard
+Route::get('/bank/totalTabunganBank', function(Request $re) {
+    $ModelUser                  = new SysUser();
+    $data_user                  = $ModelUser->getInformasiUser($re->cookie('tkn'));
 
+    $ModelTransaksiTabungan     = new BankTransaksiTabunganWadiah();
+
+    $data                       = $ModelTransaksiTabungan->totalNominalTabunganByBank($data_user->kd_bank);
+
+    return response()->json($data);
+});
 
 // Sub Manajemen Bank
 Route::get('/super/bankList', [Administrator::class, 'getBankList']);
@@ -179,7 +189,11 @@ Route::get('/bank/cekDataNasabah', [CustomerIdentificationFile::class, 'cekDataN
 
 // Untuk testing
 
-Route::get('duar', [MetodeBerguna::class, 'totalTabuganWadiahByBank']);
+Route::get('duar', function() {
+    $data = BankTransaksiTabunganWadiah::where('kd_buku_tabungan', '201-2023-07-20-2')->get();
+
+    return number_format($data->sum('nominal_transaksi'), 3);
+});
 
 Route::get('testings', function(Request $re) {
     $tabel = DB::table('INFORMATION_SCHEMA.TABLES')

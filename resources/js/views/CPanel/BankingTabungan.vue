@@ -33,7 +33,7 @@
     <Transition name="slide-fade">
         <div class="flex flex-col w-full h-full bg-slate-900 left-0 top-0 fixed bg-opacity-70 justify-center align-middle" v-if="modalDetailTabungan.status == true">
             <!-- Modal Content -->
-            <div class="relative bg-white rounded-lg shadow p-4 m-auto md:w-1/2 2xl:w-[60%]">
+            <div class="relative bg-white rounded-lg shadow p-4 m-auto md:w-1/2 2xl:w-1/4">
                 <div class="grid grid-rows-1">
                 <h1 class="text-2xl text-black mb-4">Detail Tabungan | {{ modalDetailTabungan.data.kd_buku_tabungan }}</h1>
                 <div class="grid grid-cols-1 gap-4">

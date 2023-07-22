@@ -196,8 +196,9 @@ class LaporanTabungan extends Controller
         $pdf->Cell(60,10, 'Nom. Tr', 1,0,'C');
         $pdf->Cell(40,10, 'Tgl. Tr', 1,1,'C');
 
+        $a = 1;
+
         foreach($data_riwayat->data as $val) {
-            $a = 0;
             $pdf->Cell(10,10, $a++, 1,0, 'C');
             $pdf->Cell(50,10, $val->kd_transaksi_tabungan, 1,0, 'L');
             $pdf->Cell(30,10, ucfirst($val->jenis_transaksi), 1,0, 'C');

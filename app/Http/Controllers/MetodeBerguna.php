@@ -25,17 +25,4 @@ class MetodeBerguna extends Controller
         return $output;
     }
 
-    public function totalTabuganWadiahByBank(Request $re) {
-        try {
-            $token          = $re->cookie('tkn');
-
-            $ModelUser      = new SysUser();
-            $data_user      = $ModelUser->getInformasiUser($token);
-            
-        } catch (\Throwable $th) {
-            $err       = new MetodeBerguna;
-
-            return response()->json($err->outErrCatch($th->getMessage()));
-        }
-    }
 }

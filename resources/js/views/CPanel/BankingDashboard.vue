@@ -28,7 +28,17 @@ export default {
     mounted() {
         // Ambil data banyak cif
         axios.get('/api/banyakCIF').then(out => {
-            console.log(out.data)
+            // console.log(out.data)
+        }).catch(err => {
+            console.log(err)
+        })
+
+        axios.get('/api/bank/totalTabunganBank').then(hsl => {
+            // console.log(hsl.data)
+            let nominal         = hsl.data.nominal
+
+            // this.totalTabungan = new Intl.NumberFormat(['ban', 'id']).format(nominal) + ',='
+            this.totalTabungan = hsl.data.nominal
         })
     },
     data() {
