@@ -12,9 +12,88 @@ use App\Models\SysToken;
 use App\Models\SysUser;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use stdClass;
 
 class JurnalAkuntansi extends Controller
 {
+
+    function tulisJurnalUmum($tipe_jurnal, $data) {
+        try {
+
+            if($tipe_jurnal == 'judul') {
+                $kd_transaksi                            = $data->kd_transaksi;
+                $tgl_pencatatan                          = $data->tgl_pencatatan;
+                $nama_transaksi                          = $data->nama_transaksi;
+                $nominal                                 = $data->nominal;
+                $deskripsi                               = $data->deskripsi;
+                $user_id                                 = $data->user_id;
+                $kd_bank                                 = $data->kd_bank;
+
+                $ModelJurnalUmum                         = new SysBukuJurnalUmum();
+                $ModelJurnalUmum->kd_transaksi_akuntansi = $kd_transaksi;
+                $ModelJurnalUmum->tgl_pencatatan_jurnal  = $tgl_pencatatan;
+                $ModelJurnalUmum->nama_transaksi         = $nama_transaksi;
+                $ModelJurnalUmum->nominal_transaksi      = $nominal;
+                $ModelJurnalUmum->deskripsi              = $deskripsi;
+                $ModelJurnalUmum->status_transaksi       = 'open';
+                $ModelJurnalUmum->kd_admin               = $user_id;
+                $ModelJurnalUmum->kd_bank                = $kd_bank;
+                $ModelJurnalUmum->save();
+
+                $output                     = new stdClass;
+                $output->status             = true;
+                $output->message            = 'Pencatatan berhasil disimpan';
+                $output->data               = null;
+            } else if($tipe_jurnal == 'detail') {
+                
+                $kd_transaksi                                       = $data->kd_transaksi;
+                $buku_akuntansi                                     = $data->buku_akuntansi;
+                $tipe_transaksi                                     = $data->tipe_transaksi;
+                $nominal_transaksi                                  = $data->nominal_transaksi;
+                $deskripsi                                          = $data->deskripsi;
+                $user_id                                            = $data->user_id;
+                $kd_bank                                            = $data->kd_bank;
+
+                $ModelJurnalUmumDetail                              = new SysBukuJurnalUmumDetail;
+                $ModelJurnalUmumDetail->kd_transaksi_akuntansi      = $kd_transaksi;
+                $ModelJurnalUmumDetail->kd_buku_akuntansi           = $buku_akuntansi;
+                if($tipe_transaksi == 'debit') {
+                    $ModelJurnalUmumDetail->nominal_debit           = $nominal_transaksi;
+                    $ModelJurnalUmumDetail->nominal_kredit          = 0;
+                } elseif($tipe_transaksi == 'kredit') {
+                    $ModelJurnalUmumDetail->nominal_debit           = 0;
+                    $ModelJurnalUmumDetail->nominal_kredit          = $nominal_transaksi;
+                }
+                $ModelJurnalUmumDetail->deskripsi                   = $deskripsi;
+                $ModelJurnalUmumDetail->kd_admin                    = $user_id;
+                $ModelJurnalUmumDetail->kd_bank                     = $kd_bank;
+                $ModelJurnalUmumDetail->save();
+
+                $ModelJurnalUmumDetail->refresh();
+
+                $output                                             = new stdClass;
+                $output->status                                     = true;
+                $output->message                                    = 'Pencatatan Detail berhasil disimpan';
+                $output->data                                       = null;
+
+            } else {
+                $output                 = new stdClass;
+                $output->status         = false;
+                $output->message        = 'Parameter Input kategori jurnal tidak terdaftar';
+                $output->data           = null;
+            }
+
+            return $output;
+
+        } catch (\Throwable $th) {
+            $output                     = new stdClass;
+            $output->status             = false;
+            $output->message            = 'Pencatatan gagal disimpan';
+            $output->data               = $th->getMessage();
+
+            return $output;
+        }
+    }
 
     public function insertJurnalUmum($kode_transaksi, $tanggal_pencatatan, $transaction_name, $cash, $desc, $userid, $bankid)
     {
