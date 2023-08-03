@@ -349,4 +349,26 @@ class CustomerIdentificationFile extends Controller
             return response()->json($err->outErrCatch($th->getMessage()));
         }
     }
+
+    public function ambilCountTotalNasabah(Request $re) {
+        try {
+            $token              = $re->cookie('tkn');
+
+            $ModelUser          = new SysUser();
+            $data_user          = $ModelUser->getInformasiUser($token);
+            
+            $hitungDataCIF      = BankCIF::where(['kd_bank' => $data_user->kd_bank])->get();
+
+            $output             = new stdClass;
+            $output->status     = 200;
+            $output->message    = 'Data berhasil diambil';
+            $output->data       = $hitungDataCIF->count();
+
+            return response()->json($output);
+
+        } catch (\Throwable $th) {
+            $err = new MetodeBerguna();
+            return response()->json($err->outErrCatch($th->getMessage()));
+        }
+    }
 }

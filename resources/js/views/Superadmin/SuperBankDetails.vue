@@ -169,7 +169,7 @@ export default {
         })
 
         axios.get('/api/super/neraca/'+ bankingId).then(res3 => {
-            // console.log(res3)
+            console.log(res3)
 
             this.tabelAktiva    = res3.data.aktiva
             this.tabelPasiva    = res3.data.pasiva

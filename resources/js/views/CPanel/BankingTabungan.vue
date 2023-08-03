@@ -69,7 +69,7 @@
             <div class="relative bg-white rounded-lg shadow p-4 m-auto md:w-1/2 2xl:w-[60%]">
                 <div class="grid grid-rows-1">
                     <h1 class="text-2xl text-black mb-4">Tambah Tabungan Baru</h1>
-                    <div class="grid grid-cols-1 2xl:grid-cols-2 gap-4">
+                    <div class="grid grid-cols-2 gap-4">
                         <!-- <div class="grid grid-rows-2 mb-2">
                             <label>Target Nasabah</label>
                             <select class="border bg-white p-2" v-model="formTabunganBaru.kd_cif">

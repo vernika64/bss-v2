@@ -34,6 +34,7 @@ class BankTransaksiTabunganWadiah extends Model
             $output->message            = 'Data berhasil diambil';
             $output->kd_buku_tabungan   = $kd_buku_tabungan;
             $output->nominal            = $ModelTransaksi->sum('nominal_transaksi');
+            $output->data               = $ModelTransaksi;
             
             return $output;
         } catch (\Throwable $th) {

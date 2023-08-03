@@ -19,6 +19,7 @@ class MetodeBerguna extends Controller
 
         $output     = [
             'status'    => 500,
+            'qr_status' => false,
             'message'   => 'Terjadi kesalahan di server, silahkan menghubungi staff IT website'
         ];
 

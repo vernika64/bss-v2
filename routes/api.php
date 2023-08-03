@@ -83,6 +83,8 @@ Route::get('/bank/totalTabunganBank', function(Request $re) {
     return response()->json($data);
 });
 
+Route::get('/bank/countTotalNasabahByBank', [CustomerIdentificationFile::class, 'ambilCountTotalNasabah']);
+
 // Sub Manajemen Bank
 Route::get('/super/bankList', [Administrator::class, 'getBankList']);
 Route::get('/super/bankList/{keys}', [Administrator::class, 'getBankListById']);

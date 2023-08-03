@@ -24,6 +24,7 @@
                         <td class="border border-white p-3 text-center">
                             <button v-if="tp.status_barang == 'pending'" class="p-2 bg-blue-500 text-white" @click="openModalRetrive(tp.id, tp.kd_transaksi_murabahah, tp.nama_barang)">Terima Barang</button>
                             <button v-else-if="tp.status_barang == 'receive'" class="p-2 bg-red-500 text-white" @click="keluarkanBarang(tp.id)">Barang Keluar</button>
+                            <button v-else class="p-2 bg-green-500 text-white">Barang Diterima Nasabah</button>
                         </td>
                     </tr>
                 </tbody>
