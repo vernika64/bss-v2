@@ -39,7 +39,7 @@
 
         <div class="flex flex-col w-full h-full bg-slate-900 left-0 top-0 fixed bg-opacity-70 justify-center align-middle" v-if="openModalAddUser == true">
             
-                <div class="relative bg-white rounded-lg p-4 m-auto w-1/4">
+                <div class="relative bg-white rounded-lg p-4 m-auto md:w-1/2 2xl:w-1/2">
                     <div class="grid grid-rows-1">
                         <h1 class="text-2xl text-black mb-5">Tambah User Baru</h1>
                         <div class="grid grid-rows-1 mb-5">

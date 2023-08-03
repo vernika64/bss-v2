@@ -19,7 +19,7 @@
                         <td class="border border-white text-center p-3">{{ index + 1 }}</td> 
                         <td class="border border-white p-3">{{ bk.nama_role }}</td>
                         <td class="border border-white p-3 text-center">
-                            <router-link :to="''" class="p-2 bg-red-600 text-white rounded-md text-sm ">Hapus</router-link>
+                            <!-- <router-link :to="''" class="p-2 bg-red-600 text-white rounded-md text-sm ">Hapus</router-link> -->
                         </td>
                     </tr>
                 </tbody>

@@ -1,11 +1,11 @@
 <template>
 <div>
-    <div class="p-3 bg-white border-t flex flex-row">
+    <div class="p-3 bg-white border-b flex flex-row shadow-md mb-2">
         <h1 class="text-2xl italic">{{ judulNavbar }}</h1>
     </div>
     <div class="p-2">
         <div>
-            <table class="border border-white w-full">
+            <table class="border border-white w-full shadow-md">
                 <thead class="bg-slate-500 text-white">
                     <tr>
                         <th class="p-4 bold font-md text-left font-semibold w-[50px]">No.#</th>
@@ -24,6 +24,7 @@
                         <td class="border border-white p-3 text-center">
                             <button v-if="tp.status_barang == 'pending'" class="p-2 bg-blue-500 text-white" @click="openModalRetrive(tp.id, tp.kd_transaksi_murabahah, tp.nama_barang)">Terima Barang</button>
                             <button v-else-if="tp.status_barang == 'receive'" class="p-2 bg-red-500 text-white" @click="keluarkanBarang(tp.id)">Barang Keluar</button>
+                            <button v-else class="p-2 bg-green-500 text-white">Barang Diterima Nasabah</button>
                         </td>
                     </tr>
                 </tbody>
@@ -146,6 +147,7 @@ export default {
 
                 axios.put('/api/bank/terimaBarangPermintaan', this.formPermintaanBarang).then(terima => {
                     alert(terima.data.message)
+                    return location.reload()
                 }).catch(terima_error => {
                     alert('Server Error')
                 })
@@ -161,6 +163,7 @@ export default {
             {
                 axios.put('/api/bank/keluarBarangPermintaan', { kd_permintaan_barang : uid}).then(keluar => {
                     alert(keluar.data.message)
+                    return location.reload()
                 }).catch(keluarerror => {
                     console.log(keluarerror)
                     alert('Server Error')

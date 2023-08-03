@@ -1,5 +1,5 @@
 <template>
-<div class="m-4 p-4 bg-slate-700 text-white">
+<div class="flex flex-row m-4 p-4 bg-slate-700 h-1/4 text-white items-center">
     <h1 class="text-2xl">Selamat Datang di Simulasi Bank Syariah</h1>
 </div>
 <div class="ml-4 pl-4">
@@ -29,6 +29,17 @@ export default {
         // Ambil data banyak cif
         axios.get('/api/banyakCIF').then(out => {
             console.log(out.data)
+            this.totalNasabah = out.data.count
+        }).catch(err => {
+            console.log(err)
+        })
+
+        axios.get('/api/bank/totalTabunganBank').then(hsl => {
+            // console.log(hsl.data)
+            let nominal         = hsl.data.nominal
+
+            // this.totalTabungan = new Intl.NumberFormat(['ban', 'id']).format(nominal) + ',='
+            this.totalTabungan = hsl.data.nominal
         })
     },
     data() {

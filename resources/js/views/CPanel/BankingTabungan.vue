@@ -1,12 +1,12 @@
 <template>
     <div>
-        <div class="p-3 bg-white border-t flex flex-row">
+        <div class="p-3 bg-white border-b flex flex-row shadow-md mb-2">
             <h1 class="text-2xl italic">{{ judulNavbar }}</h1>
             <button class="p-2 text-white bg-blue-600 w-auto text-sm ml-4" @click="openModalAddTabungan = true">Tambah Tabungan baru</button>
         </div>
         <div class="p-2">
             <div>
-                <table class="border border-white w-full">
+                <table class="border border-white w-full shadow-md">
                     <thead class="bg-slate-500 text-white">
                         <tr>
                             <th class="p-4 bold font-md text-left font-semibold w-[50px]">#</th>
@@ -33,7 +33,7 @@
     <Transition name="slide-fade">
         <div class="flex flex-col w-full h-full bg-slate-900 left-0 top-0 fixed bg-opacity-70 justify-center align-middle" v-if="modalDetailTabungan.status == true">
             <!-- Modal Content -->
-            <div class="relative bg-white rounded-lg shadow p-4 m-auto md:w-1/2 2xl:w-[60%]">
+            <div class="relative bg-white rounded-lg shadow p-4 m-auto md:w-1/2 2xl:w-1/4">
                 <div class="grid grid-rows-1">
                 <h1 class="text-2xl text-black mb-4">Detail Tabungan | {{ modalDetailTabungan.data.kd_buku_tabungan }}</h1>
                 <div class="grid grid-cols-1 gap-4">
@@ -69,7 +69,7 @@
             <div class="relative bg-white rounded-lg shadow p-4 m-auto md:w-1/2 2xl:w-[60%]">
                 <div class="grid grid-rows-1">
                     <h1 class="text-2xl text-black mb-4">Tambah Tabungan Baru</h1>
-                    <div class="grid grid-cols-1 2xl:grid-cols-2 gap-4">
+                    <div class="grid grid-cols-2 gap-4">
                         <!-- <div class="grid grid-rows-2 mb-2">
                             <label>Target Nasabah</label>
                             <select class="border bg-white p-2" v-model="formTabunganBaru.kd_cif">

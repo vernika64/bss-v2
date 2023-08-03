@@ -322,7 +322,11 @@ export default {
                 axios.post('/api/bank/terimaTransaksiMurabahah', this.formVerifikasiTransaksi).then(hasilterima => {
                     console.log(hasilterima.data)
 
-                    return alert(hasilterima.data.message)
+                    let data        = hasilterima.data
+
+                    alert(hasilterima.data.message)
+
+                    return this.$router.push({ name: 'JualBeliMurabahah' })
                 }).catch(hasilerror => {
                     console.log(hasilerror)
                     

@@ -23,13 +23,14 @@ class SysBank extends Model
     // Cari berdasarkan kode bank (id)
     public function cariDataBankById($kdbank) {
         try {
-            $query                  = SysBank::find($kdbank)->first();
+            $query                  = SysBank::find($kdbank);
             
             if($query != null) {
                 $output                 = new stdClass;
                 $output->status         = true;
                 $output->nama_bank      = $query->nama_bank;
                 $output->alamat_bank    = $query->alamat_bank;
+                $output->data           = $query;
     
                 return $output;
             } else {

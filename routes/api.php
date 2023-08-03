@@ -12,6 +12,9 @@ use App\Http\Controllers\Testing;
 use App\Http\Controllers\UserManagement;
 use App\Http\Middleware\CekTokenLogin;
 use App\Models\BankCIF;
+use App\Models\BankJualBeliMurabahah;
+use App\Models\BankTransaksiTabunganWadiah;
+use App\Models\SysBank;
 use App\Models\SysLog;
 use App\Models\SysToken;
 use App\Models\SysUser;
@@ -68,6 +71,20 @@ Route::get('/super/memberListFilterBank/{bankKeys}', [Administrator::class, 'get
 Route::get('/super/groupList', [Administrator::class, 'getGroupList']);
 Route::post('/super/addNewGroup', [Administrator::class, 'addNewGroups']);
 
+// Sub Manajemen Dashboard
+Route::get('/bank/totalTabunganBank', function(Request $re) {
+    $ModelUser                  = new SysUser();
+    $data_user                  = $ModelUser->getInformasiUser($re->cookie('tkn'));
+
+    $ModelTransaksiTabungan     = new BankTransaksiTabunganWadiah();
+
+    $data                       = $ModelTransaksiTabungan->totalNominalTabunganByBank($data_user->kd_bank);
+
+    return response()->json($data);
+});
+
+Route::get('/bank/countTotalNasabahByBank', [CustomerIdentificationFile::class, 'ambilCountTotalNasabah']);
+
 // Sub Manajemen Bank
 Route::get('/super/bankList', [Administrator::class, 'getBankList']);
 Route::get('/super/bankList/{keys}', [Administrator::class, 'getBankListById']);
@@ -108,7 +125,7 @@ Route::get('/banyakCIF', function(Request $re) {
         return response()->json([
             'status'    => 200,
             'message'   => 'Data banyak cif berhasil diambil',
-            'count'     => $Hasil
+            'count'     => $Hasil->count
         ]);
     } else {
         return response()->json([
@@ -175,7 +192,9 @@ Route::get('/bank/cekDataNasabah', [CustomerIdentificationFile::class, 'cekDataN
 // Untuk testing
 
 Route::get('duar', function() {
-// 
+    $data = BankTransaksiTabunganWadiah::where('kd_buku_tabungan', '201-2023-07-20-2')->get();
+
+    return number_format($data->sum('nominal_transaksi'), 3);
 });
 
 Route::get('testings', function(Request $re) {
@@ -186,9 +205,6 @@ Route::get('testings', function(Request $re) {
                 ->get();
 
     dd($tabel);
-    // return response()->json([
-    //     'data'  => $tabel
-    // ]);
 });
 
 

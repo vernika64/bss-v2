@@ -1,6 +1,6 @@
 <template>
 <div>
-    <div class="p-3 bg-white border-t border-b flex flex-row">
+    <div class="p-3 bg-white border-b flex flex-row shadow-md mb-2">
         <h1 class="text-2xl italic">{{ judulNavbar }}</h1>
     </div>
     <!-- <div class="grid grid-cols-2 mt-4 gap-4">
@@ -25,10 +25,10 @@
             <div class="flex flex-wrap mt-4">
                 <div class="flex-auto">
                     <!-- <label class="font-bold">Cari Nomor Rekening Nasabah</label> -->
-                    <input class="bg-white w-full p-2 border" placeholder="Nomor rekening nasabah" v-model="inputCariTabungan" />
+                    <input class="bg-white w-full p-2 border border-slate-200 shadow-md" placeholder="Nomor rekening nasabah" v-model="inputCariTabungan" />
                 </div>
                 <div class="flex-initial w-32 ml-4">
-                    <button class="bg-blue-500 text-white w-full p-2" @click="cariTabungan">Cari</button>
+                    <button class="bg-blue-500 text-white w-full p-2 shadow-md" @click="cariTabungan">Cari</button>
                 </div>
             </div>
         </div>
@@ -71,7 +71,7 @@
                             <label class="font-bold">Nominal Transaksi</label>
                             <div class="flex">
                                 <p class="text-md p-2 border bg-slate-200">Rp.</p>
-                                <input class="bg-white w-full p-2 border" v-model="formTransaksi.nominal_transaksi" />
+                                <input class="bg-white w-full p-2 border" v-model="dummyFormTransaksi.nominal_transaksi" @keyup="beriKomaUtkNominal" />
                             </div>
                         </div>
                         <div>
@@ -104,6 +104,8 @@ export default {
                 kd_buku_tabungan    : '',
                 jenis_transaksi     : '',
                 no_nota_fisik       : '',
+                nominal_transaksi   : ''
+            }, dummyFormTransaksi : {
                 nominal_transaksi   : ''
             }
         }
@@ -164,6 +166,14 @@ export default {
             } else {
                 return alert('Browser Error, Please Reload the website')
             }
+        }, beriKomaUtkNominal() {
+            let nominalTransaksi                            = this.dummyFormTransaksi.nominal_transaksi.replace(/,/gi, "")
+
+            this.formTransaksi.nominal_transaksi            = nominalTransaksi
+
+            this.dummyFormTransaksi.nominal_transaksi       = nominalTransaksi.split(/(?=(?:\d{3})+$)/).join(",")
+            
+            console.log(this.formTransaksi.nominal_transaksi)
         }
     }
 }

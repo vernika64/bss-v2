@@ -400,4 +400,37 @@ class Tabungan extends Controller
             return response()->json($err->outErrCatch($th->getMessage()));
         }
     }
+
+    public function hitungTotalTabunganWadiahBank(Request $re) {
+        try {
+            $token          = $re->cookie('tkn');
+            $ModelUser      = new SysUser();
+
+            $data_user      = $ModelUser->getInformasiUser($token);
+
+            if($data_user->status == false) {
+                return response()->json([
+                    'status'        => 200,
+                    'message'       => 'User tidak terdaftar di sistem'
+                ]);
+            }
+
+            $data_pencarian                 = new stdClass;
+            $data_pencarian->kd_user        = $data_user->id;
+            $data_pencarian->kd_bank        = $data_user->kd_bank;
+
+            $ModelTabungan  = new BankBukuTabunganWadiah();
+            $data_tabungan  = $ModelTabungan->hitungTotalTabunganWadiah($data_pencarian);
+
+            return response()->json([
+                'status'        => 200,
+                'message'       => $data_tabungan->message,
+                'data'          => $data_tabungan->data
+            ]);
+        } catch (\Throwable $th) {
+            $err       = new MetodeBerguna;
+
+            return response()->json($err->outErrCatch($th->getMessage()));
+        }
+    }
 }

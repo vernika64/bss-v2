@@ -33,6 +33,7 @@ class BankTransaksiTabunganWadiah extends Model
             $output->status             = true;
             $output->message            = 'Data berhasil diambil';
             $output->kd_buku_tabungan   = $kd_buku_tabungan;
+            $output->nominal            = $ModelTransaksi->sum('nominal_transaksi');
             $output->data               = $ModelTransaksi;
             
             return $output;
@@ -48,5 +49,30 @@ class BankTransaksiTabunganWadiah extends Model
             return $output;
         }
         
+    }
+
+    public function totalNominalTabunganByBank($kd_bank) {
+        try {
+            $query                      = ['kd_bank' => $kd_bank];
+
+            $ModelTrTabungan            = BankTransaksiTabunganWadiah::where($query)->get();
+
+            $output                     = new stdClass;
+            $output->status             = true;
+            $output->message            = 'Total Nominal Tabungan di Bank berhasil diambil';
+            $output->nominal            = $ModelTrTabungan->sum('nominal_transaksi');
+
+            return $output;
+        } catch (\Throwable $th) {
+            $buat_log                   = new SysLog();
+
+            $buat_log->buatErrorLog($th->getMessage());
+
+            $output                     = new stdClass;
+            $output->status             = false;
+            $output->message            = 'Terjadi kesalahan di server, mohon mencoba kembali';
+
+            return $output;
+        }
     }
 }

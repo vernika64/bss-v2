@@ -142,4 +142,59 @@ class BankBukuTabunganWadiah extends Model
             return $output;
         }
     }
+
+    public function hitungTotalTabunganWadiah($data) {
+        try {
+            $kd_user                = $data->kd_user;
+            $kd_bank                = $data->kd_bank;
+
+            $data_pencarian         = [
+                'kd_bank'       =>  $kd_bank,
+                'kd_admin'      =>  $kd_user
+            ];
+
+            $ModelTabungan          = BankBukuTabunganWadiah::where($data_pencarian)->get();
+
+            $output                 = new stdClass;
+            $output->status         = true;
+            $output->message        = 'Data berhasil diambil';
+            $output->data           = $ModelTabungan;
+
+            return $output;
+        } catch (\Throwable $th) {
+            $buat_log       = new SysLog();
+
+            $buat_log->buatErrorLog($th->getMessage());
+
+            $output                     = new stdClass;
+            $output->status             = false;
+            $output->message            = 'Terjadi kesalahan di server, mohon mencoba kembali';
+
+            return $output;
+        }
+    }
+
+    public function hitungTotalNasabahCount($kd_bank) {
+        try {
+            $data                       = BankBukuTabunganWadiah::where(['kd_bank', $kd_bank])->get();
+
+            $output                     = new stdClass;
+            $output->status             = true;
+            $output->message            = 'Data berhasil diambil';
+            $output->data               = $data;
+            $output->count              = $data->count();
+
+            return $output;
+        } catch (\Throwable $th) {
+            $buat_log       = new SysLog();
+
+            $buat_log->buatErrorLog($th->getMessage());
+
+            $output                     = new stdClass;
+            $output->status             = false;
+            $output->message            = 'Terjadi kesalahan di server, mohon mencoba kembali';
+
+            return $output;
+        }
+    }
 }
