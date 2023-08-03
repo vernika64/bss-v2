@@ -1,12 +1,12 @@
 <template>
 <div>
-    <div class="p-3 bg-white border-t flex flex-row">
+    <div class="p-3 bg-white border-b flex flex-row shadow-md mb-2">
         <h1 class="text-2xl italic">{{ judulNavbar }}</h1>
         <!-- <button class="p-2 text-white bg-blue-600 w-auto text-sm ml-4" @click="openModalAddBank = true">Tambah Transaksi Baru</button> -->
     </div>
     <div class="p-2">
         <div>
-            <table class="border border-white w-full">
+            <table class="border border-white w-full shadow-md">
                 <thead class="bg-slate-500 text-white">
                     <tr>
                         <th class="p-4 bold font-md text-left font-semibold w-[50px]">No.#</th>

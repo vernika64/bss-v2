@@ -21,7 +21,7 @@
                         type="password" 
                         placeholder="Password" />
 
-                    <input class="border bg-blue-500 text-white p-4 rounded-md hover:bg-blue-900 shadow-md transition-all ease-in-out cursor-pointer"
+                    <input class="border bg-blue-600 text-white text-xl p-4 rounded-md hover:bg-blue-900 shadow-md transition-all ease-in-out hover:tracking-widest hover:italic cursor-pointer"
                         type="submit" 
                         value="Login" 
                         @click="masukKeDashboard" />

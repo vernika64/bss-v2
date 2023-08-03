@@ -1,6 +1,6 @@
 <template>
 <div>
-    <div class="p-3 bg-white border-t flex flex-row">
+    <div class="p-3 bg-white border-b flex flex-row shadow-md mb-2">
         <h1 class="text-2xl italic">{{ judulNavbar }}</h1>
     </div>
     <div class="p-2">
@@ -10,7 +10,7 @@
                 <button class="w-[200px] bg-blue-500 text-white p-2 ml-2" @click="cariAngsuran(fieldCari)">Cari</button>
             </div>
             <div>
-                <table class="border border-white w-full">
+                <table class="border border-white w-full shadow-md">
                     <thead class="bg-slate-500 text-white">
                         <tr>
                             <th class="p-4 bold font-md text-left font-semibold w-[50px]">No.#</th>

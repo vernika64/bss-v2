@@ -1,5 +1,5 @@
 <template>
-<div class="m-4 p-4 bg-slate-700 text-white">
+<div class="flex flex-row m-4 p-4 bg-slate-700 h-1/4 text-white items-center">
     <h1 class="text-2xl">Selamat Datang di Simulasi Bank Syariah</h1>
 </div>
 <div class="ml-4 pl-4">
@@ -28,7 +28,8 @@ export default {
     mounted() {
         // Ambil data banyak cif
         axios.get('/api/banyakCIF').then(out => {
-            // console.log(out.data)
+            console.log(out.data)
+            this.totalNasabah = out.data.count
         }).catch(err => {
             console.log(err)
         })
