@@ -125,7 +125,7 @@ Route::get('/banyakCIF', function(Request $re) {
         return response()->json([
             'status'    => 200,
             'message'   => 'Data banyak cif berhasil diambil',
-            'count'     => $Hasil
+            'count'     => $Hasil->count
         ]);
     } else {
         return response()->json([
