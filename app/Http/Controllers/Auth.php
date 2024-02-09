@@ -17,25 +17,44 @@ class Auth extends Controller
     public function login(Request $re)
     {
         try {
-            $ModelUser = SysUser::where('username', $re->username)->first();
+            
+            try {
+                $ModelUser      = SysUser::where('username', $re->username)->first();
+            } catch (\Throwable $th) {
+                return response()->json([
+                    'message'   => 'Terjadi kesalahan pada server database, silahkan coba lagi nanti',
+                    'status'    => false
+                ], 503);
+            }
+            
             if(empty($ModelUser)) {
                 return response()->json([
                     'message'   => 'Akun tidak terdaftar',
                     'status'    => false
-                ]);
+                ], 200);
             } else if(!Hash::check($re->password, $ModelUser->password)) {
                 return response()->json([
                     'message'   => 'Password salah',
                     'status'    => false
-                ]);
+                ], 200);
             } else if(!$ModelUser) {
                 return response()->json([
-                    'message'   => 'Terjadi kesalahan di server, silahkan coba lagi',
+                    'message'   => 'Terjadi kesalahan di server',
                     'status'    => false
-                ]);
+                ], 200);
             }
-            $ModelBank = SysBank::find($ModelUser->kd_bank);
+
+            try {
+                $ModelBank = SysBank::find($ModelUser->kd_bank);
+            } catch (\Throwable $th) {
+                return response()->json([
+                    'message'   => 'Terjadi kesalahan pada server database, silahkan coba lagi nanti',
+                    'status'    => false
+                ], 503);
+            }
+            
             if(!empty($ModelBank)) {
+                
                 $data_cookie    = Hash::make(rand());
 
                 $cookie         = cookie('tkn', $data_cookie, 3 * 60);
@@ -51,20 +70,22 @@ class Auth extends Controller
                     'role'      => $ModelUser->role,
                     'user'      => $ModelUser->username,
                     'nama'      => $ModelUser->fname
-                ])->withCookie($cookie);
+                ], 200)->withCookie($cookie);
+
             } else {
                 return response()->json([
-                    'message'       => 'Terdapat kesalahan pada data user, mohon laporkan ke web admin untuk perbaikan',
+                    'message'       => 'Terdapat kesalahan pada data sistem, mohon laporkan ke web admin untuk perbaikan',
                     'status'        => false
-                ]);
+                ], 500);
             }
+
         } catch (\Throwable $th) {
             $out        = new MetodeBerguna();
             return response()->json($out->outErrCatch($th->getMessage()));
         }
     }
 
-    public function appLevelLoginAuth(Request $re)
+    public function cekTokenLogin(Request $re)
     {
         try {
             $ModelUser      = new SysUser();
@@ -120,7 +141,7 @@ class Auth extends Controller
 
     // GRAVEYARD
 
-    public function checkSudahLogin(Request $re)
+    public function cekLogin(Request $re)
     {
         try {
             if(empty($re->cookie('tkn')))

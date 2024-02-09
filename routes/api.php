@@ -53,8 +53,8 @@ Route::get('/tesCookie', [Testing::class, 'tesCookie']);
 
 // Untuk Login
 Route::post('/super/login', [Auth::class, 'login']);
-Route::get('/super/tknCheck', [Auth::class, 'appLevelLoginAuth']);
-Route::get('/super/cekLogin', [Auth::class, 'checkSudahLogin']);
+Route::get('/super/tknCheck', [Auth::class, 'cekTokenLogin']);
+Route::get('/super/cekLogin', [Auth::class, 'cekLogin']);
 Route::get('/super/keluar', [Auth::class, 'logout']);
 
 // Untuk Administrator
