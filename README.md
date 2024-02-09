@@ -17,9 +17,15 @@ Aplikasi untuk melakukan simulasi operasional mini bank syariah. Dapat digunakan
 
 3. Akuntansi Untuk Bank Syariah (Masih dalam pengembangan)
 
-4. Tabungan menggunakan akad Wadiah
+4. Tabungan menggunakan landasan akad `Wadiah yad-amanah`
 
-5. Pembiayaan Tangguh menggunakan akad Murabahah
+5. Pembiayaan Tangguh menggunakan landasan akad `Murabahah`
+
+<!-- ### Glossary untuk user yang awam dengan keuangan syariah
+
+`akad` adalah kontrak yang mengikat kedua belah pihak untuk memenuhi setiap kewajiban dan tanggung jawab yang telah ditulis di dalam akad.
+
+`wadiah` adalah  -->
 
 ## Library dan Framework yang digunakan di dalam aplikasi
 
@@ -51,7 +57,8 @@ Sebelum menginstall aplikasi dianjurkan untuk membuat database terlebih dahulu. 
 3. copy paste file `.env.example` dan rubah file yang dipaste dengan nama `.env`
 4. rubah pengatuan autentikasi database dan nama database di dalam `.env`
 5. generate `key` untuk `laravel` menggunakan command `php artisan key:generate`
-6. selesai
+6. upload skema tabel ke dalam database menggunakan command `php artisan migrate --seed`
+7. selesai
 
 ## Cara Pakai Aplikasi
 
@@ -64,6 +71,10 @@ Untuk Start Frontend
 `npm run hot`
 
 Akses Halaman Website dengan URL yang telah disediakan oleh command pada `npm`
+
+Untuk mengakses halaman admin pertama kali bisa menggunakan akun dengan username password `admin`
+
+Detail pemakaian aplikasi akan diupdate seiring pembuat masih dalam kondisi `motivated` wkwk
 
 ## Log Update
 
