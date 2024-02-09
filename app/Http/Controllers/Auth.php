@@ -17,57 +17,49 @@ class Auth extends Controller
     public function login(Request $re)
     {
         try {
-
             $ModelUser = SysUser::where('username', $re->username)->first();
-
-            if(empty($ModelUser))
-            {
+            if(empty($ModelUser)) {
                 return response()->json([
                     'message'   => 'Akun tidak terdaftar',
-                    'status'    => 404
+                    'status'    => false
                 ]);
-            } else if(!Hash::check($re->password, $ModelUser->password))
-            {
+            } else if(!Hash::check($re->password, $ModelUser->password)) {
                 return response()->json([
                     'message'   => 'Password salah',
-                    'status'    => 400
+                    'status'    => false
                 ]);
             } else if(!$ModelUser) {
                 return response()->json([
                     'message'   => 'Terjadi kesalahan di server, silahkan coba lagi',
-                    'status'    => 500
+                    'status'    => false
                 ]);
             }
-
             $ModelBank = SysBank::find($ModelUser->kd_bank);
+            if(!empty($ModelBank)) {
+                $data_cookie    = Hash::make(rand());
 
-            if(!empty($ModelBank))
-            {
-                $buatkuki = Hash::make(rand());
+                $cookie         = cookie('tkn', $data_cookie, 3 * 60);
 
-                $kuki = cookie('tkn', $buatkuki, 3 * 60);       // Cookie expired dalam 3 jam (3 dikali 60 menit) setelah login
-
-                $ModelToken = new SysToken;
+                $ModelToken             = new SysToken;
                 $ModelToken->kd_user    = $ModelUser->username;
-                $ModelToken->token      = $buatkuki;
+                $ModelToken->token      = $data_cookie;
                 $ModelToken->save();
 
                 return response()->json([
+                    'status'    => true,
+                    'message'   => 'Berhasil Login',
                     'role'      => $ModelUser->role,
                     'user'      => $ModelUser->username,
-                    'nama'      => $ModelUser->fname,
-                    'status'    => 200
-                ])->withCookie($kuki);
+                    'nama'      => $ModelUser->fname
+                ])->withCookie($cookie);
             } else {
                 return response()->json([
                     'message'       => 'Terdapat kesalahan pada data user, mohon laporkan ke web admin untuk perbaikan',
-                    'status'        => 500
+                    'status'        => false
                 ]);
             }
-
         } catch (\Throwable $th) {
             $out        = new MetodeBerguna();
-
             return response()->json($out->outErrCatch($th->getMessage()));
         }
     }

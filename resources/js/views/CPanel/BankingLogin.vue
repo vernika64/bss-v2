@@ -1,16 +1,12 @@
 <template>
-
     <div class="flex h-screen bg-pikisuperstars-circle bg-cover">
         <div class=" lg:w-1/2 lg:h-[70%] xl:w-1/4 xl:h-[70%] m-auto bg-white rounded-md">
             <!-- Login Section -->
             <div class="pl-8 pr-8 text-center mt-[50px]">
                 <h1 class="text-4xl italic mb-2">BSS</h1>
                 <p class="mb-4">Bank Syariah Simulator</p>
-                
                 <p class="mt-4 mb-4">Silahkan login untuk melanjutkan</p>
-
                 <form class="grid gap-4">
-
                     <input class="border border-slate-300 pl-2 pt-4 pb-4 font-medium rounded-md shadow-md" 
                         v-model="formLogin.username"
                         type="text" 
@@ -30,12 +26,10 @@
             <div class="pl-8 pr-8 pt-4">
                 <hr>
             </div>
-            <div>
-                
+            <div>      
             </div>
         </div>
     </div>
-
 </template>
 
 <script>
@@ -49,40 +43,31 @@ export default {
     },
     methods: {
         masukKeDashboard(e) {
-            e.preventDefault()
+            e.preventDefault();
             axios.post('/api/super/login', { username: this.formLogin.username, password: this.formLogin.password }).then(res => {
-                // console.log(res.data)
-                if(res.data.status == 200) {
-
-                    localStorage.setItem('uname', res.data.nama)
-                    localStorage.setItem('user', res.data.user)
-
+                if(res.data.status == true) {
+                    localStorage.setItem('uname', res.data.nama);
+                    localStorage.setItem('user', res.data.user);
                     switch (res.data.role) {
                         case 'office':
-
-                            this.userRole = 'office'
-
-                            router.push({ name: 'BankingDashboard' })
+                            this.userRole = 'office';
+                            router.push({ name: 'BankingDashboard' });
                             break;
                         case 'admin':
-                            this.userRole = 'admin'
-                            router.push({ name: 'SuperDashboard' })
+                            this.userRole = 'admin';
+                            router.push({ name: 'SuperDashboard' });
                             break;
                         default:
-                            alert('Server error, silahkan hubungi web administrator')
+                            alert('Server error, silahkan hubungi web administrator');
                             break;
                     }
-                    
                 }
-                else {
-                    alert('Terjadi kesalahan di aplikasi, dimohon untuk memuat ulang halaman website')
+                else if(res.data.status == false) {
+                    alert(res.data.message);
                 }
-
             }).catch(err => {
-                if(err.response.status == 500) {
-                    alert('Error : Gagal menyambungkan koneksi ke server')
-                }
-            })
+                return alert("Terjadi kesalahan di dalam aplikasi, mohon menghubungi Admin website.");
+            });
         }
     },
     data() {
