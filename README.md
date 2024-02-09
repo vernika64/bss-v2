@@ -3,7 +3,7 @@
 (Masih dalam tahap alpha)
 
 <!-- `
-Pesan Rahasia Wkwk
+Pesan Tidak Rahasia Wkwk
 
 ` -->
 
@@ -11,15 +11,15 @@ Aplikasi untuk melakukan simulasi operasional mini bank syariah. Dapat digunakan
 
 ## Fitur Utama Aplikasi
 
-`1. Dapat membuat cabang bank lebih dari satu`
+1. Dapat membuat cabang bank lebih dari satu
 
-`2. Multi User yang terikat dengan cabang bank`
+2. Multi User yang terikat dengan cabang bank
 
-`3. Akuntansi Untuk Bank Syariah (Masih dalam pengembangan)`
+3. Akuntansi Untuk Bank Syariah (Masih dalam pengembangan)
 
-`4. Tabungan menggunakan akad Wadiah`
+4. Tabungan menggunakan akad Wadiah
 
-`5. Pembiayaan Tangguh menggunakan akad Murabahah`
+5. Pembiayaan Tangguh menggunakan akad Murabahah
 
 ## Library dan Framework yang digunakan di dalam aplikasi
 
@@ -64,3 +64,7 @@ Untuk Start Frontend
 `npm run hot`
 
 Akses Halaman Website dengan URL yang telah disediakan oleh command pada `npm`
+
+## Log Update
+
+TBW
