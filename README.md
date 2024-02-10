@@ -6,12 +6,11 @@
 Pesan Tidak Rahasia Wkwk
 
 ` -->
-
-Aplikasi untuk melakukan simulasi operasional mini bank syariah. Dapat digunakan untuk jaringan lokal maupun online.
+Aplikasi ini merupakan aplikasi simulasi perbankan syariah yang dibuat untuk menuntaskan kegiatan skripsi pada program studi D4 Keuangan di Politeknik Negeri Malang pada tahun 2021.
 
 ## Fitur Utama Aplikasi
 
-1. Dapat membuat cabang bank lebih dari satu
+1. Dapat membuat cabang bank lebih dari satu (setiap data di cabang bank terisolasi untuk mencegah setiap user di dalam aplikasi merubah data dari cabang bank lain)
 
 2. Multi User yang terikat dengan cabang bank
 
@@ -20,6 +19,14 @@ Aplikasi untuk melakukan simulasi operasional mini bank syariah. Dapat digunakan
 4. Tabungan menggunakan landasan akad `Wadiah yad-amanah`
 
 5. Pembiayaan Tangguh menggunakan landasan akad `Murabahah`
+
+## Rencana Fitur yang akan dikembangkan kedepan (jika pembuat sudah menyelesaikan beberapa bug critical dan tidak membebankan ke dirinya di masa depan wkwk)
+
+1. Penambahan Produk Investasi dengan akad `Mudharabah`
+   
+2. Implementasi API KEY (ya, kode di project ini banyak lobang)
+
+3. Penambahan fitur QOL (jika pembuat telah mendapatkan ide wkwk)
 
 <!-- ### Glossary untuk user yang awam dengan keuangan syariah
 
