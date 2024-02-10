@@ -207,7 +207,15 @@ export default {
         tambahTabungan() {
             console.log(this.formTabunganBaru)
 
-            axios.post('/api/bank/tabungan/tambah', this.formTabunganBaru).then(nxt => {
+            let form_tabungan = this.formTabunganBaru;
+
+            if(form_tabungan.kd_produk_tabungan == '' ||
+               form_tabungan.kd_identitas == '' ||
+               form_tabungan.tipe_id == '') {
+                return alert("Silahkan lengkapi form buka rekening tabungan terlebih dahulu sebelum klik simpan");
+            }
+
+            axios.post('/api/bank/tabungan/tambah', form_tabungan).then(nxt => {
                 console.log('Error sukses')
                 console.log(nxt.data)
 
@@ -225,37 +233,30 @@ export default {
         },
         cekDataNasabah() {
             if(this.formTabunganBaru.kd_identitas == '' || this.formTabunganBaru.tipe_id == '') {
-                return alert('Data pencarian harus diisi terlebih dahulu')    
-            } else if (this.formTabunganBaru.kd_identitas != '' && this.formTabunganBaru.tipe_id != '') {
-                let data = {
-                    tipe_id         : this.formTabunganBaru.tipe_id,
-                    kd_identitas    : this.formTabunganBaru.kd_identitas
+                return alert('Data pencarian harus diisi terlebih dahulu');
+            }
+
+            let data = { tipe_id         : this.formTabunganBaru.tipe_id, kd_identitas : this.formTabunganBaru.kd_identitas };
+
+            this.status_cek_cif                                     = false;
+            this.dummyFormHasilPencarian.nama_nasabah               = '';
+            this.dummyFormHasilPencarian.alamat_nasabah             = '';
+
+            axios.post('/api/bank/cariDataCIF', data).then(hsl => {
+                console.log(hsl.data);
+
+                if(hsl.data.status == false) {
+                    return alert(hsl.data.message);
                 }
 
-                this.status_cek_cif                                     = false
-                this.dummyFormHasilPencarian.nama_nasabah               = ''
-                this.dummyFormHasilPencarian.alamat_nasabah             = ''
+                this.dummyFormHasilPencarian.nama_nasabah       = hsl.data.data.nama;
+                this.dummyFormHasilPencarian.alamat_nasabah     = hsl.data.data.alamat;
+                this.status_cek_cif                             = true;
 
-                axios.post('/api/bank/cariDataCIF', data).then(hsl => {
-                    console.log(hsl.data)
-                    if(hsl.data.status == 200) {
-                        console.log(hsl.data)
-
-                        this.dummyFormHasilPencarian.nama_nasabah       = hsl.data.data.nama
-                        this.dummyFormHasilPencarian.alamat_nasabah     = hsl.data.data.alamat
-
-                        this.status_cek_cif                             = true
-
-                        return alert(hsl.data.message)
-                    } else if(hsl.data.status == 400) {
-                        return alert(hsl.data.message)
-                    }
-                }).catch(err => {
-                    console.log(err.data)
-                })
-            } else {
-                return alert('Terdapat kesalahan di sisi client, mohon merestart halaman jika tombol tidak berfungsi')
-            }
+                return alert(hsl.data.message);
+            }).catch(err => {
+                console.log(err.data)
+            })
         },
         tutupDaftarTabungan() {
             this.formTabunganBaru.kd_identitas              = ''

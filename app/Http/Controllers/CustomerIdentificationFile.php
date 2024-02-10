@@ -328,20 +328,15 @@ class CustomerIdentificationFile extends Controller
                     return response()->json([
                         'data'              => $hasil_cif,
                         'message'           => 'Data berhasil diambil',
-                        'status'            => 200,
-                        'qr_status'         => true
-                    ]);
+                        'status'            => true,
+                    ], 200);
                 } else if($hasil_cif->status == false) {
                     return response()->json([
-                        'status'            => 200,
+                        'status'            => false,
                         'message'           => $hasil_cif->message,
-                        'qr_status'         => false,
                         'tipe_id'           => $re->tipe_id,
                         'kd_identitas'      => $re->kd_identitas
-
-                        // 'data'      => $hasil_cif->message,
-                        // 'form'      => $data_cif
-                    ]);
+                    ], 200);
                 }
             } 
         } catch (\Throwable $th) {

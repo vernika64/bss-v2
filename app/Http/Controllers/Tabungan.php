@@ -161,36 +161,34 @@ class Tabungan extends Controller
         }
     }
 
-    public function getDataTabunganForTransaksi($id, Request $re)
+    public function cariDataTabungan($id, Request $re)
     {
         try {
-            $getUserCookie = $re->cookie('tkn');
+            $cookie_user     = $re->cookie('tkn');
 
-            $ModelToken = SysToken::where('token', $getUserCookie)->first();
+            $ModelUser       = new SysUser();
+            $data_user       = $ModelUser->getInformasiUser($cookie_user);
 
-            if (empty($ModelToken)) {
-                // return response('Error 403 - Forbidden', 403);
+            if($data_user->status == false) {
                 return response()->json([
-                    'message'   => 'Token tidak ditemukan'
-                ]);
+                    'message'   => 'User belum login, silahkan login terlebih dahulu',
+                    'status'    => false
+                ], 200);
             }
 
-            $ModelUser = SysUser::where('username', $ModelToken->kd_user)->first();
-
-            if (empty($ModelUser)) {
-                // return response('Error 404 - User not found', 404);
-                return response()->json([
-                    'message'   => 'User tidak ditemukan'
-                ]);
-            }
-
-            $kodeadmin   = $ModelUser->id;
-            $kodebank    = $ModelUser->kd_bank;
+            $kd_user    = $data_user->user_id;
+            $kd_bank    = $data_user->kd_bank;
 
             $ModelTabungan          = BankBukuTabunganWadiah::where('kd_buku_tabungan', $id)->first();
 
+            if(empty($ModelTabungan) == true) {
+                return response()->json([
+                    'message'   => 'Tabungan tidak ditemukan',
+                    'status'    => false
+                ], 200);
+            }
 
-            if ($ModelTabungan->kd_bank == $kodebank) {
+            if ($ModelTabungan->kd_bank == $kd_bank) {
                 $ModelCIF               = BankCIF::find($ModelTabungan->kd_cif);
 
                 $ModelProdukTabungan            = SysProdukTabungan::find($ModelTabungan->kd_produk_tabungan);
@@ -222,7 +220,7 @@ class Tabungan extends Controller
                     'status'    => true,
                     'data'      => $data
                 ]);
-            } else if ($ModelTabungan->kd_bank != $kodebank) {
+            } else if ($ModelTabungan->kd_bank != $kd_bank) {
                 return response()->json([
                     'message'   => 'Tabungan tidak terdaftar di bank ini',
                     'status'    => false
