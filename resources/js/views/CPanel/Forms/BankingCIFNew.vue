@@ -485,21 +485,28 @@ export default {
             var pesan = confirm("Apakah anda sudah yakin data CIF sudah benar ?")
 
             if(pesan == true) {
-                console.log('simpan')
-                console.log(this.formCIF)
+
+                let banyak_form_kosong = 0;
+                Object.keys(this.formCIF).forEach(key => {
+                    if(this.formCIF[key] == '') {
+                        banyak_form_kosong++;
+                    }
+                });
+
+                if(banyak_form_kosong > 0) {
+                    banyak_form_kosong = 0;
+                    return alert("Data belum lengkap");
+                }
 
                 axios.post('/api/bank/tambahCIF', this.formCIF).then(dat => {
-                    alert(dat.data.message)
-                    console.log(dat.data)
+                    alert(dat.data.message);
+                    console.log(dat.data);
 
-                    return this.$router.push({name: 'CIF'})
+                    return this.$router.push({name: 'CIF'});
                 }).catch(error => {
-                    console.log(error)
+                    console.log(error);
+                    return alert("Terjadi kesalahan pada saat menyimpan data, silahkan refresh halaman website untuk mengulangi lagi");
                 })
-            } else if(pesan == false) {
-                console.log('batal')
-            } else {
-                console.log('error')
             }
         },
         cariDataId() {
