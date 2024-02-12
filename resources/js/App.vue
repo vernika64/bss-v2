@@ -31,7 +31,6 @@
 
 <script>
 import axios from 'axios'
-import router from './routes/router'
 import { HomeIcon, IdentificationIcon, OfficeBuildingIcon, DocumentReportIcon, UsersIcon, CodeIcon, BookOpenIcon } from '@heroicons/vue/solid'
 import { LogoutIcon, ViewGridIcon } from '@heroicons/vue/outline'
 
@@ -51,27 +50,15 @@ export default {
         ViewGridIcon
     },
     mounted() {
+        var tgl = new Date();
 
-        var tgl = new Date()
+        this.tanggal = tgl.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
 
-        this.tanggal = tgl.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
-
-        this.userCpanel = localStorage.getItem('uname')
+        this.userCpanel = localStorage.getItem('uname');
 
         axios.get('/api/super/tknCheck').then(loggedin => {
-            this.userRole = loggedin.data.role
-        })
-
-        // axios.get('/api/super/cekLogin').then(dt => {
-        //     console.log(dt.data)
-
-        //     if(dt.data.status == 200) {
-        //         statusLogin = true
-        //     }
-
-        // }).catch(er => {
-        //     console.log(er)
-        // })
+            this.userRole = loggedin.data.role;
+        });
     },
     data() {
         return {
@@ -86,25 +73,10 @@ export default {
                 menuBkAkuntansi : false,
                 menuDevArea     : false
             },
-            // statusLogin     : false
         }
     },
     methods: {
-        
+        // 
     }
 }
 </script>
-
-<style>
-/*  */
-
-/* .bg-sidebar {
-    background-color: #1b213d;
-}
-.bg-content {
-    background-color: #151934;
-}
-.bg-navbar {
-    background-color: #1c2340;
-} */
-</style>

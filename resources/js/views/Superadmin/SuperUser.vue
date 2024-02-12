@@ -6,36 +6,12 @@
             <button class="p-2 text-white bg-blue-600 w-auto text-sm ml-4" @click="openModalAddUser = true">Tambah User baru</button>
         </div>
         <div class="p-2">
-            <table class="border border-white w-full">
-                <thead>
-                    <tr>
-                        <th class="p-4 bg-slate-500 text-slate-100 bold text-left w-[50px]">#</th>
-                        <th class="p-4 bg-slate-500 text-slate-100 bold text-left">Username</th>
-                        <th class="p-4 bg-slate-500 text-slate-100 bold text-left">Terdaftar di Bank</th>
-                        <th class="p-4 bg-slate-500 text-slate-100 bold text-left">Role</th>
-                        <!-- <th class="p-4 bg-slate-500 text-slate-100 bold text-center">Aksi</th> -->
-                    </tr>
-                </thead>
-                <tbody class="bg-white">
-                    <tr v-for="(user, index) in listUser" :key="index" class="even:bg-slate-100 even:text-black hover:bg-slate-300">
-                        <td class="text-center border border-white p-2">{{ index + 1 }}</td>
-                        <td class="border border-white p-3">{{ user.fname }}</td>
-                        <td class="border border-white p-3">{{ user.nama_bank }}</td>
-                        <td class="border border-white p-3">{{ user.nama_role }}</td>
-                        <!-- <td class="border border-white p-3 text-center">
-                            <button class="bg-blue-500 p-2 inline-block text-white text-sm rounded-md mr-1 ml-1" @click="openModalUserDetails = true">
-                                Detail
-                            </button>
-                        </td> -->
-                    </tr>
-                </tbody>
-            </table>
+            <SuperTabelUser :items="listUser" />
         </div>
     </div>
 
     <!-- Modal Section for Add New User -->
     <Transition name="slide-fade">
-
 
         <div class="flex flex-col w-full h-full bg-slate-900 left-0 top-0 fixed bg-opacity-70 justify-center align-middle" v-if="openModalAddUser == true">
             
@@ -109,9 +85,13 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from 'axios';
+import SuperTabelUser from '../Components/SuperTabelUser.vue';
 
 export default {
+    components: {
+        SuperTabelUser
+    },
     mounted() {
         
         axios.get('/api/super/bankList').then(hsl => {
@@ -156,7 +136,20 @@ export default {
                 fname       : '',
                 role        : '',
                 bank        : ''
-            }
+            },
+            propTabel: [
+                    {
+                        no: 1,
+                        username: 'Joni',
+                        nama_bank: 'Bank Sejahtera',
+                        role: 'Teller'
+                    },
+                    {
+                        no: 2,
+                        username: 'Kodi',
+                        nama_bank: 'Bank Amanah',
+                        role: 'Manajer'
+                    }]
         }
     },
     methods: {
