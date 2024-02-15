@@ -41,7 +41,6 @@
         </div>
     </div>
 
-
     <!-- Modal Section -->
     <Transition name="slide-fade">
     <div class="flex flex-col w-full h-full bg-slate-900 left-0 top-0 fixed bg-opacity-70 justify-center align-middle" v-if="openModalAddJualBeli == true">
@@ -75,15 +74,6 @@
                             <textarea class="border border-slate-300 bg-white shadow-md rounded-md text-md p-2" placeholder="Nama Nasabah (terisi otomatis)" readonly v-model="dummyFormJualBeli.alamat_nasabah"></textarea>
                         </div>
 
-                        <!-- <div class="flex flex-col">
-                            <label>CIF</label>
-                            <select class="border border-slate-300 bg-white shadow-md rounded-md text-md p-2" v-model="formJualBeli.kd_identitas">
-                                <option :value="''">-- Pilih CIF --</option>
-                                <option v-for="(cf, index) in listCustomer" :key="index" :value="cf.id">
-                                    {{ cf.kd_identitas }} - {{ cf.nama_sesuai_identitas }}
-                                </option>
-                            </select>
-                        </div> -->
                     </fieldset>
 
                     <fieldset class="border border-slate-300 rounded-md pl-4 pr-2 pb-4 pt-2">
@@ -125,13 +115,9 @@ import axios from 'axios'
 export default {
     mounted() {
         axios.get('/api/bank/listJualBeliMurabahah').then(res2 => {
-            console.log(res2.data)
-
-            let data            = res2.data.data
-
-            this.tabelJualBeli  = data
-        })
-
+            let data            = res2.data.data;
+            this.tabelJualBeli  = data;
+        });
     },
     data() {
         return {
@@ -157,71 +143,57 @@ export default {
         displayStatus(stats) {
             switch (stats) {
                 case 'pending':
-                    return 'Menunggu Verifikasi'
+                    return 'Menunggu Verifikasi';
                 case 'active':
-                    return 'Lolos Verifikasi'
+                    return 'Lolos Verifikasi';
                 case 'pass':
-                    return 'Lunas'
+                    return 'Lunas';
                 case 'fail':
-                    return 'Gagal Bayar'
+                    return 'Gagal Bayar';
                 case 'reject':
-                    return 'Ditolak'
-
+                    return 'Ditolak';
                 default:
-                    return 'Error'
+                    return '';
             }
         },
         cariTransaksi() {
             console.log(this.inputPencarian)
-
             axios.get('/api/bank/cariJualBeliMurabahah/' + this.inputPencarian).then(pencarian => {
-                console.log(pencarian.data)
                 if (pencarian.data.status == false) {
-                    return alert('Data tidak ditemukan')
+                    return alert('Data tidak ditemukan');
                 }
-                this.tabelJualBeli = pencarian.data.data
+                this.tabelJualBeli = pencarian.data.data;
             }).catch(error_pencarian => {
-                return console.log(error_pencarian.data)
-            })
+                return console.log(error_pencarian.data);
+            });
         },
         cariDataNasabah() {
-            console.log(this.formJualBeli)
-
             let data    = {
                 'tipe_id'        : this.formJualBeli.tipe_id,
                 'kd_identitas'   : this.formJualBeli.kd_identitas
-            }
-
+            };
             axios.post('/api/bank/cariDataCIF', data).then(hasil => {
-                console.log(hasil.data)
-
-                let status  = hasil.data.qr_status
-
+                let status  = hasil.data.status;
                 if(status == false) {
                     alert('Data tidak ditemukan, coba lagi')
                 } else if(status == true) {
                     alert(hasil.data.message)
-
-                    let dat = hasil.data.data
-    
-                    this.dummyFormJualBeli.nama_nasabah     = dat.nama
-                    this.dummyFormJualBeli.alamat_nasabah   = dat.alamat
+                    let dat = hasil.data.data;
+                    this.dummyFormJualBeli.nama_nasabah     = dat.nama;
+                    this.dummyFormJualBeli.alamat_nasabah   = dat.alamat;
                 } else {
-                    alert('Terjadi kesalahan pada halaman website, dimohon untuk merefresh halaman untuk mencoba lagi')
+                    alert('Terjadi kesalahan pada halaman website, dimohon untuk merefresh halaman untuk mencoba lagi');
                 }
             }).catch(error => {
-                console.log(error.data)
-            })
+                console.log(error.data);
+            });
         },
-        tambahJualBeli() {
-            console.log(this.formJualBeli)
-
+        tambahJualBeli() {            
             axios.post('/api/bank/listJualBeliMurabahah/Add', this.formJualBeli).then(hsl => {
-                console.log(hsl.data)
-                alert(hsl.data.message)
-                return location.reload()
+                alert(hsl.data.message);
+                return location.reload();
             }).catch(hslerr => {
-                console.log(hslerr)
+                console.log(hslerr);
             })
         },
     }
