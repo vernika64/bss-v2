@@ -7,30 +7,7 @@
     </div>
     <div class="p-2">
         <div>
-            <table class="border border-white w-full">
-                <thead class="bg-slate-500 text-white">
-                    <tr>
-                        <th class="p-4 bold font-md text-left font-semibold w-[50px]">No.#</th>
-                        <th class="p-4 bold font-md text-left font-semibold">Kode Bank</th>
-                        <th class="p-4 bold font-md text-left font-semibold">Nama Bank</th>
-                        <th class="p-4 bold font-md text-left font-semibold">Alamat Bank</th>
-                        <th class="p-4 bold font-md text-center font-semibold">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody class="bg-white">
-                    <tr v-for="(bk, index) in tabelBank" :key="bk.kd_bank" class="even:bg-slate-200 even:text-black">
-                        <td class="border border-white text-center p-3">{{ index + 1 }}</td> 
-                        <td class="border border-white p-3">{{ bk.kd_bank }}</td> 
-                        <td class="border border-white p-3">{{ bk.nama_bank }}</td> 
-                        <td class="border border-white p-3">{{ bk.alamat_bank }}</td> 
-                        <td class="border border-white p-3 text-center">
-                            <router-link class="p-2 bg-blue-600 text-white rounded-md text-sm" :to="{ name: 'SuperBankDetail', params: { bankID: bk.kd_bank }}">
-                                Details
-                            </router-link>
-                        </td> 
-                    </tr>
-                </tbody>
-            </table>
+            <SuperTabelBank :items="tabelBank" />
         </div>
     </div>
 
@@ -65,15 +42,18 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from 'axios';
+import SuperTabelBank from '../Components/SuperTabelBank.vue';
 
 export default {
+    components: {
+        SuperTabelBank
+    },
     mounted() {
         axios.get('/api/super/bankList').then(res => {
-            this.tabelBank = res.data.data
-            console.log(this.tabelBank)
+            this.tabelBank = res.data.data;
         }).catch(err => {
-            alert('Mohon maaf, server sedang mengalami gangguan, mohon untuk menghubungi Web Administrator')
+            alert('Mohon maaf, server sedang mengalami gangguan, mohon untuk menghubungi Web Administrator');
         })
     },
     data() {
@@ -92,15 +72,15 @@ export default {
             let dataBank = {
                 namabank        : this.formBankBaru.namabank,
                 alamatbank      : this.formBankBaru.alamatbank
-            }
+            };
 
             axios.post('/api/super/addNewBank', dataBank).then(res2 => {
-                alert(res2.data.message)
-                console.log(res2)
-                location.reload()
+                alert(res2.data.message);
+                console.log(res2);
+                location.reload();
             }).catch(err2 => {
-                alert(err2.data.message)
-            })
+                alert(err2.data.message);
+            });
         }
     }
 }
